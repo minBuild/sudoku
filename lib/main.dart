@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'controllers/sudoku_controller.dart';
+import 'screens/sudoku_screen.dart';
 
 void main() {
-  runApp(
-    MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text(
-            'Hello 성애!',
-          ),
+  runApp(const SudokuApp());
+}
+
+class SudokuApp extends StatelessWidget {
+  const SudokuApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => SudokuController(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Sudoku',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          useMaterial3: true,
         ),
+        home: const SudokuScreen(),
       ),
-    ),
-  );
+    );
+  }
 }
