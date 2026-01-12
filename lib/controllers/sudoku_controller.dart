@@ -34,6 +34,15 @@ class SudokuController extends ChangeNotifier {
     notifyListeners();
   }
 
+  int _wrongCount = 0;
+  int get wrongCount => _wrongCount;
+
+  static const int maxWrongCount = 5;
+
+  bool _isGameOver = false;
+  bool get isGameOver => _isGameOver;
+
+
   SudokuController() {
     _loadSamplePuzzle();
   }
@@ -85,6 +94,8 @@ class SudokuController extends ChangeNotifier {
     _updateConflicts();
     _updateHighlights();
     notifyListeners();
+    _wrongCount = 0;
+    _isGameOver = false;
   }
 
   void selectCell(int row, int col) {
@@ -109,6 +120,7 @@ class SudokuController extends ChangeNotifier {
 
   void inputNumber(int number) {
     if (_selectedRow == null || _selectedCol == null) return;
+    if (_isGameOver) return;
 
     final cell = _board[_selectedRow!][_selectedCol!];
     if (cell.isGiven) return;
@@ -135,6 +147,12 @@ class SudokuController extends ChangeNotifier {
     }
 
     // ✅ 입력 모드: 값 입력 + 메모 초기화
+    final int? prevValue = cell.value;
+    final bool wasConflictedBefore = cell.isConflicted;
+
+    // 같은 숫자를 또 누른 건 오답처리 안함
+    if (prevValue == number) return;
+
     cell.value = number;
     cell.notes.clear();
 
@@ -145,20 +163,35 @@ class SudokuController extends ChangeNotifier {
       cell.isWrong = false;
     }
 
-    final bool wasConflictedBefore = cell.isConflicted;
-
     _updateConflicts();
     _updateHighlights();
 
-    if (!wasConflictedBefore && cell.isConflicted) {
-      _errorController.add(null); // 보드 흔들기 트리거
+    if (_instantCheck && cell.isWrong) {
+      _wrongCount += 1;
+
+      // 원하면 오답일 때만 흔들기
+      _errorController.add(null);
+
+      if (_wrongCount >= maxWrongCount) {
+        _isGameOver = true;
+      }
+
+      notifyListeners();
+      return;
     }
+
+    if (!wasConflictedBefore && cell.isConflicted) {
+      _errorController.add(null);
+    }
+
 
     notifyListeners();
   }
 
   void clearSelectedCell() {
     if (_selectedRow == null || _selectedCol == null) return;
+    if (_isGameOver) return;
+
     final cell = _board[_selectedRow!][_selectedCol!];
     if (cell.isGiven) return;
 
