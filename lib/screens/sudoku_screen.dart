@@ -118,10 +118,24 @@ class _SudokuScreenState extends State<SudokuScreen> {
         children: [
           const SizedBox(height: 16),
           // 보드 영역
-          const Expanded(
+          Expanded(
             flex: 3,
             child: Center(
-              child: SudokuBoard(),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  const SudokuBoard(), // 이건 const여도 되지만, 아래 때문에 통째 const를 못 씀
+
+                  Positioned(
+                    top: -24,
+                    right: 15,
+                    child: _WrongCounterBadge(
+                      wrong: controller.wrongCount,
+                      maxWrong: SudokuController.maxWrongCount,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -135,15 +149,11 @@ class _SudokuScreenState extends State<SudokuScreen> {
                       : controller.isGameOver
                       ? '게임 종료'
                       : controller.isNoteMode
-                      ? '메모 모드: 후보 숫자를 기록해보세요'
-                      : '숫자를 선택해서 채워보세요',
+                      ? '📝 메모'
+                      : '🖊️ 입력',
                   style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 6),
-                Text(
-                  '오답: ${controller.wrongCount}/${SudokuController.maxWrongCount}',
-                  style: const TextStyle(fontSize: 14),
-                ),
                 const SizedBox(height: 8),
                 const _NumberPad(),
                 const SizedBox(height: 8),
@@ -202,6 +212,43 @@ class _NumberPad extends StatelessWidget {
             ),
           );
         }),
+      ),
+    );
+  }
+}
+
+class _WrongCounterBadge extends StatelessWidget {
+  final int wrong;
+  final int maxWrong;
+
+  const _WrongCounterBadge({
+    required this.wrong,
+    required this.maxWrong,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDanger = wrong >= maxWrong - 1;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: isDanger ? Colors.red.shade400 : Colors.black87,
+        borderRadius: BorderRadius.circular(999),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Text(
+        '오답 $wrong/$maxWrong',
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
