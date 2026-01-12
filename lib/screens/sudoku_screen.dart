@@ -183,6 +183,12 @@ class _SudokuScreenState extends State<SudokuScreen> {
 
                   Positioned(
                     top: -24,
+                    left: 15,
+                    child: _TimerBadge(label: controller.elapsedLabel),
+                  ),
+
+                  Positioned(
+                    top: -24,
                     right: 15,
                     child: _WrongCounterBadge(
                       wrong: controller.wrongCount,
@@ -304,6 +310,44 @@ class _WrongCounterBadge extends StatelessWidget {
           fontSize: 12,
           fontWeight: FontWeight.bold,
         ),
+      ),
+    );
+  }
+}
+
+class _TimerBadge extends StatelessWidget {
+  final String label;
+
+  const _TimerBadge({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.black87,
+        borderRadius: BorderRadius.circular(999),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.timer, size: 14, color: Colors.white),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }

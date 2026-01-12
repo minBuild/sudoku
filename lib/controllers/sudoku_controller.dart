@@ -28,6 +28,42 @@ class SudokuController extends ChangeNotifier {
   // "reset"은 현재 퍼즐로 다시 시작하도록 initial snapshot을 저장해둠
   late List<List<int>> _initialSnapshot;
 
+  Timer? _timer;
+  int _elapsedSeconds = 0;
+
+  int get elapsedSeconds => _elapsedSeconds;
+
+  String get elapsedLabel {
+    final m = _elapsedSeconds ~/ 60;
+    final s = _elapsedSeconds % 60;
+    final mm = m.toString().padLeft(2, '0');
+    final ss = s.toString().padLeft(2, '0');
+    return '$mm:$ss';
+  }
+
+  void _startTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      // 게임 끝났으면 증가 중단
+      if (_isGameOver || isSolved) {
+        _timer?.cancel();
+        _timer = null;
+        return;
+      }
+      _elapsedSeconds += 1;
+      notifyListeners();
+    });
+  }
+
+  void _stopTimer() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
+  void _resetTimer() {
+    _elapsedSeconds = 0;
+  }
+
   bool _isNoteMode = false;
   bool get isNoteMode => _isNoteMode;
 
@@ -88,6 +124,8 @@ class SudokuController extends ChangeNotifier {
     _updateConflicts();
     _updateHighlights();
     // _updateWrongMarks(); // instantCheck 토글을 쓰고 있으면 필요 시 호출
+    _resetTimer();
+    _startTimer();
     notifyListeners();
   }
 
@@ -114,6 +152,8 @@ class SudokuController extends ChangeNotifier {
 
     _updateConflicts();
     _updateHighlights();
+    _resetTimer();
+    _startTimer();
     notifyListeners();
   }
 
@@ -366,5 +406,12 @@ class SudokuController extends ChangeNotifier {
       }
     }
     return true;
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _errorController.close(); // 이미 쓰고 있으면 같이 정리
+    super.dispose();
   }
 }
