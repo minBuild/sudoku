@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/sudoku_controller.dart';
+import '../models/difficulty.dart';
 import '../widgets/sudoku_board.dart';
 
 class SudokuScreen extends StatefulWidget {
@@ -13,6 +14,16 @@ class SudokuScreen extends StatefulWidget {
 
 class _SudokuScreenState extends State<SudokuScreen> {
   bool _shownGameOverDialog = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 첫 진입 시 난이도 선택 띄우기 (1회)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showDifficultyDialog();
+    });
+  }
 
   @override
   void didChangeDependencies() {
@@ -53,12 +64,37 @@ class _SudokuScreenState extends State<SudokuScreen> {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                controller.reset(); // ✅ 새 게임 (현재는 샘플 퍼즐뿐이라 동일)
+                _showDifficultyDialog(); // ✅ 난이도 선택 후 newGame
                 // 나중에 generator 붙이면 controller.newGame()로 바꾸면 됨
               },
               child: const Text('새 게임'),
             ),
           ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showDifficultyDialog() async {
+    final controller = context.read<SudokuController>();
+
+    await showDialog<void>(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text('난이도 선택'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: Difficulty.values.map((d) {
+              return ListTile(
+                  title: Text(d.label),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  controller.newGame(d);
+                },
+              );
+            }).toList(),
+          ),
         );
       },
     );

@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
+import '../models/difficulty.dart';
 import '../models/sudoku_cell.dart';
 import '../models/sudoku_puzzle.dart';
+import '../services/sudoku_generator.dart';
 import 'dart:async';
+
 
 class SudokuController extends ChangeNotifier {
   late SudokuPuzzle _puzzle;
@@ -16,6 +19,14 @@ class SudokuController extends ChangeNotifier {
   List<List<SudokuCell>> get board => _board;
   int? get selectedRow => _selectedRow;
   int? get selectedCol => _selectedCol;
+
+  final SudokuGenerator _generator = SudokuGenerator();
+
+  Difficulty _difficulty = Difficulty.normal;
+  Difficulty get difficulty => _difficulty;
+
+  // "reset"은 현재 퍼즐로 다시 시작하도록 initial snapshot을 저장해둠
+  late List<List<int>> _initialSnapshot;
 
   bool _isNoteMode = false;
   bool get isNoteMode => _isNoteMode;
@@ -44,40 +55,47 @@ class SudokuController extends ChangeNotifier {
 
 
   SudokuController() {
-    _loadSamplePuzzle();
+    newGame(Difficulty.normal);
   }
 
-  void _loadSamplePuzzle() {
-    // 간단한 예제 퍼즐 (0 = 빈칸)
-    const initial = [
-      [0, 0, 0, 2, 6, 0, 7, 0, 1],
-      [6, 8, 0, 0, 7, 0, 0, 9, 0],
-      [1, 9, 0, 0, 0, 4, 5, 0, 0],
-      [8, 2, 0, 1, 0, 0, 0, 4, 0],
-      [0, 0, 4, 6, 0, 2, 9, 0, 0],
-      [0, 5, 0, 0, 0, 3, 0, 2, 8],
-      [0, 0, 9, 3, 0, 0, 0, 7, 4],
-      [0, 4, 0, 0, 5, 0, 0, 3, 6],
-      [7, 0, 3, 0, 1, 8, 0, 0, 0],
-    ];
-
-    const solution = [
-      [4, 3, 5, 2, 6, 9, 7, 8, 1],
-      [6, 8, 2, 5, 7, 1, 4, 9, 3],
-      [1, 9, 7, 8, 3, 4, 5, 6, 2],
-      [8, 2, 6, 1, 9, 5, 3, 4, 7],
-      [3, 7, 4, 6, 8, 2, 9, 1, 5],
-      [9, 5, 1, 7, 4, 3, 6, 2, 8],
-      [5, 1, 9, 3, 2, 6, 8, 7, 4],
-      [2, 4, 8, 9, 5, 7, 1, 3, 6],
-      [7, 6, 3, 4, 1, 8, 2, 5, 9],
-    ];
-
-    _puzzle = SudokuPuzzle(initial: initial, solution: solution);
+  void newGame(Difficulty difficulty) {
+    _difficulty = difficulty;
+    _puzzle = _generator.generate(difficulty);
 
     _board = List.generate(9, (row) {
       return List.generate(9, (col) {
-        final v = initial[row][col];
+        final v = _puzzle.initial[row][col];
+        return SudokuCell(
+          row: row,
+          col: col,
+          isGiven: v != 0,
+          value: v == 0 ? null : v,
+          // notes/isWrong/isHighlighted 등은 기본 false/empty
+        );
+      });
+    });
+
+    _initialSnapshot =
+        List.generate(9, (r) => List<int>.from(_puzzle.initial[r]));
+
+    _selectedRow = null;
+    _selectedCol = null;
+
+    _wrongCount = 0;
+    _isGameOver = false;
+    _isNoteMode = false;
+
+    _updateConflicts();
+    _updateHighlights();
+    // _updateWrongMarks(); // instantCheck 토글을 쓰고 있으면 필요 시 호출
+    notifyListeners();
+  }
+
+  void reset() {
+    // 현재 퍼즐(_puzzle.solution)은 유지, initialSnapshot으로 다시 시작
+    _board = List.generate(9, (row) {
+      return List.generate(9, (col) {
+        final v = _initialSnapshot[row][col];
         return SudokuCell(
           row: row,
           col: col,
@@ -89,13 +107,14 @@ class SudokuController extends ChangeNotifier {
 
     _selectedRow = null;
     _selectedCol = null;
+
+    _wrongCount = 0;
+    _isGameOver = false;
     _isNoteMode = false;
 
     _updateConflicts();
     _updateHighlights();
     notifyListeners();
-    _wrongCount = 0;
-    _isGameOver = false;
   }
 
   void selectCell(int row, int col) {
@@ -347,9 +366,5 @@ class SudokuController extends ChangeNotifier {
       }
     }
     return true;
-  }
-
-  void reset() {
-    _loadSamplePuzzle();
   }
 }
