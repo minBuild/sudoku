@@ -103,14 +103,14 @@ class SudokuController extends ChangeNotifier {
     if (_selectedRow == null || _selectedCol == null) return;
 
     final cell = _board[_selectedRow!][_selectedCol!];
+    if (cell.isGiven) return;
 
-    if (cell.isGiven) return; // 고정 숫자는 건들지 않음
-
-    // ✅ 메모 모드일 때: 값 대신 notes 토글
+    // ✅ 메모 모드: 값이 있으면 날리고, notes 토글
     if (_isNoteMode) {
+      // 값이 있던 칸이면 값을 지우고 메모로 전환
       if (cell.value != null) {
-        // 이미 값이 있는 칸에는 메모 안 넣는 걸로
-        return;
+        cell.value = null;
+        cell.isConflicted = false; // 값 지웠으니 일단 이 칸 충돌 플래그 초기화
       }
 
       if (cell.notes.contains(number)) {
@@ -118,11 +118,15 @@ class SudokuController extends ChangeNotifier {
       } else {
         cell.notes.add(number);
       }
+
+      // 값이 바뀐건 아니지만, 값 지운 경우 충돌 상태/하이라이트 정리 필요
+      _updateConflicts();
+      _updateHighlights();
       notifyListeners();
       return;
     }
 
-    // ✅ 일반 모드: 값 입력 + 메모 초기화
+    // ✅ 입력 모드: 값 입력 + 메모 초기화
     cell.value = number;
     cell.notes.clear();
 
@@ -131,15 +135,12 @@ class SudokuController extends ChangeNotifier {
     _updateConflicts();
     _updateHighlights();
 
-    // 새로 충돌이 생겼으면 보드 흔들기
     if (!wasConflictedBefore && cell.isConflicted) {
-      _errorController.add(null);
+      _errorController.add(null); // 보드 흔들기 트리거
     }
 
     notifyListeners();
   }
-
-
 
   void clearSelectedCell() {
     if (_selectedRow == null || _selectedCol == null) return;
