@@ -100,17 +100,72 @@ class _SudokuScreenState extends State<SudokuScreen> {
     );
   }
 
+  Future<void> _confirmAbandonAndChooseDifficulty(SudokuController controller) async {
+    // 게임이 이미 끝났거나, 아직 한 번도 진행 안 했으면 바로 난이도 선택
+    final shouldConfirm = !_isFreshState(controller) && !controller.isGameOver && !controller.isSolved;
+
+    if (shouldConfirm) {
+      final abandon = await showDialog<bool>(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text('게임을 포기할까요?'),
+          content: const Text('현재 진행 상황은 사라집니다.\n난이도를 바꿔 새 게임을 시작할까요?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('취소'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('포기하고 새 게임'),
+            ),
+          ],
+        ),
+      );
+
+      if (abandon != true) return;
+    }
+
+    // 포기 확정(or 확인 불필요) → 난이도 선택
+    await _showDifficultyDialog();
+  }
+
+  bool _isFreshState(SudokuController controller) {
+    // 오답이 있거나, 메모 모드/게임오버면 fresh 아님
+    if (controller.wrongCount > 0) return false;
+    if (controller.isNoteMode) return false;
+    if (controller.isGameOver) return false;
+
+    // 보드에 사용자가 채운 숫자가 하나라도 있으면 fresh 아님
+    final board = controller.board;
+    for (var r = 0; r < 9; r++) {
+      for (var c = 0; c < 9; c++) {
+        final cell = board[r][c];
+        if (!cell.isGiven && (cell.value != null || cell.notes.isNotEmpty)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<SudokuController>();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sudoku'),
+        title: const Text('Sudoku Jang'),
         actions: [
           IconButton(
             onPressed: () => controller.reset(),
             icon: const Icon(Icons.refresh),
+            tooltip: '다시 시작',
+          ),
+          IconButton(
+            onPressed: () => _confirmAbandonAndChooseDifficulty(controller),
+            icon: const Icon(Icons.tune),
+            tooltip: '난이도 변경',
           ),
         ],
       ),
