@@ -24,6 +24,9 @@ class SudokuCellWidget extends StatelessWidget {
     if (cell.isSelected) {
       bgColor = Colors.blue.shade100;     // 선택된 칸
     }
+    if (cell.isWrong) {
+      bgColor = Colors.orange.shade200;
+    }
     if (cell.isConflicted) {
       bgColor = Colors.red.shade200;      // 충돌이 최우선
     }

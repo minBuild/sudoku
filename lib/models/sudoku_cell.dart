@@ -7,6 +7,7 @@ class SudokuCell {
   bool isSelected;
   bool isConflicted; // 중복 등 오류 상태
   bool isHighlighted; // 선택한 기준에 의해 하이라이트 여부
+  bool isWrong; // ✅ 정답과 비교했을 때 틀린 입력인지
   Set<int> notes; // ✅ 메모(후보 숫자들)
 
   SudokuCell({
@@ -17,6 +18,7 @@ class SudokuCell {
     this.isSelected = false,
     this.isConflicted = false,
     this.isHighlighted = false,
+    this.isWrong = false,
     Set<int>? notes,
   }) : notes = notes ?? {};
 }

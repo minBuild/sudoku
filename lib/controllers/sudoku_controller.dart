@@ -25,6 +25,14 @@ class SudokuController extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _instantCheck = true;
+  bool get instantCheck => _instantCheck;
+
+  void toggleInstantCheck() {
+    _instantCheck = !_instantCheck;
+    _updateWrongMarks();
+    notifyListeners();
+  }
 
   SudokuController() {
     _loadSamplePuzzle();
@@ -130,6 +138,13 @@ class SudokuController extends ChangeNotifier {
     cell.value = number;
     cell.notes.clear();
 
+    // ✅ 정답 즉시 체크
+    if (_instantCheck) {
+      cell.isWrong = (_puzzle.solution[cell.row][cell.col] != number);
+    } else {
+      cell.isWrong = false;
+    }
+
     final bool wasConflictedBefore = cell.isConflicted;
 
     _updateConflicts();
@@ -149,6 +164,7 @@ class SudokuController extends ChangeNotifier {
 
     cell.value = null;
     cell.notes.clear();
+    cell.isWrong = false;
 
     _updateConflicts();
     _updateHighlights();
@@ -276,7 +292,18 @@ class SudokuController extends ChangeNotifier {
     }
   }
 
-
+  void _updateWrongMarks() {
+    for (var r = 0; r < 9; r++) {
+      for (var c = 0; c < 9; c++) {
+        final cell = _board[r][c];
+        if (cell.value == null || !_instantCheck) {
+          cell.isWrong = false;
+        } else {
+          cell.isWrong = (_puzzle.solution[r][c] != cell.value);
+        }
+      }
+    }
+  }
 
   bool get isSolved {
     for (var r = 0; r < 9; r++) {
