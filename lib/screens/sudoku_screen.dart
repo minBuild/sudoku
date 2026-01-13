@@ -263,22 +263,36 @@ class _NumberPad extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<SudokuController>();
+    final controller = context.watch<SudokuController>();
 
     return SizedBox(
       height: 56,
       child: Row(
         children: List.generate(9, (index) {
           final number = index + 1;
+          final isCompleted = controller.isNumberCompleted(number);
+
+          if (isCompleted) {
+            // ✅ 다 사용한 숫자는 공간만 차지 (레이아웃 유지)
+            return const Expanded(child: SizedBox.shrink());
+          }
+
           return Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 2.0),
               child: ElevatedButton(
-                onPressed: () => controller.inputNumber(number),
-                style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
+                onPressed: controller.isGameOver
+                    ? null
+                    : () => controller.inputNumber(number),
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                ),
                 child: Text(
                   number.toString(),
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),

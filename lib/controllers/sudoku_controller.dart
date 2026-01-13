@@ -428,6 +428,22 @@ class SudokuController extends ChangeNotifier {
     return true;
   }
 
+  int countNumber(int number) {
+    int count = 0;
+    for (var r = 0; r < 9; r++) {
+      for (var c = 0; c < 9; c++) {
+        if (_board[r][c].value == number) {
+          count++;
+        }
+      }
+    }
+    return count;
+  }
+
+  bool isNumberCompleted(int number) {
+    return countNumber(number) >= 9;
+  }
+
   @override
   void dispose() {
     _timer?.cancel();
