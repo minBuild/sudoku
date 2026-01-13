@@ -27,6 +27,13 @@ class SudokuController extends ChangeNotifier {
 
   // "reset"은 현재 퍼즐로 다시 시작하도록 initial snapshot을 저장해둠
   late List<List<int>> _initialSnapshot;
+  int? _selectedNumber;
+  int? get selectedNumber => _selectedNumber;
+
+  void selectNumber(int number) {
+    _selectedNumber = number;
+    notifyListeners();
+  }
 
   Timer? _timer;
   int _elapsedSeconds = 0;
@@ -140,6 +147,7 @@ class SudokuController extends ChangeNotifier {
     _wrongCount = 0;
     _isGameOver = false;
     _isNoteMode = false;
+    _selectedNumber = null;
 
     _updateConflicts();
     _updateHighlights();
@@ -169,6 +177,7 @@ class SudokuController extends ChangeNotifier {
     _wrongCount = 0;
     _isGameOver = false;
     _isNoteMode = false;
+    _selectedNumber = null;
 
     _updateConflicts();
     _updateHighlights();
@@ -198,73 +207,69 @@ class SudokuController extends ChangeNotifier {
   }
 
   void inputNumber(int number) {
-    if (_selectedRow == null || _selectedCol == null) return;
-    if (_isGameOver) return;
+    _selectedNumber = number;
 
-    final cell = _board[_selectedRow!][_selectedCol!];
-    if (cell.isGiven) return;
+    try {
+      if (_selectedRow == null || _selectedCol == null) return;
+      if (_isGameOver) return;
 
-    // ✅ 메모 모드: 값이 있으면 날리고, notes 토글
-    if (_isNoteMode) {
-      // 값이 있던 칸이면 값을 지우고 메모로 전환
-      if (cell.value != null) {
-        cell.value = null;
-        cell.isConflicted = false; // 값 지웠으니 일단 이 칸 충돌 플래그 초기화
+      final cell = _board[_selectedRow!][_selectedCol!];
+      if (cell.isGiven) return;
+
+      // ✅ 메모 모드: 값이 있으면 날리고, notes 토글
+      if (_isNoteMode) {
+        if (cell.value != null) {
+          cell.value = null;
+          cell.isConflicted = false;
+        }
+
+        if (cell.notes.contains(number)) {
+          cell.notes.remove(number);
+        } else {
+          cell.notes.add(number);
+        }
+
+        _updateConflicts();
+        _updateHighlights();
+        return;
       }
 
-      if (cell.notes.contains(number)) {
-        cell.notes.remove(number);
+      // ✅ 입력 모드
+      final int? prevValue = cell.value;
+      final bool wasConflictedBefore = cell.isConflicted;
+
+      if (prevValue == number) return;
+
+      cell.value = number;
+      cell.notes.clear();
+
+      if (_instantCheck) {
+        cell.isWrong = (_puzzle.solution[cell.row][cell.col] != number);
       } else {
-        cell.notes.add(number);
+        cell.isWrong = false;
       }
 
-      // 값이 바뀐건 아니지만, 값 지운 경우 충돌 상태/하이라이트 정리 필요
       _updateConflicts();
       _updateHighlights();
-      notifyListeners();
-      return;
-    }
 
-    // ✅ 입력 모드: 값 입력 + 메모 초기화
-    final int? prevValue = cell.value;
-    final bool wasConflictedBefore = cell.isConflicted;
+      if (_instantCheck && cell.isWrong) {
+        _wrongCount += 1;
+        _errorController.add(null);
 
-    // 같은 숫자를 또 누른 건 오답처리 안함
-    if (prevValue == number) return;
-
-    cell.value = number;
-    cell.notes.clear();
-
-    // ✅ 정답 즉시 체크
-    if (_instantCheck) {
-      cell.isWrong = (_puzzle.solution[cell.row][cell.col] != number);
-    } else {
-      cell.isWrong = false;
-    }
-
-    _updateConflicts();
-    _updateHighlights();
-
-    if (_instantCheck && cell.isWrong) {
-      _wrongCount += 1;
-
-      // 원하면 오답일 때만 흔들기
-      _errorController.add(null);
-
-      if (_wrongCount >= maxWrongCount) {
-        _isGameOver = true;
+        if (_wrongCount >= maxWrongCount) {
+          _isGameOver = true;
+        }
+        return;
       }
 
+      if (!wasConflictedBefore && cell.isConflicted) {
+        _errorController.add(null);
+      }
+    } finally {
+      // ✅ 어떤 경로로 return 하든 항상 선택 해제
+      _selectedNumber = null;
       notifyListeners();
-      return;
     }
-
-    if (!wasConflictedBefore && cell.isConflicted) {
-      _errorController.add(null);
-    }
-
-
-    notifyListeners();
   }
 
   void clearSelectedCell() {
@@ -277,6 +282,7 @@ class SudokuController extends ChangeNotifier {
     cell.value = null;
     cell.notes.clear();
     cell.isWrong = false;
+    _selectedNumber = null;
 
     _updateConflicts();
     _updateHighlights();

@@ -266,32 +266,53 @@ class _NumberPad extends StatelessWidget {
     final controller = context.watch<SudokuController>();
 
     return SizedBox(
-      height: 56,
+      height: 64,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(9, (index) {
           final number = index + 1;
           final isCompleted = controller.isNumberCompleted(number);
 
           if (isCompleted) {
-            // ✅ 다 사용한 숫자는 공간만 차지 (레이아웃 유지)
             return const Expanded(child: SizedBox.shrink());
           }
 
+          final isSelected = controller.selectedNumber == number;
+
           return Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              child: ElevatedButton(
-                onPressed: controller.isGameOver
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(999),
+                onTap: controller.isGameOver
                     ? null
                     : () => controller.inputNumber(number),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                ),
-                child: Text(
-                  number.toString(),
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 150),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isSelected
+                        ? Colors.blue.shade600
+                        : Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.15),
+                        blurRadius: 6,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      number.toString(),
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: isSelected
+                            ? Colors.white
+                            : Colors.black87,
+                      ),
+                    ),
                   ),
                 ),
               ),
