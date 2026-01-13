@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sudoku/models/difficulty.dart';
 
 import '../controllers/sudoku_controller.dart';
-import '../models/difficulty.dart';
 import '../widgets/sudoku_board.dart';
 
 class SudokuScreen extends StatefulWidget {
@@ -14,16 +14,7 @@ class SudokuScreen extends StatefulWidget {
 
 class _SudokuScreenState extends State<SudokuScreen> {
   bool _shownGameOverDialog = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // 첫 진입 시 난이도 선택 띄우기 (1회)
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showDifficultyDialog();
-    });
-  }
+  bool _shownSolvedDialog = false;
 
   @override
   void didChangeDependencies() {
@@ -31,7 +22,15 @@ class _SudokuScreenState extends State<SudokuScreen> {
 
     final controller = context.watch<SudokuController>();
 
-    // 게임오버가 되었고, 아직 다이얼로그를 안 띄웠으면 1회만 띄움
+    // ✅ 클리어 되었고, 아직 다이얼로그 안 띄웠으면 1회만 띄움
+    if (controller.isSolved && !_shownSolvedDialog) {
+      _shownSolvedDialog = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showSolvedDialog(controller);
+      });
+    }
+
+    // ✅ 게임오버 되었고, 아직 다이얼로그 안 띄웠으면 1회만 띄움
     if (controller.isGameOver && !_shownGameOverDialog) {
       _shownGameOverDialog = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -39,7 +38,10 @@ class _SudokuScreenState extends State<SudokuScreen> {
       });
     }
 
-    // 게임이 리셋되면 플래그도 초기화
+    // ✅ 새 게임/리셋되면 플래그 초기화
+    if (!controller.isSolved && _shownSolvedDialog) {
+      _shownSolvedDialog = false;
+    }
     if (!controller.isGameOver && _shownGameOverDialog) {
       _shownGameOverDialog = false;
     }
@@ -51,23 +53,70 @@ class _SudokuScreenState extends State<SudokuScreen> {
       barrierDismissible: false,
       builder: (_) {
         return AlertDialog(
-          title: const Text('게임 종료'),
-          content: Text('오답 ${SudokuController.maxWrongCount}회로 게임이 종료되었습니다.\n무엇을 할까요?'),
+          title: const Text('Game Over'),
+          content: Text('Game Over.\nWhat do you want?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 controller.reset(); // ✅ 다시 시작(같은 퍼즐/현재 샘플)
               },
-              child: const Text('다시 시작'),
+              child: const Text('Restart'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+                Navigator.of(context).popUntil((route) => route.isFirst); // 홈으로
+              },
+              child: const Text('New Game'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showSolvedDialog(SudokuController controller) async {
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text('🎉 Clear!'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(controller.difficulty.label),
+              const SizedBox(height: 6),
+              Text('Time: ${controller.elapsedLabel}'),
+              const SizedBox(height: 6),
+              Text('❌: ${controller.wrongCount}/${SudokuController.maxWrongCount}'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                // 홈으로
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+              child: const Text('Home'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                controller.reset(); // 같은 퍼즐 다시하기
+              },
+              child: const Text('Restart'),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                _showDifficultyDialog(); // ✅ 난이도 선택 후 newGame
-                // 나중에 generator 붙이면 controller.newGame()로 바꾸면 됨
+                // "새 게임"은 홈에서 난이도 선택 정책이면 홈으로 보내기
+                Navigator.of(context).popUntil((route) => route.isFirst);
               },
-              child: const Text('새 게임'),
+              child: const Text('New Game'),
             ),
           ],
         );
@@ -75,78 +124,35 @@ class _SudokuScreenState extends State<SudokuScreen> {
     );
   }
 
-  Future<void> _showDifficultyDialog() async {
-    final controller = context.read<SudokuController>();
+  Future<void> _confirmGoHome(SudokuController controller) async {
+    // 이미 게임이 끝났으면 바로 홈으로
+    if (controller.isGameOver || controller.isSolved) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      return;
+    }
 
-    await showDialog<void>(
+    // 진행 중이면 확인 다이얼로그
+    final bool? abandon = await showDialog<bool>(
       context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: const Text('난이도 선택'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: Difficulty.values.map((d) {
-              return ListTile(
-                  title: Text(d.label),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  controller.newGame(d);
-                },
-              );
-            }).toList(),
+      builder: (_) => AlertDialog(
+        title: const Text('Go Home?'),
+        content: const Text('The game currently in progress will not be saved.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('❌'),
           ),
-        );
-      },
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('🏡'),
+          ),
+        ],
+      ),
     );
-  }
 
-  Future<void> _confirmAbandonAndChooseDifficulty(SudokuController controller) async {
-    // 게임이 이미 끝났거나, 아직 한 번도 진행 안 했으면 바로 난이도 선택
-    final shouldConfirm = !_isFreshState(controller) && !controller.isGameOver && !controller.isSolved;
-
-    if (shouldConfirm) {
-      final abandon = await showDialog<bool>(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: const Text('게임을 포기할까요?'),
-          content: const Text('현재 진행 상황은 사라집니다.\n난이도를 바꿔 새 게임을 시작할까요?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('취소'),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('포기하고 새 게임'),
-            ),
-          ],
-        ),
-      );
-
-      if (abandon != true) return;
+    if (abandon == true) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
     }
-
-    // 포기 확정(or 확인 불필요) → 난이도 선택
-    await _showDifficultyDialog();
-  }
-
-  bool _isFreshState(SudokuController controller) {
-    // 오답이 있거나, 메모 모드/게임오버면 fresh 아님
-    if (controller.wrongCount > 0) return false;
-    if (controller.isNoteMode) return false;
-    if (controller.isGameOver) return false;
-
-    // 보드에 사용자가 채운 숫자가 하나라도 있으면 fresh 아님
-    final board = controller.board;
-    for (var r = 0; r < 9; r++) {
-      for (var c = 0; c < 9; c++) {
-        final cell = board[r][c];
-        if (!cell.isGiven && (cell.value != null || cell.notes.isNotEmpty)) {
-          return false;
-        }
-      }
-    }
-    return true;
   }
 
   @override
@@ -155,20 +161,25 @@ class _SudokuScreenState extends State<SudokuScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sudoku Jang'),
+        centerTitle: true,
+        toolbarHeight: 100,
+        title: Image.asset(
+          'assets/images/title.png',
+          height: 100,
+          fit: BoxFit.contain,
+        ),
         actions: [
           IconButton(
             onPressed: () => controller.reset(),
             icon: const Icon(Icons.refresh),
-            tooltip: '다시 시작',
           ),
           IconButton(
-            onPressed: () => _confirmAbandonAndChooseDifficulty(controller),
-            icon: const Icon(Icons.tune),
-            tooltip: '난이도 변경',
+            onPressed: () => _confirmGoHome(controller),
+            icon: const Icon(Icons.home),
           ),
         ],
       ),
+
       body: Column(
         children: [
           const SizedBox(height: 16),
@@ -206,12 +217,12 @@ class _SudokuScreenState extends State<SudokuScreen> {
               children: [
                 Text(
                   controller.isSolved
-                      ? '🎉 완료되었습니다!'
+                      ? '🎉 Success!'
                       : controller.isGameOver
-                      ? '게임 종료'
+                      ? 'Game Over'
                       : controller.isNoteMode
-                      ? '📝 메모'
-                      : '🖊️ 입력',
+                      ? '📝'
+                      : '🖊️',
                   style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 6),
@@ -224,7 +235,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
                     TextButton(
                       onPressed:
                       controller.isGameOver ? null : controller.clearSelectedCell,
-                      child: const Text('선택된 칸 지우기'),
+                      child: const Text('🧹 Clear Selected'),
                     ),
                     const SizedBox(width: 16),
                     OutlinedButton.icon(
@@ -233,7 +244,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
                         controller.isNoteMode ? Icons.edit_note : Icons.edit,
                       ),
                       label: Text(
-                        controller.isNoteMode ? '메모 모드' : '입력 모드',
+                        controller.isNoteMode ? 'NoteMode' : 'InputMode',
                       ),
                     ),
                   ],
@@ -304,7 +315,7 @@ class _WrongCounterBadge extends StatelessWidget {
         ],
       ),
       child: Text(
-        '오답 $wrong/$maxWrong',
+        '❌ $wrong/$maxWrong',
         style: const TextStyle(
           color: Colors.white,
           fontSize: 12,

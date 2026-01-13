@@ -91,7 +91,27 @@ class SudokuController extends ChangeNotifier {
 
 
   SudokuController() {
-    newGame(Difficulty.normal);
+    _initEmptyBoard();
+  }
+
+  void _initEmptyBoard() {
+    _board = List.generate(9, (r) {
+      return List.generate(9, (c) {
+        return SudokuCell(row: r, col: c, isGiven: false, value: null);
+      });
+    });
+
+    _selectedRow = null;
+    _selectedCol = null;
+
+    _wrongCount = 0;
+    _isGameOver = false;
+    _isNoteMode = false;
+
+    _resetTimer();      // 시간도 0으로
+    _stopTimer();       // 타이머 멈춤
+
+    notifyListeners();
   }
 
   void newGame(Difficulty difficulty) {

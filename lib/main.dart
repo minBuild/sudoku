@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/sudoku_controller.dart';
-import 'screens/sudoku_screen.dart';
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(const SudokuApp());
@@ -22,7 +22,7 @@ class SudokuApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
         ),
-        home: const SudokuScreen(),
+        home: const HomeScreen(),
       ),
     );
   }

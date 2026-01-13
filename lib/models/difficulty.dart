@@ -10,15 +10,15 @@ extension DifficultyLabel on Difficulty {
   String get label {
     switch (this) {
       case Difficulty.easy:
-        return '쉬움';
+        return 'Easy 😎';
       case Difficulty.normal:
-        return '보통';
+        return 'Normal 🙂';
       case Difficulty.hard:
-        return '어려움';
+        return 'Hard 💪';
       case Difficulty.expert:
-        return '전문가';
+        return 'Expert 🎓';
       case Difficulty.hell:
-        return '헬';
+        return 'Hell 😈';
     }
   }
 }
