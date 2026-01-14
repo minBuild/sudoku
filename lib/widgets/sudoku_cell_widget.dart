@@ -45,7 +45,7 @@ class SudokuCellWidget extends StatelessWidget {
 
 
     final majorLineColor = Colors.black;
-    final minorLineColor = Colors.black.withOpacity(0.25);
+    final minorLineColor = Colors.black.withValues(alpha: 0.25);
 
     double w(bool isOuter, bool isBlock) => isOuter ? 4 : (isBlock ? 2 : 0.5);
     Color c(bool isOuter, bool isBlock) => (isOuter || isBlock) ? majorLineColor : minorLineColor;
