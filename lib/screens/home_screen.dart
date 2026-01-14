@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../controllers/sudoku_controller.dart';
 import '../models/difficulty.dart';
+import 'records_screen.dart';
 import 'sudoku_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -60,6 +61,20 @@ class HomeScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => _pickDifficultyAndStart(context),
                   child: const Text('New Game 🔢'),
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: 220,
+                height: 48,
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const RecordsScreen()),
+                    );
+                  },
+                  icon: const Icon(Icons.history),
+                  label: const Text('Record'),
                 ),
               ),
               const SizedBox(height: 12),

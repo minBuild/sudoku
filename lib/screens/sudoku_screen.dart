@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sudoku/models/difficulty.dart';
 
 import '../controllers/sudoku_controller.dart';
+import '../models/game_record.dart';
+import '../services/record_store.dart';
 import '../widgets/sudoku_board.dart';
 
 class SudokuScreen extends StatefulWidget {
@@ -15,6 +17,8 @@ class SudokuScreen extends StatefulWidget {
 class _SudokuScreenState extends State<SudokuScreen> {
   bool _shownGameOverDialog = false;
   bool _shownSolvedDialog = false;
+  final RecordStore _recordStore = RecordStore();
+  bool _savedClearRecord = false;
 
   @override
   void didChangeDependencies() {
@@ -41,6 +45,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
     // ✅ 새 게임/리셋되면 플래그 초기화
     if (!controller.isSolved && _shownSolvedDialog) {
       _shownSolvedDialog = false;
+      _savedClearRecord = false;
     }
     if (!controller.isGameOver && _shownGameOverDialog) {
       _shownGameOverDialog = false;
@@ -77,6 +82,21 @@ class _SudokuScreenState extends State<SudokuScreen> {
   }
 
   Future<void> _showSolvedDialog(SudokuController controller) async {
+    if (!_savedClearRecord) {
+      _savedClearRecord = true;
+
+      await _recordStore.add(
+        GameRecord(
+          difficulty: controller.difficulty,
+          elapsedSeconds: controller.elapsedSeconds,
+          wrongCount: controller.wrongCount,
+          finishedAt: DateTime.now(),
+        ),
+      );
+
+      if (!mounted) return;
+    }
+
     await showDialog<void>(
       context: context,
       barrierDismissible: false,

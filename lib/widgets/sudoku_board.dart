@@ -58,9 +58,6 @@ class _SudokuBoardState extends State<SudokuBoard>
         aspectRatio: 1,
         child: Container(
           margin: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            border: Border.all(width: 2),
-          ),
           child: GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
