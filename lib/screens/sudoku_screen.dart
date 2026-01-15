@@ -202,76 +202,87 @@ class _SudokuScreenState extends State<SudokuScreen> {
 
       body: Column(
         children: [
-          const SizedBox(height: 16),
+          const SizedBox(height: 4),
           // 보드 영역
-          Expanded(
-            flex: 3,
-            child: Center(
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  const SudokuBoard(), // 이건 const여도 되지만, 아래 때문에 통째 const를 못 씀
+          SafeArea(
+            bottom: false,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final size = constraints.maxWidth;
 
-                  Positioned(
-                    top: -24,
-                    left: 15,
-                    child: _TimerBadge(label: controller.elapsedLabel),
-                  ),
+                final topPad = (size).clamp(25.0, 100.0);
 
-                  Positioned(
-                    top: -24,
-                    right: 15,
-                    child: _WrongCounterBadge(
-                      wrong: controller.wrongCount,
-                      maxWrong: SudokuController.maxWrongCount,
+                return Padding(
+                  padding: EdgeInsets.only(top: topPad),
+                  child: SizedBox(
+                    height: size,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        const SudokuBoard(),
+                        Positioned(
+                          top: -24,
+                          left: 15,
+                          child: _TimerBadge(label: controller.elapsedLabel),
+                        ),
+                        Positioned(
+                          top: -24,
+                          right: 15,
+                          child: _WrongCounterBadge(
+                            wrong: controller.wrongCount,
+                            maxWrong: SudokuController.maxWrongCount,
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
+                );
+              },
+            ),
+          ),
+
+          const SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(999),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  _ControlButton(
+                    icon: Icons.undo,
+                    label: 'Undo',
+                    onTap: controller.isGameOver ? null : controller.rollback,
+                  ),
+                  _ControlButton(
+                    icon: Icons.backspace_outlined,
+                    label: 'Clear',
+                    onTap: controller.isGameOver ? null : controller.clearSelectedCell,
+                  ),
+                  _ControlButton(
+                    icon: controller.isNoteMode ? Icons.edit_note : Icons.edit,
+                    label: controller.isNoteMode ? 'Note' : 'Fill',
+                    isActive: controller.isNoteMode,
+                    onTap: controller.isGameOver ? null : controller.toggleNoteMode,
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Text(
-                  controller.isSolved
-                      ? '🎉 Success!'
-                      : controller.isGameOver
-                      ? 'Game Over'
-                      : controller.isNoteMode
-                      ? '📝'
-                      : '🖊️',
-                  style: const TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 6),
-                const SizedBox(height: 8),
-                const _NumberPad(),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      onPressed:
-                      controller.isGameOver ? null : controller.clearSelectedCell,
-                      child: const Text('🧹 Clear Selected'),
-                    ),
-                    const SizedBox(width: 16),
-                    OutlinedButton.icon(
-                      onPressed: controller.isGameOver ? null : controller.toggleNoteMode,
-                      icon: Icon(
-                        controller.isNoteMode ? Icons.edit_note : Icons.edit,
-                      ),
-                      label: Text(
-                        controller.isNoteMode ? 'NoteMode' : 'InputMode',
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+
+          const SizedBox(height: 10),
+          const _NumberPad(),
+          const SizedBox(height: 10),
         ],
       ),
     );
@@ -285,18 +296,15 @@ class _NumberPad extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.watch<SudokuController>();
 
+    final numbers = List<int>.generate(9, (i) => i + 1)
+        .where((n) => !controller.isNumberCompleted(n))
+        .toList();
+
     return SizedBox(
       height: 64,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(9, (index) {
-          final number = index + 1;
-          final isCompleted = controller.isNumberCompleted(number);
-
-          if (isCompleted) {
-            return const Expanded(child: SizedBox.shrink());
-          }
-
+        children: numbers.map((number) {
           final isSelected = controller.selectedNumber == number;
 
           return Expanded(
@@ -338,7 +346,7 @@ class _NumberPad extends StatelessWidget {
               ),
             ),
           );
-        }),
+        }).toList(),
       ),
     );
   }
@@ -414,6 +422,68 @@ class _TimerBadge extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ControlButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback? onTap;
+  final bool isActive;
+
+  const _ControlButton({
+    required this.icon,
+    required this.label,
+    this.onTap,
+    this.isActive = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final disabled = onTap == null;
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: isActive
+                ? Colors.blue.shade600
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(999),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                size: 20,
+                color: disabled
+                    ? Colors.grey
+                    : isActive
+                    ? Colors.white
+                    : Colors.black87,
+              ),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: disabled
+                      ? Colors.grey
+                      : isActive
+                      ? Colors.white
+                      : Colors.black87,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

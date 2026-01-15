@@ -96,6 +96,8 @@ class SudokuController extends ChangeNotifier {
   bool _isGameOver = false;
   bool get isGameOver => _isGameOver;
 
+  final List<_HistoryEntry> _history = [];
+  static const int _maxHistory = 200; // 너무 커지는 것 방지(취향)
 
   SudokuController() {
     _initEmptyBoard();
@@ -122,6 +124,7 @@ class SudokuController extends ChangeNotifier {
   }
 
   void newGame(Difficulty difficulty) {
+    _history.clear();
     _difficulty = difficulty;
     _puzzle = _generator.generate(difficulty);
 
@@ -158,6 +161,7 @@ class SudokuController extends ChangeNotifier {
   }
 
   void reset() {
+    _history.clear();
     // 현재 퍼즐(_puzzle.solution)은 유지, initialSnapshot으로 다시 시작
     _board = List.generate(9, (row) {
       return List.generate(9, (col) {
@@ -216,8 +220,11 @@ class SudokuController extends ChangeNotifier {
       final cell = _board[_selectedRow!][_selectedCol!];
       if (cell.isGiven) return;
 
+      _pushHistoryForSelection(cell.row, cell.col);
+
       // ✅ 메모 모드: 값이 있으면 날리고, notes 토글
       if (_isNoteMode) {
+        _pushHistoryForSelection(cell.row, cell.col);
         if (cell.value != null) {
           cell.value = null;
           cell.isConflicted = false;
@@ -239,6 +246,8 @@ class SudokuController extends ChangeNotifier {
       final bool wasConflictedBefore = cell.isConflicted;
 
       if (prevValue == number) return;
+
+      _pushHistoryForSelection(cell.row, cell.col);
 
       cell.value = number;
       cell.notes.clear();
@@ -282,6 +291,8 @@ class SudokuController extends ChangeNotifier {
 
     final cell = _board[_selectedRow!][_selectedCol!];
     if (cell.isGiven) return;
+
+    _pushHistoryForSelection(cell.row, cell.col);
 
     cell.value = null;
     cell.notes.clear();
@@ -469,10 +480,117 @@ class SudokuController extends ChangeNotifier {
     return countNumber(number) >= 9;
   }
 
+  Set<String> _affectedKeys(int row, int col) {
+    final keys = <String>{};
+
+    // row
+    for (int c = 0; c < 9; c++) {
+      keys.add('$row,$c');
+    }
+    // col
+    for (int r = 0; r < 9; r++) {
+      keys.add('$r,$col');
+    }
+    // box
+    final br = (row ~/ 3) * 3;
+    final bc = (col ~/ 3) * 3;
+    for (int r = br; r < br + 3; r++) {
+      for (int c = bc; c < bc + 3; c++) {
+        keys.add('$r,$c');
+      }
+    }
+
+    return keys;
+  }
+
+  void _pushHistoryForSelection(int row, int col) {
+    final keys = _affectedKeys(row, col);
+
+    final snapshots = <_CellSnapshot>[];
+    for (final k in keys) {
+      final parts = k.split(',');
+      final r = int.parse(parts[0]);
+      final c = int.parse(parts[1]);
+      final cell = _board[r][c];
+
+      snapshots.add(_CellSnapshot(
+        row: r,
+        col: c,
+        value: cell.value,
+        notes: Set<int>.from(cell.notes),
+        isWrong: cell.isWrong,
+      ));
+    }
+
+    _history.add(_HistoryEntry(
+      cells: snapshots,
+      prevWrongCount: _wrongCount,
+      prevIsGameOver: _isGameOver,
+    ));
+
+    if (_history.length > _maxHistory) {
+      _history.removeAt(0);
+    }
+  }
+
+  void rollback() {
+    if (_history.isEmpty) return;
+
+    final last = _history.removeLast();
+
+    for (final snap in last.cells) {
+      final cell = _board[snap.row][snap.col];
+      if (cell.isGiven) continue; // 혹시 모르니 보호
+
+      cell.value = snap.value;
+      cell.notes
+        ..clear()
+        ..addAll(snap.notes);
+      cell.isWrong = snap.isWrong;
+    }
+
+    _wrongCount = last.prevWrongCount;
+    _isGameOver = last.prevIsGameOver;
+
+    // 상태 다시 계산
+    _updateConflicts();
+    _updateHighlights();
+
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     _timer?.cancel();
     _errorController.close(); // 이미 쓰고 있으면 같이 정리
     super.dispose();
   }
+}
+
+class _CellSnapshot {
+  final int row;
+  final int col;
+  final int? value;
+  final Set<int> notes;
+  final bool isWrong;
+
+  _CellSnapshot({
+    required this.row,
+    required this.col,
+    required this.value,
+    required this.notes,
+    required this.isWrong,
+  });
+}
+
+class _HistoryEntry {
+  final List<_CellSnapshot> cells;
+  final int prevWrongCount;
+  final bool prevIsGameOver;
+
+  _HistoryEntry({
+    required this.cells,
+    required this.prevWrongCount,
+    required this.prevIsGameOver,
+  });
 }
