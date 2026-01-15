@@ -249,6 +249,10 @@ class SudokuController extends ChangeNotifier {
         cell.isWrong = false;
       }
 
+      if (!_instantCheck || !cell.isWrong) {
+        _clearNotesByConfirmedNumber(cell.row, cell.col, number);
+      }
+
       _updateConflicts();
       _updateHighlights();
 
@@ -289,6 +293,21 @@ class SudokuController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void _clearNotesByConfirmedNumber(int row, int col, int number) {
+    for (int r = 0; r < 9; r++) {
+      for (int c = 0; c < 9; c++) {
+        if (r == row && c == col) continue;
+
+        final sameRow = r == row;
+        final sameCol = c == col;
+        final sameBox = (r ~/ 3 == row ~/ 3) && (c ~/ 3 == col ~/ 3);
+
+        if (sameRow || sameCol || sameBox) {
+          _board[r][c].notes.remove(number);
+        }
+      }
+    }
+  }
 
   void _updateConflicts() {
     // 모든 셀의 conflict 초기화
