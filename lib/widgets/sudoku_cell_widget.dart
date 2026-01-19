@@ -125,7 +125,7 @@ class _NotesView extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final size = constraints.maxWidth;
-        final fontSize = size * 0.29; // 메모 글자 크기 (조절 포인트)
+        final fontSize = size * 0.25; // 메모 글자 크기 (조절 포인트)
 
         return SizedBox(
           width: size,
