@@ -549,7 +549,6 @@ class SudokuController extends ChangeNotifier {
       cell.isWrong = snap.isWrong;
     }
 
-    _wrongCount = last.prevWrongCount;
     _isGameOver = last.prevIsGameOver;
 
     // 상태 다시 계산

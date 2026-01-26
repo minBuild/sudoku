@@ -15,40 +15,37 @@ class SudokuScreen extends StatefulWidget {
 }
 
 class _SudokuScreenState extends State<SudokuScreen> {
-  bool _shownGameOverDialog = false;
-  bool _shownSolvedDialog = false;
   final RecordStore _recordStore = RecordStore();
-  bool _savedClearRecord = false;
+
+  // 다이얼로그 중복 방지 플래그
+  bool _hasShownSolved = false;
+  bool _hasShownGameOver = false;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
+    // 성능 최적화를 위해 addListener 사용
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<SudokuController>().addListener(_checkGameState);
+    });
+  }
 
-    final controller = context.watch<SudokuController>();
+  // 화면 갱신 없이 상태만 체크 (최적화)
+  void _checkGameState() {
+    if (!mounted) return;
+    final controller = context.read<SudokuController>();
 
-    // ✅ 클리어 되었고, 아직 다이얼로그 안 띄웠으면 1회만 띄움
-    if (controller.isSolved && !_shownSolvedDialog) {
-      _shownSolvedDialog = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showSolvedDialog(controller);
-      });
-    }
+    // 리셋 체크
+    if (!controller.isSolved && _hasShownSolved) _hasShownSolved = false;
+    if (!controller.isGameOver && _hasShownGameOver) _hasShownGameOver = false;
 
-    // ✅ 게임오버 되었고, 아직 다이얼로그 안 띄웠으면 1회만 띄움
-    if (controller.isGameOver && !_shownGameOverDialog) {
-      _shownGameOverDialog = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showGameOverDialog(controller);
-      });
-    }
-
-    // ✅ 새 게임/리셋되면 플래그 초기화
-    if (!controller.isSolved && _shownSolvedDialog) {
-      _shownSolvedDialog = false;
-      _savedClearRecord = false;
-    }
-    if (!controller.isGameOver && _shownGameOverDialog) {
-      _shownGameOverDialog = false;
+    // 클리어/게임오버 체크
+    if (controller.isSolved && !_hasShownSolved) {
+      _hasShownSolved = true;
+      _showSolvedDialog(controller);
+    } else if (controller.isGameOver && !_hasShownGameOver) {
+      _hasShownGameOver = true;
+      _showGameOverDialog(controller);
     }
   }
 
@@ -59,19 +56,19 @@ class _SudokuScreenState extends State<SudokuScreen> {
       builder: (_) {
         return AlertDialog(
           title: const Text('Game Over'),
-          content: Text('Game Over.\nWhat do you want?'),
+          content: const Text('Game Over.\nWhat do you want?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                controller.reset(); // ✅ 다시 시작(같은 퍼즐/현재 샘플)
+                controller.reset();
               },
               child: const Text('Restart'),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pop(); // 다이얼로그 닫기
-                Navigator.of(context).popUntil((route) => route.isFirst); // 홈으로
+                Navigator.of(context).pop();
+                Navigator.of(context).popUntil((route) => route.isFirst);
               },
               child: const Text('New Game'),
             ),
@@ -82,20 +79,16 @@ class _SudokuScreenState extends State<SudokuScreen> {
   }
 
   Future<void> _showSolvedDialog(SudokuController controller) async {
-    if (!_savedClearRecord) {
-      _savedClearRecord = true;
+    await _recordStore.add(
+      GameRecord(
+        difficulty: controller.difficulty,
+        elapsedSeconds: controller.elapsedSeconds,
+        wrongCount: controller.wrongCount,
+        finishedAt: DateTime.now(),
+      ),
+    );
 
-      await _recordStore.add(
-        GameRecord(
-          difficulty: controller.difficulty,
-          elapsedSeconds: controller.elapsedSeconds,
-          wrongCount: controller.wrongCount,
-          finishedAt: DateTime.now(),
-        ),
-      );
-
-      if (!mounted) return;
-    }
+    if (!mounted) return;
 
     await showDialog<void>(
       context: context,
@@ -118,7 +111,6 @@ class _SudokuScreenState extends State<SudokuScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                // 홈으로
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
               child: const Text('Home'),
@@ -126,14 +118,13 @@ class _SudokuScreenState extends State<SudokuScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                controller.reset(); // 같은 퍼즐 다시하기
+                controller.reset();
               },
               child: const Text('Restart'),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                // "새 게임"은 홈에서 난이도 선택 정책이면 홈으로 보내기
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
               child: const Text('New Game'),
@@ -145,13 +136,11 @@ class _SudokuScreenState extends State<SudokuScreen> {
   }
 
   Future<void> _confirmGoHome(SudokuController controller) async {
-    // 이미 게임이 끝났으면 바로 홈으로
     if (controller.isGameOver || controller.isSolved) {
       Navigator.of(context).popUntil((route) => route.isFirst);
       return;
     }
 
-    // 진행 중이면 확인 다이얼로그
     final bool? abandon = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
@@ -178,14 +167,17 @@ class _SudokuScreenState extends State<SudokuScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<SudokuController>();
+    // 가로 모드인지 확인
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        toolbarHeight: 100,
+        // 가로 모드일 때는 앱바 높이를 좀 줄여주는 게 좋습니다.
+        toolbarHeight: isLandscape ? 60 : 100,
         title: Image.asset(
           'assets/images/title.png',
-          height: 100,
+          height: isLandscape ? 50 : 100,
           fit: BoxFit.contain,
         ),
         actions: [
@@ -199,91 +191,144 @@ class _SudokuScreenState extends State<SudokuScreen> {
           ),
         ],
       ),
+      body: SafeArea(
+        bottom: false,
+        child: isLandscape
+            ? _buildLandscapeLayout(context, controller) // 가로 모드 레이아웃
+            : _buildPortraitLayout(context, controller), // 세로 모드 레이아웃 (기존)
+      ),
+    );
+  }
 
-      body: Column(
-        children: [
-          const SizedBox(height: 4),
-          // 보드 영역
-          SafeArea(
-            bottom: false,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final size = constraints.maxWidth;
+  // 📱 세로 모드 레이아웃 (기존 코드와 동일)
+  Widget _buildPortraitLayout(BuildContext context, SudokuController controller) {
+    return Column(
+      children: [
+        const SizedBox(height: 4),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final size = constraints.maxWidth;
+            final topPad = (size).clamp(25.0, 100.0);
 
-                final topPad = (size).clamp(25.0, 100.0);
-
-                return Padding(
-                  padding: EdgeInsets.only(top: topPad),
-                  child: SizedBox(
-                    height: size,
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        const SudokuBoard(),
-                        Positioned(
-                          top: -24,
-                          left: 15,
-                          child: _TimerBadge(label: controller.elapsedLabel),
-                        ),
-                        Positioned(
-                          top: -24,
-                          right: 15,
-                          child: _WrongCounterBadge(
-                            wrong: controller.wrongCount,
-                            maxWrong: SudokuController.maxWrongCount,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-
-          const SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(999),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
-                    blurRadius: 6,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
+            return Padding(
+              padding: EdgeInsets.only(top: topPad),
+              child: SizedBox(
+                height: size,
+                child: _buildBoardWithBadges(controller), // 보드+배지 분리
               ),
-              child: Row(
-                children: [
-                  _ControlButton(
-                    icon: Icons.undo,
-                    label: 'Undo',
-                    onTap: controller.isGameOver ? null : controller.rollback,
-                  ),
-                  _ControlButton(
-                    icon: Icons.backspace_outlined,
-                    label: 'Clear',
-                    onTap: controller.isGameOver ? null : controller.clearSelectedCell,
-                  ),
-                  _ControlButton(
-                    icon: controller.isNoteMode ? Icons.edit_note : Icons.edit,
-                    label: controller.isNoteMode ? 'Note' : 'Fill',
-                    isActive: controller.isNoteMode,
-                    onTap: controller.isGameOver ? null : controller.toggleNoteMode,
-                  ),
-                ],
+            );
+          },
+        ),
+        const Spacer(), // 남은 공간 밀어내기
+        _buildControlPanel(controller), // 컨트롤 패널 (Undo/Clear/Note)
+        const SizedBox(height: 10),
+        const _NumberPad(),
+        const SizedBox(height: 20),
+      ],
+    );
+  }
+
+  // 💻 가로 모드 레이아웃 (태블릿 등)
+  Widget _buildLandscapeLayout(BuildContext context, SudokuController controller) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // 왼쪽: 보드 (최대한 크게)
+        Expanded(
+          flex: 5,
+          child: Center(
+            child: AspectRatio(
+              aspectRatio: 1.0,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: _buildBoardWithBadges(controller),
               ),
             ),
           ),
+        ),
+        // 오른쪽: 컨트롤 패널
+        Expanded(
+          flex: 3,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildControlPanel(controller),
+                const SizedBox(height: 30),
+                // 가로 모드에서는 숫자 패드가 너무 옆으로 길어지면 안 예쁘니 Wrap으로 감싸거나 그대로 둡니다.
+                // 여기서는 기존 _NumberPad가 Row 기반이라 그대로 씁니다.
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: _NumberPad(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
-          const SizedBox(height: 10),
-          const _NumberPad(),
-          const SizedBox(height: 10),
-        ],
+  // 🧩 보드와 배지(타이머/실수)를 묶은 위젯
+  Widget _buildBoardWithBadges(SudokuController controller) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        const SudokuBoard(),
+        Positioned(
+          top: -24,
+          left: 15,
+          child: _TimerBadge(label: controller.elapsedLabel),
+        ),
+        Positioned(
+          top: -24,
+          right: 15,
+          child: _WrongCounterBadge(
+            wrong: controller.wrongCount,
+            maxWrong: SudokuController.maxWrongCount,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // 🎛️ Undo, Clear, Note 버튼 패널
+  Widget _buildControlPanel(SudokuController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(999),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            _ControlButton(
+              icon: Icons.undo,
+              label: 'Undo',
+              onTap: controller.isGameOver ? null : controller.rollback,
+            ),
+            _ControlButton(
+              icon: Icons.backspace_outlined,
+              label: 'Clear',
+              onTap: controller.isGameOver ? null : controller.clearSelectedCell,
+            ),
+            _ControlButton(
+              icon: controller.isNoteMode ? Icons.edit_note : Icons.edit,
+              label: controller.isNoteMode ? 'Note' : 'Fill',
+              isActive: controller.isNoteMode,
+              onTap: controller.isGameOver ? null : controller.toggleNoteMode,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -296,15 +341,26 @@ class _NumberPad extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.watch<SudokuController>();
 
-    final numbers = List<int>.generate(9, (i) => i + 1)
-        .where((n) => !controller.isNumberCompleted(n))
-        .toList();
+    // [수정 1] 여기서 .where로 거르지 말고 1~9 모든 숫자를 가져옵니다.
+    final numbers = List<int>.generate(9, (i) => i + 1);
 
     return SizedBox(
       height: 64,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: numbers.map((number) {
+          // [수정 2] 완료 여부를 확인합니다.
+          final isCompleted = controller.isNumberCompleted(number);
+
+          // [핵심] 완료된 숫자는 '버튼' 대신 '빈 공간(SizedBox)'을 리턴합니다.
+          // Expanded로 감싸져 있기 때문에 여전히 1/9 공간을 차지합니다!
+          if (isCompleted) {
+            return const Expanded(
+              child: SizedBox(),
+            );
+          }
+
+          // 완료되지 않은 숫자는 정상적으로 버튼을 보여줍니다.
           final isSelected = controller.selectedNumber == number;
 
           return Expanded(
