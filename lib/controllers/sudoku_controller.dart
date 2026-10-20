@@ -1,595 +1,318 @@
-import 'package:flutter/foundation.dart';
-import '../models/difficulty.dart';
-import '../models/sudoku_cell.dart';
-import '../models/sudoku_puzzle.dart';
-import '../services/sudoku_generator.dart';
 import 'dart:async';
+import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 
+import '../models/difficulty.dart';
+import '../models/game_status.dart';
+import '../models/saved_game.dart';
+import '../models/sudoku_puzzle.dart';
+
+class _Snapshot {
+  _Snapshot(this.values, this.notes);
+  final Uint8List values;
+  final Uint16List notes;
+}
+
+/// 한 판의 상태. I/O, BuildContext, prefs 를 갖지 않는다.
 class SudokuController extends ChangeNotifier {
-  late SudokuPuzzle _puzzle;
-  late List<List<SudokuCell>> _board; // 9x9 셀 상태
+  static const maxWrong = 5;
+  static const maxHistory = 200;
 
-  final _errorController = StreamController<void>.broadcast();
-  Stream<void> get errorStream => _errorController.stream;
+  /// 각 칸의 같은 행·열·박스 칸 (자기 자신 제외, 20개).
+  static final List<List<int>> peersOf = List.generate(81, (i) {
+    final r = i ~/ 9, c = i % 9;
+    final br = r ~/ 3 * 3, bc = c ~/ 3 * 3;
+    final set = <int>{};
+    for (var k = 0; k < 9; k++) {
+      set.add(r * 9 + k);
+      set.add(k * 9 + c);
+      set.add((br + k ~/ 3) * 9 + bc + k % 3);
+    }
+    set.remove(i);
+    return List.unmodifiable(set);
+  });
 
-  int? _selectedRow;
-  int? _selectedCol;
-
-  List<List<SudokuCell>> get board => _board;
-  int? get selectedRow => _selectedRow;
-  int? get selectedCol => _selectedCol;
-
-  final SudokuGenerator _generator = SudokuGenerator();
-
-  Difficulty _difficulty = Difficulty.normal;
-  Difficulty get difficulty => _difficulty;
-
-  // "reset"은 현재 퍼즐로 다시 시작하도록 initial snapshot을 저장해둠
-  late List<List<int>> _initialSnapshot;
-  int? _selectedNumber;
-  int? get selectedNumber => _selectedNumber;
-
-  void selectNumber(int number) {
-    _selectedNumber = number;
-    notifyListeners();
+  SudokuController.fresh(
+    SudokuPuzzle p,
+    this.difficulty, {
+    required bool instantCheck,
+  }) : _sol = _flatten(p.solution),
+       _init = _flatten(p.initial),
+       _values = _flatten(p.initial),
+       _notes = Uint16List(81),
+       _instantCheck = instantCheck,
+       _icEverOff = !instantCheck,
+       _offsetMs = 0,
+       elapsedSeconds = ValueNotifier(0) {
+    _recomputeConflicts();
   }
 
-  Timer? _timer;
-  int _elapsedSeconds = 0;
-
-  int get elapsedSeconds => _elapsedSeconds;
-
-  String get elapsedLabel {
-    final m = _elapsedSeconds ~/ 60;
-    final s = _elapsedSeconds % 60;
-    final mm = m.toString().padLeft(2, '0');
-    final ss = s.toString().padLeft(2, '0');
-    return '$mm:$ss';
+  /// 저장된 판에서 복원. undo 스택은 비어 있다.
+  SudokuController.fromSave(SavedGame s)
+    : difficulty = s.difficulty,
+      _sol = Uint8List.fromList(s.solution),
+      _init = Uint8List.fromList(s.initial),
+      _values = Uint8List.fromList(s.current),
+      _notes = Uint16List.fromList(s.notes),
+      _instantCheck = s.instantCheck,
+      _icEverOff = s.icEverOff,
+      _wrongCount = s.wrongCount,
+      _offsetMs = s.elapsedMs,
+      elapsedSeconds = ValueNotifier(s.elapsedMs ~/ 1000) {
+    _recomputeConflicts();
   }
 
-  void _startTimer() {
-    _timer?.cancel();
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      // 게임 끝났으면 증가 중단
-      if (_isGameOver || isSolved) {
-        _timer?.cancel();
-        _timer = null;
-        return;
-      }
-      _elapsedSeconds += 1;
-      notifyListeners();
-    });
-  }
+  final Difficulty difficulty;
+  final Uint8List _sol;
+  final Uint8List _init;
+  final Uint8List _values;
+  final Uint16List _notes;
+  final _conflicts = List<bool>.filled(81, false);
+  final _history = <_Snapshot>[];
+  final _effects = StreamController<GameEffect>.broadcast();
+  final _stopwatch = Stopwatch();
+  Timer? _ticker;
 
-  void _stopTimer() {
-    _timer?.cancel();
-    _timer = null;
-  }
+  /// 표시용 경과 초. 실제 시간은 Stopwatch + 오프셋.
+  final ValueNotifier<int> elapsedSeconds;
 
-  void _resetTimer() {
-    _elapsedSeconds = 0;
-  }
-
-  bool _isNoteMode = false;
-  bool get isNoteMode => _isNoteMode;
-
-  void toggleNoteMode() {
-    _isNoteMode = !_isNoteMode;
-    notifyListeners();
-  }
-
-  bool _instantCheck = true;
-  bool get instantCheck => _instantCheck;
-
-  void toggleInstantCheck() {
-    _instantCheck = !_instantCheck;
-    _updateWrongMarks();
-    notifyListeners();
-  }
-
+  GameStatus _status = GameStatus.paused;
+  int _offsetMs;
+  int _revision = 0;
+  int? _selected;
   int _wrongCount = 0;
+  bool _instantCheck;
+  bool _icEverOff;
+  bool _noteMode = false;
+
+  GameStatus get status => _status;
+  Stream<GameEffect> get effects => _effects.stream;
+  int get revision => _revision;
+  int? get selected => _selected;
   int get wrongCount => _wrongCount;
+  bool get instantCheck => _instantCheck;
+  bool get icEverOff => _icEverOff;
+  bool get noteMode => _noteMode;
+  bool get canUndo => _history.isNotEmpty;
+  int get elapsedMs => _offsetMs + _stopwatch.elapsedMilliseconds;
 
-  static const int maxWrongCount = 5;
+  int valueAt(int i) => _values[i];
+  int notesAt(int i) => _notes[i];
+  bool isGiven(int i) => _init[i] != 0;
 
-  bool _isGameOver = false;
-  bool get isGameOver => _isGameOver;
+  bool isWrongAt(int i) =>
+      _instantCheck && _values[i] != 0 && _values[i] != _sol[i];
 
-  final List<_HistoryEntry> _history = [];
-  static const int _maxHistory = 200; // 너무 커지는 것 방지(취향)
+  bool isConflictedAt(int i) => _conflicts[i];
 
-  SudokuController() {
-    _initEmptyBoard();
+  /// 아직 놓을 수 있는 n 의 개수 (오답으로 표시된 칸은 세지 않는다).
+  int remaining(int n) {
+    var placed = 0;
+    for (var i = 0; i < 81; i++) {
+      if (_values[i] == n && !isWrongAt(i)) placed++;
+    }
+    return 9 - placed;
   }
 
-  void _initEmptyBoard() {
-    _board = List.generate(9, (r) {
-      return List.generate(9, (c) {
-        return SudokuCell(row: r, col: c, isGiven: false, value: null);
-      });
-    });
+  // -------------------- 상태 전이 --------------------
 
-    _selectedRow = null;
-    _selectedCol = null;
-
-    _wrongCount = 0;
-    _isGameOver = false;
-    _isNoteMode = false;
-
-    _resetTimer();      // 시간도 0으로
-    _stopTimer();       // 타이머 멈춤
-
+  void resume() {
+    if (_status != GameStatus.paused) return;
+    _status = GameStatus.playing;
+    _stopwatch.start();
+    _ticker?.cancel();
+    _ticker = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
     notifyListeners();
   }
 
-  void newGame(Difficulty difficulty) {
-    _history.clear();
-    _difficulty = difficulty;
-    _puzzle = _generator.generate(difficulty);
-
-    _board = List.generate(9, (row) {
-      return List.generate(9, (col) {
-        final v = _puzzle.initial[row][col];
-        return SudokuCell(
-          row: row,
-          col: col,
-          isGiven: v != 0,
-          value: v == 0 ? null : v,
-          // notes/isWrong/isHighlighted 등은 기본 false/empty
-        );
-      });
-    });
-
-    _initialSnapshot =
-        List.generate(9, (r) => List<int>.from(_puzzle.initial[r]));
-
-    _selectedRow = null;
-    _selectedCol = null;
-
-    _wrongCount = 0;
-    _isGameOver = false;
-    _isNoteMode = false;
-    _selectedNumber = null;
-
-    _updateConflicts();
-    _updateHighlights();
-    // _updateWrongMarks(); // instantCheck 토글을 쓰고 있으면 필요 시 호출
-    _resetTimer();
-    _startTimer();
+  void pause() {
+    if (_status != GameStatus.playing) return;
+    _stopTime();
+    _status = GameStatus.paused;
     notifyListeners();
   }
 
+  void _stopTime() {
+    _stopwatch.stop();
+    _ticker?.cancel();
+    _ticker = null;
+    _tick();
+  }
+
+  void _tick() => elapsedSeconds.value = elapsedMs ~/ 1000;
+
+  // -------------------- 입력 --------------------
+
+  bool get _playing => _status == GameStatus.playing;
+
+  void select(int i) {
+    if (!_playing || i < 0 || i > 80 || _selected == i) return;
+    _selected = i;
+    _changed();
+  }
+
+  void toggleNote() {
+    if (!_playing) return;
+    _noteMode = !_noteMode;
+    notifyListeners();
+  }
+
+  void input(int n) {
+    final i = _selected;
+    if (!_playing || i == null || isGiven(i) || n < 1 || n > 9) return;
+
+    if (_noteMode) {
+      _pushHistory();
+      _values[i] = 0;
+      _notes[i] ^= 1 << (n - 1);
+      _recomputeConflicts();
+      _changed();
+      return;
+    }
+
+    if (_values[i] == n || remaining(n) == 0) return;
+
+    _pushHistory();
+    _values[i] = n;
+    _notes[i] = 0;
+    final wrong = n != _sol[i];
+    if (!wrong) {
+      final mask = ~(1 << (n - 1)) & 0x1FF;
+      for (final p in peersOf[i]) {
+        _notes[p] &= mask;
+      }
+    }
+    _recomputeConflicts();
+
+    if (_instantCheck && wrong) {
+      _wrongCount++;
+      _effects.add(GameEffect.wrong);
+      if (_wrongCount == 1) _effects.add(GameEffect.firstMistake);
+      if (_wrongCount >= maxWrong) {
+        _stopTime();
+        _status = GameStatus.failed;
+      }
+    } else if (!_instantCheck && _conflicts[i]) {
+      _effects.add(GameEffect.conflict);
+    }
+
+    if (_isSolved()) {
+      _stopTime();
+      _status = GameStatus.solved;
+      _selected = null;
+    }
+    _changed();
+  }
+
+  void erase() {
+    final i = _selected;
+    if (!_playing || i == null || isGiven(i)) return;
+    if (_values[i] == 0 && _notes[i] == 0) return;
+    _pushHistory();
+    _values[i] = 0;
+    _notes[i] = 0;
+    _recomputeConflicts();
+    _changed();
+  }
+
+  /// 보드 1단계 복원. wrongCount 는 되돌리지 않는다 (D12).
+  void undo() {
+    if (!_playing || _history.isEmpty) return;
+    final s = _history.removeLast();
+    _values.setAll(0, s.values);
+    _notes.setAll(0, s.notes);
+    _recomputeConflicts();
+    _changed();
+  }
+
+  void setInstantCheck(bool v) {
+    if (_instantCheck == v) return;
+    _instantCheck = v;
+    if (!v) _icEverOff = true;
+    _changed();
+  }
+
+  /// 같은 퍼즐을 처음부터. 상태는 paused 로 돌아간다.
   void reset() {
+    _stopwatch
+      ..stop()
+      ..reset();
+    _ticker?.cancel();
+    _ticker = null;
+    _offsetMs = 0;
+    elapsedSeconds.value = 0;
+    _values.setAll(0, _init);
+    _notes.fillRange(0, 81, 0);
     _history.clear();
-    // 현재 퍼즐(_puzzle.solution)은 유지, initialSnapshot으로 다시 시작
-    _board = List.generate(9, (row) {
-      return List.generate(9, (col) {
-        final v = _initialSnapshot[row][col];
-        return SudokuCell(
-          row: row,
-          col: col,
-          isGiven: v != 0,
-          value: v == 0 ? null : v,
-        );
-      });
-    });
-
-    _selectedRow = null;
-    _selectedCol = null;
-
     _wrongCount = 0;
-    _isGameOver = false;
-    _isNoteMode = false;
-    _selectedNumber = null;
+    _selected = null;
+    _noteMode = false;
+    _icEverOff = !_instantCheck;
+    _status = GameStatus.paused;
+    _recomputeConflicts();
+    _changed();
+  }
 
-    _updateConflicts();
-    _updateHighlights();
-    _resetTimer();
-    _startTimer();
+  SavedGame snapshot() => SavedGame(
+    difficulty: difficulty,
+    solution: Uint8List.fromList(_sol),
+    initial: Uint8List.fromList(_init),
+    current: Uint8List.fromList(_values),
+    notes: Uint16List.fromList(_notes),
+    elapsedMs: elapsedMs,
+    wrongCount: _wrongCount,
+    instantCheck: _instantCheck,
+    icEverOff: _icEverOff,
+    savedAt: DateTime.now(),
+  );
+
+  // -------------------- 내부 --------------------
+
+  void _pushHistory() {
+    _history.add(
+      _Snapshot(Uint8List.fromList(_values), Uint16List.fromList(_notes)),
+    );
+    if (_history.length > maxHistory) _history.removeAt(0);
+  }
+
+  void _changed() {
+    _revision++;
     notifyListeners();
   }
 
-  void selectCell(int row, int col) {
-    if (_board[row][col].isGiven) {
-      // 고정 숫자 클릭도 허용 (선택 + 하이라이트만)
-    }
-
-    // 기존 선택 해제
-    for (var r = 0; r < 9; r++) {
-      for (var c = 0; c < 9; c++) {
-        _board[r][c].isSelected = false;
-      }
-    }
-
-    _board[row][col].isSelected = true;
-    _selectedRow = row;
-    _selectedCol = col;
-
-    _updateHighlights(); // ← 선택한 숫자 기준으로 하이라이트
-    notifyListeners();
-  }
-
-  void inputNumber(int number) {
-    _selectedNumber = number;
-
-    try {
-      if (_selectedRow == null || _selectedCol == null) return;
-      if (_isGameOver) return;
-
-      final cell = _board[_selectedRow!][_selectedCol!];
-      if (cell.isGiven) return;
-
-      _pushHistoryForSelection(cell.row, cell.col);
-
-      // ✅ 메모 모드: 값이 있으면 날리고, notes 토글
-      if (_isNoteMode) {
-        _pushHistoryForSelection(cell.row, cell.col);
-        if (cell.value != null) {
-          cell.value = null;
-          cell.isConflicted = false;
-        }
-
-        if (cell.notes.contains(number)) {
-          cell.notes.remove(number);
-        } else {
-          cell.notes.add(number);
-        }
-
-        _updateConflicts();
-        _updateHighlights();
-        return;
-      }
-
-      // ✅ 입력 모드
-      final int? prevValue = cell.value;
-      final bool wasConflictedBefore = cell.isConflicted;
-
-      if (prevValue == number) return;
-
-      _pushHistoryForSelection(cell.row, cell.col);
-
-      cell.value = number;
-      cell.notes.clear();
-
-      if (_instantCheck) {
-        cell.isWrong = (_puzzle.solution[cell.row][cell.col] != number);
-      } else {
-        cell.isWrong = false;
-      }
-
-      if (!_instantCheck || !cell.isWrong) {
-        _clearNotesByConfirmedNumber(cell.row, cell.col, number);
-      }
-
-      _updateConflicts();
-      _updateHighlights();
-
-      if (_instantCheck && cell.isWrong) {
-        _wrongCount += 1;
-        _errorController.add(null);
-
-        if (_wrongCount >= maxWrongCount) {
-          _isGameOver = true;
-        }
-        return;
-      }
-
-      if (!wasConflictedBefore && cell.isConflicted) {
-        _errorController.add(null);
-      }
-    } finally {
-      // ✅ 어떤 경로로 return 하든 항상 선택 해제
-      _selectedNumber = null;
-      notifyListeners();
-    }
-  }
-
-  void clearSelectedCell() {
-    if (_selectedRow == null || _selectedCol == null) return;
-    if (_isGameOver) return;
-
-    final cell = _board[_selectedRow!][_selectedCol!];
-    if (cell.isGiven) return;
-
-    _pushHistoryForSelection(cell.row, cell.col);
-
-    cell.value = null;
-    cell.notes.clear();
-    cell.isWrong = false;
-    _selectedNumber = null;
-
-    _updateConflicts();
-    _updateHighlights();
-    notifyListeners();
-  }
-
-  void _clearNotesByConfirmedNumber(int row, int col, int number) {
-    for (int r = 0; r < 9; r++) {
-      for (int c = 0; c < 9; c++) {
-        if (r == row && c == col) continue;
-
-        final sameRow = r == row;
-        final sameCol = c == col;
-        final sameBox = (r ~/ 3 == row ~/ 3) && (c ~/ 3 == col ~/ 3);
-
-        if (sameRow || sameCol || sameBox) {
-          _board[r][c].notes.remove(number);
-        }
-      }
-    }
-  }
-
-  void _updateConflicts() {
-    // 모든 셀의 conflict 초기화
-    for (var r = 0; r < 9; r++) {
-      for (var c = 0; c < 9; c++) {
-        _board[r][c].isConflicted = false;
-      }
-    }
-
-    // 행 검사
-    for (var r = 0; r < 9; r++) {
-      final map = <int, List<SudokuCell>>{};
-      for (var c = 0; c < 9; c++) {
-        final v = _board[r][c].value;
-        if (v == null) continue;
-        map.putIfAbsent(v, () => []).add(_board[r][c]);
-      }
-      for (final entry in map.entries) {
-        if (entry.value.length > 1) {
-          for (final cell in entry.value) {
-            cell.isConflicted = true;
-          }
-        }
-      }
-    }
-
-    // 열 검사
-    for (var c = 0; c < 9; c++) {
-      final map = <int, List<SudokuCell>>{};
-      for (var r = 0; r < 9; r++) {
-        final v = _board[r][c].value;
-        if (v == null) continue;
-        map.putIfAbsent(v, () => []).add(_board[r][c]);
-      }
-      for (final entry in map.entries) {
-        if (entry.value.length > 1) {
-          for (final cell in entry.value) {
-            cell.isConflicted = true;
-          }
-        }
-      }
-    }
-
-    // 3x3 박스 검사
-    for (var br = 0; br < 3; br++) {
-      for (var bc = 0; bc < 3; bc++) {
-        final map = <int, List<SudokuCell>>{};
-        for (var r = br * 3; r < br * 3 + 3; r++) {
-          for (var c = bc * 3; c < bc * 3 + 3; c++) {
-            final v = _board[r][c].value;
-            if (v == null) continue;
-            map.putIfAbsent(v, () => []).add(_board[r][c]);
-          }
-        }
-        for (final entry in map.entries) {
-          if (entry.value.length > 1) {
-            for (final cell in entry.value) {
-              cell.isConflicted = true;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  void _updateHighlights() {
-    // 선택된 칸이 없으면 전체 하이라이트 해제
-    if (_selectedRow == null || _selectedCol == null) {
-      for (var r = 0; r < 9; r++) {
-        for (var c = 0; c < 9; c++) {
-          _board[r][c].isHighlighted = false;
-        }
-      }
-      return;
-    }
-
-    final sr = _selectedRow!;
-    final sc = _selectedCol!;
-    final selectedCell = _board[sr][sc];
-    final selectedValue = selectedCell.value;
-
-    // 🔴 선택한 칸이 "빈 칸"이면 → 아무 하이라이트도 안 보이게
-    if (selectedValue == null) {
-      for (var r = 0; r < 9; r++) {
-        for (var c = 0; c < 9; c++) {
-          _board[r][c].isHighlighted = false;
-        }
-      }
-      return;
-    }
-
-    // 여기부터는 "숫자가 있는 칸"을 클릭했을 때 동작
-    // 선택된 칸이 속한 3x3 박스 시작 인덱스 계산
-    final boxStartRow = (sr ~/ 3) * 3;
-    final boxStartCol = (sc ~/ 3) * 3;
-
-    for (var r = 0; r < 9; r++) {
-      for (var c = 0; c < 9; c++) {
-        final cell = _board[r][c];
-
-        final sameRow = r == sr;
-        final sameCol = c == sc;
-        final sameBox = (r >= boxStartRow &&
-            r < boxStartRow + 3 &&
-            c >= boxStartCol &&
-            c < boxStartCol + 3);
-
-        final sameValue = cell.value == selectedValue;
-
-        // ✅ 규칙:
-        // 1) 선택한 칸 기준 가로/세로/3x3 박스는 노란색
-        // 2) 값이 같은 모든 칸(예: 1)도 노란색
-        if (sameRow || sameCol || sameBox || sameValue) {
-          cell.isHighlighted = true;
-        } else {
-          cell.isHighlighted = false;
-        }
-      }
-    }
-  }
-
-  void _updateWrongMarks() {
-    for (var r = 0; r < 9; r++) {
-      for (var c = 0; c < 9; c++) {
-        final cell = _board[r][c];
-        if (cell.value == null || !_instantCheck) {
-          cell.isWrong = false;
-        } else {
-          cell.isWrong = (_puzzle.solution[r][c] != cell.value);
-        }
-      }
-    }
-  }
-
-  bool get isSolved {
-    for (var r = 0; r < 9; r++) {
-      for (var c = 0; c < 9; c++) {
-        if (_board[r][c].value == null || _board[r][c].isConflicted) {
-          return false;
-        }
-      }
+  bool _isSolved() {
+    for (var i = 0; i < 81; i++) {
+      if (_values[i] != _sol[i]) return false;
     }
     return true;
   }
 
-  int countNumber(int number) {
-    int count = 0;
-    for (var r = 0; r < 9; r++) {
-      for (var c = 0; c < 9; c++) {
-        if (_board[r][c].value == number) {
-          count++;
+  void _recomputeConflicts() {
+    for (var i = 0; i < 81; i++) {
+      final v = _values[i];
+      var hit = false;
+      if (v != 0) {
+        for (final p in peersOf[i]) {
+          if (_values[p] == v) {
+            hit = true;
+            break;
+          }
         }
       }
-    }
-    return count;
-  }
-
-  bool isNumberCompleted(int number) {
-    return countNumber(number) >= 9;
-  }
-
-  Set<String> _affectedKeys(int row, int col) {
-    final keys = <String>{};
-
-    // row
-    for (int c = 0; c < 9; c++) {
-      keys.add('$row,$c');
-    }
-    // col
-    for (int r = 0; r < 9; r++) {
-      keys.add('$r,$col');
-    }
-    // box
-    final br = (row ~/ 3) * 3;
-    final bc = (col ~/ 3) * 3;
-    for (int r = br; r < br + 3; r++) {
-      for (int c = bc; c < bc + 3; c++) {
-        keys.add('$r,$c');
-      }
-    }
-
-    return keys;
-  }
-
-  void _pushHistoryForSelection(int row, int col) {
-    final keys = _affectedKeys(row, col);
-
-    final snapshots = <_CellSnapshot>[];
-    for (final k in keys) {
-      final parts = k.split(',');
-      final r = int.parse(parts[0]);
-      final c = int.parse(parts[1]);
-      final cell = _board[r][c];
-
-      snapshots.add(_CellSnapshot(
-        row: r,
-        col: c,
-        value: cell.value,
-        notes: Set<int>.from(cell.notes),
-        isWrong: cell.isWrong,
-      ));
-    }
-
-    _history.add(_HistoryEntry(
-      cells: snapshots,
-      prevWrongCount: _wrongCount,
-      prevIsGameOver: _isGameOver,
-    ));
-
-    if (_history.length > _maxHistory) {
-      _history.removeAt(0);
+      _conflicts[i] = hit;
     }
   }
 
-  void rollback() {
-    if (_history.isEmpty) return;
-
-    final last = _history.removeLast();
-
-    for (final snap in last.cells) {
-      final cell = _board[snap.row][snap.col];
-      if (cell.isGiven) continue; // 혹시 모르니 보호
-
-      cell.value = snap.value;
-      cell.notes
-        ..clear()
-        ..addAll(snap.notes);
-      cell.isWrong = snap.isWrong;
-    }
-
-    _isGameOver = last.prevIsGameOver;
-
-    // 상태 다시 계산
-    _updateConflicts();
-    _updateHighlights();
-
-    notifyListeners();
-  }
+  static Uint8List _flatten(List<List<int>> g) =>
+      Uint8List.fromList([for (final row in g) ...row]);
 
   @override
   void dispose() {
-    _timer?.cancel();
-    _errorController.close(); // 이미 쓰고 있으면 같이 정리
+    _stopwatch.stop();
+    _ticker?.cancel();
+    _effects.close();
+    elapsedSeconds.dispose();
     super.dispose();
   }
-}
-
-class _CellSnapshot {
-  final int row;
-  final int col;
-  final int? value;
-  final Set<int> notes;
-  final bool isWrong;
-
-  _CellSnapshot({
-    required this.row,
-    required this.col,
-    required this.value,
-    required this.notes,
-    required this.isWrong,
-  });
-}
-
-class _HistoryEntry {
-  final List<_CellSnapshot> cells;
-  final int prevWrongCount;
-  final bool prevIsGameOver;
-
-  _HistoryEntry({
-    required this.cells,
-    required this.prevWrongCount,
-    required this.prevIsGameOver,
-  });
 }

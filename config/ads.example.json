@@ -1,0 +1,5 @@
+{
+  "ADMOB_INTERSTITIAL_ANDROID": "ca-app-pub-xxxxxxxx/xxxxxxxx",
+  "ADMOB_INTERSTITIAL_IOS": "ca-app-pub-xxxxxxxx/xxxxxxxx",
+  "ADMOB_TEST_DEVICES": "HASH1,HASH2"
+}

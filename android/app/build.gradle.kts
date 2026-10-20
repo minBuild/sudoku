@@ -7,6 +7,9 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
+// Google 샘플 AdMob App ID (Android)
+val testAdmobAppId = "ca-app-pub-3940256099942544~3347511713"
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -16,7 +19,7 @@ plugins {
 
 android {
     namespace = "com.jang.sudoku"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -33,26 +36,35 @@ android {
         applicationId = "com.jang.sudoku"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdk = maxOf(flutter.minSdkVersion, 23)
+        targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // profile 등 별도 지정이 없는 빌드 타입은 테스트 App ID 를 쓴다.
+        manifestPlaceholders["admobAppId"] = testAdmobAppId
     }
 
     signingConfigs {
-        create("release") {
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
-            storeFile = file(keystoreProperties["storeFile"] as String)
-            storePassword = keystoreProperties["storePassword"] as String
+        if (keystorePropertiesFile.exists()) create("release") {
+            keyAlias = keystoreProperties.getProperty("keyAlias") ?: error("key.properties: keyAlias 누락")
+            keyPassword = keystoreProperties.getProperty("keyPassword") ?: error("key.properties: keyPassword 누락")
+            storeFile = file(keystoreProperties.getProperty("storeFile") ?: error("key.properties: storeFile 누락"))
+            storePassword = keystoreProperties.getProperty("storePassword") ?: error("key.properties: storePassword 누락")
         }
     }
 
     buildTypes {
+        debug {
+            manifestPlaceholders["admobAppId"] = testAdmobAppId
+        }
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = if (keystorePropertiesFile.exists()) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
+            manifestPlaceholders["admobAppId"] = keystoreProperties.getProperty("admobAppId")
+                ?: testAdmobAppId.also { logger.warn("admobAppId 없음: 테스트 App ID 사용") }
         }
     }
 }

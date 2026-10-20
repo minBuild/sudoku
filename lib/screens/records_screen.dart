@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../l10n/strings.dart';
 import '../models/difficulty.dart';
 import '../models/game_record.dart';
 import '../services/record_store.dart';
+import '../theme/app_theme.dart';
+import '../util/format.dart';
+
+const _noBest = '--:--';
 
 class RecordsScreen extends StatefulWidget {
   const RecordsScreen({super.key});
@@ -11,181 +17,382 @@ class RecordsScreen extends StatefulWidget {
   State<RecordsScreen> createState() => _RecordsScreenState();
 }
 
-class _RecordsScreenState extends State<RecordsScreen>
-    with SingleTickerProviderStateMixin {
-  late final TabController _tabController;
-  final RecordStore _store = RecordStore();
+class _RecordsScreenState extends State<RecordsScreen> {
+  late final RecordStore _store = context.read<RecordStore>();
+  List<GameRecord>? _records;
+  Difficulty? _filter;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: Difficulty.values.length, vsync: this);
+    _load();
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+  Future<void> _load() async {
+    final r = await _store.loadAll();
+    if (mounted) setState(() => _records = r);
   }
 
-  String _mmss(int seconds) {
-    final m = seconds ~/ 60;
-    final s = seconds % 60;
-    return '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
-  }
-
-  String _dateLabel(DateTime dt) {
-    final local = dt.toLocal();
-    final y = local.year.toString().padLeft(4, '0');
-    final mo = local.month.toString().padLeft(2, '0');
-    final d = local.day.toString().padLeft(2, '0');
-    final h = local.hour.toString().padLeft(2, '0');
-    final mi = local.minute.toString().padLeft(2, '0');
-    return '$y-$mo-$d $h:$mi';
-  }
-
-  GameRecord? _bestOf(List<GameRecord> records) {
-    if (records.isEmpty) return null;
-
-    final sorted = [...records]
-      ..sort((a, b) {
-        final t = a.elapsedSeconds.compareTo(b.elapsedSeconds);
-        if (t != 0) return t;
-        return a.wrongCount.compareTo(b.wrongCount);
-      });
-
-    return sorted.first;
-  }
-
-  Widget _bestHeader(GameRecord best) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(12, 12, 12, 4),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.amber.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.amber.shade200),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.emoji_events, color: Colors.amber),
-          const SizedBox(width: 8),
-          Text(
-            'BEST ${_mmss(best.elapsedSeconds)}',
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+  Future<void> _clearAll() async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(S.clearAllTitle),
+        content: Text(S.clearAllBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(S.cancel),
           ),
-          const Spacer(),
-          Text(
-            '❌: ${best.wrongCount}',
-            style: const TextStyle(color: Colors.black54),
+          FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: AppTheme.error),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(S.delete),
           ),
         ],
       ),
     );
+    if (ok != true) return;
+    await _store.clearAll();
+    await _load();
   }
 
   @override
   Widget build(BuildContext context) {
+    final records = _records;
+    final hasRecords = records != null && records.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Record'),
-        centerTitle: true,
-        bottom: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          tabs: Difficulty.values.map((d) => Tab(text: d.label)).toList(),
-        ),
+        title: Text(S.records),
         actions: [
           IconButton(
-            tooltip: 'Full deletion',
-            icon: const Icon(Icons.delete_outline),
-            onPressed: () async {
-              final ok = await showDialog<bool>(
-                context: context,
-                builder: (_) => AlertDialog(
-                  title: const Text('Do you want me to delete the record?'),
-                  content: const Text('Recovery is not possible.'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, false),
-                      child: const Text('❌'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => Navigator.pop(context, true),
-                      child: const Text('🗑️'),
-                    ),
-                  ],
-                ),
-              );
-
-              if (ok == true) {
-                await _store.clearAll();
-                if (!mounted) return;
-                setState(() {});
-              }
-            },
+            tooltip: S.clearAll,
+            onPressed: hasRecords ? _clearAll : null,
+            icon: const Icon(Icons.delete_outline_rounded),
           ),
         ],
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: Difficulty.values.map((d) {
-          return FutureBuilder<List<GameRecord>>(
-            future: _store.loadAll().then((all) => all.where((r) => r.difficulty == d).toList()),
-            builder: (context, snap) {
-              if (snap.connectionState != ConnectionState.done) {
-                return const Center(child: CircularProgressIndicator());
-              }
+      body: records == null
+          ? const Center(child: CircularProgressIndicator())
+          : Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: AppTheme.maxContentWidth,
+                ),
+                child: _body(records),
+              ),
+            ),
+    );
+  }
 
-              final records = snap.data ?? [];
-              if (records.isEmpty) {
-                return const Center(child: Text('Do not have a record yet'));
-              }
+  Widget _body(List<GameRecord> all) {
+    final text = Theme.of(context).textTheme;
+    final filtered = _filter == null
+        ? all
+        : all.where((r) => r.difficulty == _filter).toList();
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(child: _filterChips()),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: AppTheme.pagePadding),
+          sliver: SliverToBoxAdapter(child: _BestCard(records: all)),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(
+            AppTheme.pagePadding,
+            24,
+            AppTheme.pagePadding,
+            8,
+          ),
+          sliver: SliverToBoxAdapter(
+            child: Text(
+              S.recentRecords(filtered.length),
+              style: text.headlineSmall,
+            ),
+          ),
+        ),
+        if (filtered.isEmpty)
+          const SliverToBoxAdapter(child: _Empty())
+        else
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(
+              AppTheme.pagePadding,
+              0,
+              AppTheme.pagePadding,
+              24,
+            ),
+            sliver: SliverList.separated(
+              itemCount: filtered.length,
+              separatorBuilder: (_, _) => const SizedBox(height: 12),
+              itemBuilder: (_, i) => _RecordTile(record: filtered[i]),
+            ),
+          ),
+      ],
+    );
+  }
 
-              final best = _bestOf(records);
+  Widget _filterChips() {
+    Widget chip(String label, Difficulty? d) => Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: ChoiceChip(
+        label: Text(label),
+        selected: _filter == d,
+        onSelected: (_) => setState(() => _filter = d),
+        labelStyle: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: _filter == d ? Colors.white : AppTheme.text,
+        ),
+      ),
+    );
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.fromLTRB(
+        AppTheme.pagePadding,
+        4,
+        AppTheme.pagePadding,
+        16,
+      ),
+      child: Row(
+        children: [
+          chip(S.all, null),
+          for (final d in Difficulty.values) chip(d.label, d),
+        ],
+      ),
+    );
+  }
+}
 
-              return ListView.builder(
-                padding: const EdgeInsets.only(bottom: 12),
-                itemCount: records.length + (best != null ? 1 : 0),
-                itemBuilder: (context, index) {
-                  if (index == 0 && best != null) {
-                    return _bestHeader(best);
-                  }
+class _BestCard extends StatelessWidget {
+  const _BestCard({required this.records});
 
-                  final recordIndex = best != null ? index - 1 : index;
-                  final r = records[recordIndex];
+  final List<GameRecord> records;
 
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
-                    child: Card(
-                      child: ListTile(
-                        leading: const Icon(Icons.history),
-                        title: Text('🕗 ${_mmss(r.elapsedSeconds)}'),
-                        subtitle: Column(
+  @override
+  Widget build(BuildContext context) {
+    final text = Theme.of(context).textTheme;
+    final best = <Difficulty, int>{};
+    for (final r in records) {
+      final b = best[r.difficulty];
+      if (b == null || r.elapsedSeconds < b) {
+        best[r.difficulty] = r.elapsedSeconds;
+      }
+    }
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: AppTheme.card(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryTint,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(
+                  Icons.emoji_events_outlined,
+                  color: AppTheme.primary,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(S.bestRecords, style: text.titleMedium),
+                    Text(S.bestRecordsSub, style: text.bodySmall),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          LayoutBuilder(
+            builder: (context, box) {
+              final w = (box.maxWidth - 12) / 2;
+              return Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: [
+                  for (final d in Difficulty.values)
+                    SizedBox(
+                      width: w,
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppTheme.bg,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('❌: ${r.wrongCount}'),
+                            Text(d.label, style: text.bodySmall),
                             const SizedBox(height: 2),
-                            Text(
-                              _dateLabel(r.finishedAt),
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.black54,
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                best[d] == null
+                                    ? _noBest
+                                    : formatClock(best[d]!),
+                                style: text.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontFeatures: AppTheme.tabular,
+                                  color: best[d] == null
+                                      ? AppTheme.textSecondary
+                                      : AppTheme.text,
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                  );
-                },
+                ],
               );
             },
-          );
-        }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RecordTile extends StatelessWidget {
+  const _RecordTile({required this.record});
+
+  final GameRecord record;
+
+  @override
+  Widget build(BuildContext context) {
+    final text = Theme.of(context).textTheme;
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: AppTheme.card(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              _Badge(
+                record.difficulty.label,
+                bg: AppTheme.primaryTint,
+                fg: AppTheme.primary,
+              ),
+              if (!record.instantCheck)
+                _Badge(
+                  S.checkOff,
+                  bg: Color(0xFFF3F4F6),
+                  fg: AppTheme.textSecondary,
+                ),
+              Text(S.recordDate(record.finishedAt), style: text.bodySmall),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(S.clearTime, style: text.bodySmall),
+                    Text(
+                      formatClock(record.elapsedSeconds),
+                      style: text.headlineMedium?.copyWith(
+                        fontSize: 22,
+                        fontFeatures: AppTheme.tabular,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(9999),
+                  border: Border.all(color: AppTheme.border),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.close_rounded,
+                      size: 14,
+                      color: AppTheme.textSecondary,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      S.recordMistakes(record.wrongCount),
+                      style: text.labelSmall?.copyWith(
+                        color: AppTheme.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Badge extends StatelessWidget {
+  const _Badge(this.label, {required this.bg, required this.fg});
+
+  final String label;
+  final Color bg;
+  final Color fg;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+    decoration: BoxDecoration(
+      color: bg,
+      borderRadius: BorderRadius.circular(6),
+    ),
+    child: Text(
+      label,
+      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: fg),
+    ),
+  );
+}
+
+class _Empty extends StatelessWidget {
+  const _Empty();
+
+  @override
+  Widget build(BuildContext context) {
+    final text = Theme.of(context).textTheme;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 20),
+      child: Column(
+        children: [
+          const Icon(
+            Icons.inbox_outlined,
+            size: 48,
+            color: AppTheme.textSecondary,
+          ),
+          const SizedBox(height: 12),
+          Text(S.noRecords, style: text.titleMedium),
+          const SizedBox(height: 4),
+          Text(
+            S.noRecordsSub,
+            textAlign: TextAlign.center,
+            style: text.bodySmall,
+          ),
+        ],
       ),
     );
   }

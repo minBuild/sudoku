@@ -5,8 +5,5 @@ class SudokuPuzzle {
   /// 9x9 정답 보드
   final List<List<int>> solution;
 
-  SudokuPuzzle({
-    required this.initial,
-    required this.solution,
-  });
+  SudokuPuzzle({required this.initial, required this.solution});
 }

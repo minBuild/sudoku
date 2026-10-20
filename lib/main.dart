@@ -1,29 +1,30 @@
+import 'dart:async';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'controllers/sudoku_controller.dart';
-import 'screens/home_screen.dart';
+import 'app.dart';
+import 'app_deps.dart';
 
-void main() {
-  runApp(const SudokuApp());
-}
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FlutterError.onError = (d) {
+    FlutterError.presentError(d);
+    debugPrint('${d.exception}\n${d.stack}');
+  };
+  PlatformDispatcher.instance.onError = (e, s) {
+    debugPrint('$e\n$s');
+    return true;
+  };
 
-class SudokuApp extends StatelessWidget {
-  const SudokuApp({super.key});
+  final prefs = await SharedPreferences.getInstance();
+  // entitlement 동기 로드 + purchase.listen() 동기 구독 (D13)
+  final deps = AppDeps.production(prefs);
+  runApp(SudokuApp(deps: deps));
 
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => SudokuController(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Sudoku',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-          useMaterial3: true,
-        ),
-        home: const HomeScreen(),
-      ),
-    );
-  }
+  unawaited(deps.purchase.bootstrap()); // 단계별 timeout 10s, 내부 try/catch
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (!deps.entitlement.adsRemoved.value) unawaited(deps.ads.warmUp());
+  });
 }

@@ -1,39 +1,36 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
+
 import '../models/difficulty.dart';
 import '../models/sudoku_puzzle.dart';
+
+/// `compute` 로 넘기기 위한 최상위 함수 (인스턴스 메서드는 isolate 로 못 넘김).
+SudokuPuzzle generatePuzzle(Difficulty d) => SudokuGenerator().generate(d);
 
 class SudokuGenerator {
   final Random _rand = Random();
 
-  SudokuPuzzle generate(Difficulty difficulty) {
+  SudokuPuzzle generate(
+    Difficulty difficulty, {
+    Duration budget = const Duration(milliseconds: 1500),
+  }) {
     final solution = _generateSolvedGrid();
     final puzzle = _copyGrid(solution);
 
-    final removals = _removalCountByDifficulty(difficulty);
-
-    _digHolesEnsuringUniqueSolution(puzzle, solution, removals);
+    _digHolesEnsuringUniqueSolution(
+      puzzle,
+      solution,
+      difficulty.targetHoles,
+      budget,
+    );
 
     return SudokuPuzzle(initial: puzzle, solution: solution);
   }
 
-  // -------------------- Difficulty --------------------
-
-  int _removalCountByDifficulty(Difficulty d) {
-    // 빈칸 수(대략). 취향에 따라 조정 가능.
-    switch (d) {
-      case Difficulty.easy:
-        return 38;
-      case Difficulty.normal:
-        return 45;
-      case Difficulty.hard:
-        return 52;
-      case Difficulty.expert:
-        return 58;
-      case Difficulty.hell:
-        return 62;
-    }
-  }
+  @visibleForTesting
+  int countSolutions(List<List<int>> g) =>
+      _countSolutions(_copyGrid(g), limit: 2);
 
   // -------------------- Generate solved grid --------------------
 
@@ -106,15 +103,19 @@ class SudokuGenerator {
   // -------------------- Dig holes with uniqueness check --------------------
 
   void _digHolesEnsuringUniqueSolution(
-      List<List<int>> puzzle,
-      List<List<int>> solution,
-      int removals,
-      ) {
+    List<List<int>> puzzle,
+    List<List<int>> solution,
+    int removals,
+    Duration budget,
+  ) {
     // 랜덤 셀 순서
     final positions = List<int>.generate(81, (i) => i)..shuffle(_rand);
+    final sw = Stopwatch()..start();
 
     int removed = 0;
     for (final pos in positions) {
+      // 이미 뚫은 구멍은 각각 유일해 검증을 통과했으므로 여기서 끊어도 유효한 퍼즐이다.
+      if (sw.elapsed > budget) break;
       if (removed >= removals) break;
 
       final r = pos ~/ 9;
@@ -152,10 +153,8 @@ class SudokuGenerator {
 
       final r = empty[0], c = empty[1];
 
-      // 후보를 랜덤하게(퍼즐 다양성)
-      final candidates = List<int>.generate(9, (i) => i + 1)..shuffle(_rand);
-
-      for (final n in candidates) {
+      // 해의 개수만 세므로 탐색 순서는 결과에 영향이 없다.
+      for (int n = 1; n <= 9; n++) {
         if (_isValid(grid, r, c, n)) {
           grid[r][c] = n;
           dfs();
