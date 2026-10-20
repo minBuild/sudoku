@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>스도쿠 장 (Sudoku JANG)</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Pretendard & Noto Sans Fonts -->
+<link as="style" crossorigin="" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&amp;family=Noto+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed": "#001453",
+            "on-error": "#ffffff",
+            "on-surface": "#121c2a",
+            "surface-container-highest": "#d9e3f6",
+            "surface-tint": "#3052d2",
+            "on-surface-variant": "#444654",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary-container": "#7792ff",
+            "error-container": "#ffdad6",
+            "primary-fixed": "#dde1ff",
+            "outline": "#747686",
+            "tertiary-fixed": "#dde2ef",
+            "on-primary": "#ffffff",
+            "error": "#ba1a1a",
+            "on-primary-container": "#e2e5ff",
+            "primary-fixed-dim": "#b8c3ff",
+            "on-tertiary-fixed": "#161c25",
+            "primary": "#1a40c2",
+            "tertiary": "#494f5a",
+            "on-tertiary-fixed-variant": "#414751",
+            "surface-container-high": "#dee9fc",
+            "tertiary-container": "#616772",
+            "surface": "#f8f9ff",
+            "on-secondary-fixed-variant": "#1b3ca7",
+            "tertiary-fixed-dim": "#c1c6d3",
+            "background": "#f8f9ff",
+            "surface-dim": "#d0dbed",
+            "on-error-container": "#93000a",
+            "on-background": "#121c2a",
+            "surface-container": "#e6eeff",
+            "primary-container": "#3b5bdb",
+            "inverse-surface": "#27313f",
+            "surface-bright": "#f8f9ff",
+            "secondary-fixed": "#dde1ff",
+            "outline-variant": "#c4c5d6",
+            "secondary-fixed-dim": "#b7c4ff",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed": "#001355",
+            "surface-container-lowest": "#ffffff",
+            "surface-variant": "#d9e3f6",
+            "inverse-primary": "#b8c3ff",
+            "surface-container-low": "#eff4ff",
+            "on-tertiary": "#ffffff",
+            "secondary": "#3956bf",
+            "on-tertiary-container": "#e1e6f3",
+            "on-secondary-container": "#002584",
+            "on-primary-fixed-variant": "#0736ba"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "space-md": "0.75rem",
+            "space-lg": "1.25rem",
+            "margin": "1.25rem",
+            "gutter": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-xl": "1.75rem"
+          },
+          "fontFamily": {
+            "label-md": ["Noto Sans", "Pretendard", "Noto Sans KR", "sans-serif"],
+            "label-lg": ["Noto Sans", "Pretendard", "Noto Sans KR", "sans-serif"],
+            "grid-number": ["Noto Sans", "Pretendard", "Noto Sans KR", "sans-serif"],
+            "body-sm": ["Noto Sans", "Pretendard", "Noto Sans KR", "sans-serif"],
+            "grid-note": ["Noto Sans", "Pretendard", "Noto Sans KR", "sans-serif"],
+            "headline-md": ["Noto Sans", "Pretendard", "Noto Sans KR", "sans-serif"],
+            "headline-sm": ["Noto Sans", "Pretendard", "Noto Sans KR", "sans-serif"],
+            "body-lg": ["Noto Sans", "Pretendard", "Noto Sans KR", "sans-serif"],
+            "label-sm": ["Noto Sans", "Pretendard", "Noto Sans KR", "sans-serif"],
+            "body-md": ["Noto Sans", "Pretendard", "Noto Sans KR", "sans-serif"],
+            "headline-lg": ["Noto Sans", "Pretendard", "Noto Sans KR", "sans-serif"]
+          },
+          "fontSize": {
+            "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "grid-number": ["24px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "grid-note": ["10px", { "lineHeight": "12px", "fontWeight": "500" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Pretendard', 'Noto Sans KR', 'Noto Sans', -apple-system, sans-serif;
+      background-color: #F5F6FA;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      line-height: 1;
+      vertical-align: middle;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .soft-card-shadow {
+      box-shadow: 0 4px 20px -2px rgba(31, 41, 55, 0.04), 0 2px 6px -1px rgba(31, 41, 55, 0.02);
+    }
+    .cta-shadow {
+      box-shadow: 0 8px 24px -4px rgba(59, 91, 219, 0.28);
+    }
+  </style>
+</head>
+<body class="bg-[#F5F6FA] text-on-surface flex justify-center min-h-screen">
+<!-- Mobile Viewport Shell (Max width 448px / max-w-md) -->
+<div class="w-full max-w-md min-h-screen flex flex-col justify-between relative pb-28">
+<!-- Top Navigation Anchor (Shared Component: TopAppBar) -->
+<header class="w-full sticky top-0 z-40 bg-surface/90 backdrop-blur-md">
+<div class="flex justify-between items-center w-full px-5 py-3 max-w-md mx-auto">
+<!-- Leading Icon -->
+<button aria-label="그리드 보기" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[24px]">grid_on</span>
+</button>
+<!-- Center App Headline -->
+<div class="text-headline-sm font-headline-sm font-bold text-on-surface flex items-center gap-1.5 tracking-tight">
+<span>스도쿠</span>
+<span class="bg-[#EDF2FF] text-[#3B5BDB] px-1.5 py-0.5 rounded text-[11px] font-extrabold tracking-wider">JANG</span>
+</div>
+<!-- Trailing Icon (Shared Anchor) -->
+<button aria-label="설정" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-5 pt-2 flex flex-col gap-5">
+<!-- Brand Identity Hero Header -->
+<section class="bg-surface-container-lowest rounded-2xl p-5 border border-[#E5E7EB] soft-card-shadow relative overflow-hidden">
+<div class="flex items-center justify-between gap-3">
+<div class="flex items-center gap-3.5">
+<img alt="스도쿠 장 3x3 로고 마크" class="w-12 h-12 rounded-xl object-cover shadow-sm ring-1 ring-[#3B5BDB]/10 flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1WS7mz5ZTrGe13yUm7Dv7w6kdwiK4xPT0lzYxvm9VwrHjgGImgB98zRZCdFq_SSx6SoHaxWoMZpwQFkhNe-Y7DlvrusLhjn0d70st70u77hppbaL_ZVeQKp1UhQsruFUPMRCzidz_chWX47pEpU65hJAydZm0j9zsy2AV64iaEy6_qCOL6PQr0pf59wDiPBasAkhoa8YwMD5PpSzG9f0Xg3cLUnEdXgw18NxvClHU1PXR90ETMaME9Oi-o"/>
+<div>
+<div class="flex items-center gap-2">
+<h1 class="text-2xl font-black text-[#1F2937] tracking-tight leading-tight">스도쿠</h1>
+<span class="bg-[#EDF2FF] text-[#3B5BDB] px-2 py-0.5 rounded-md text-xs font-bold tracking-wider">JANG</span>
+</div>
+<p class="text-sm text-[#6B7280] font-medium mt-0.5">정돈된 몰입, 두뇌를 위한 일상의 휴식</p>
+</div>
+</div>
+<!-- Daily Streak Pill Badge -->
+<div class="flex flex-col items-end flex-shrink-0">
+<div class="flex items-center gap-1 bg-[#FFF4E6] text-[#D97706] px-2.5 py-1 rounded-full text-xs font-bold shadow-xs">
+<span class="material-symbols-outlined text-[15px] fill text-[#D97706]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span>5일 연속</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. Continue Game Card ("진행 중인 게임") -->
+<section class="bg-surface-container-lowest rounded-2xl p-5 border border-[#E5E7EB] soft-card-shadow">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#3B5BDB] text-[20px]">play_circle</span>
+<h2 class="text-base font-bold text-[#1F2937] tracking-tight">진행 중인 게임</h2>
+</div>
+<span class="bg-[#EDF2FF] text-[#3B5BDB] font-semibold text-xs px-2.5 py-1 rounded-full border border-[#DCE4FF]">
+            어려움
+          </span>
+</div>
+<!-- 3x3 Mini Sudoku Vignette & Stat Progress -->
+<div class="flex items-center gap-4 py-2">
+<!-- Mini 3x3 Grid Vignette -->
+<div class="w-16 h-16 bg-[#F8FAFF] rounded-xl border border-[#CBD5E1] p-1 grid grid-cols-3 grid-rows-3 gap-[1px] flex-shrink-0 shadow-inner">
+<div class="bg-white rounded-[2px] flex items-center justify-center text-[10px] font-bold text-[#1F2937]">5</div>
+<div class="bg-[#EDF2FF] rounded-[2px] flex items-center justify-center text-[10px] font-bold text-[#3B5BDB]">3</div>
+<div class="bg-white rounded-[2px] flex items-center justify-center text-[10px] text-gray-300">•</div>
+<div class="bg-white rounded-[2px] flex items-center justify-center text-[10px] font-bold text-[#1F2937]">6</div>
+<div class="bg-white rounded-[2px] flex items-center justify-center text-[10px] text-gray-300">•</div>
+<div class="bg-[#EDF2FF] rounded-[2px] flex items-center justify-center text-[10px] font-bold text-[#3B5BDB]">7</div>
+<div class="bg-white rounded-[2px] flex items-center justify-center text-[10px] text-gray-300">•</div>
+<div class="bg-white rounded-[2px] flex items-center justify-center text-[10px] font-bold text-[#1F2937]">9</div>
+<div class="bg-[#3B5BDB] rounded-[2px] flex items-center justify-center text-[10px] font-bold text-white shadow-xs">8</div>
+</div>
+<!-- Progress bar & timer breakdown -->
+<div class="flex-1 flex flex-col justify-center">
+<div class="flex justify-between items-center text-sm font-medium mb-1.5">
+<span class="text-[#1F2937] font-semibold">완료율 42%</span>
+<span class="text-[#6B7280] font-normal flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-[#9CA3AF]">timer</span>
+                12:34
+              </span>
+</div>
+<!-- Progress Line Track -->
+<div class="w-full bg-[#EDF2FF] rounded-full h-2.5 overflow-hidden">
+<div class="bg-[#3B5BDB] h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 42%;"></div>
+</div>
+<div class="flex items-center gap-3 mt-2 text-xs text-[#6B7280]">
+<span>실수: <strong class="text-[#1F2937]">1/3</strong></span>
+<span class="text-gray-300">·</span>
+<span>남은 빈칸: <strong class="text-[#1F2937]">38</strong></span>
+</div>
+</div>
+</div>
+<!-- Primary CTA to Continue -->
+<button class="w-full mt-4 bg-[#3B5BDB] hover:bg-[#324fbe] text-white py-3 px-4 rounded-xl font-bold text-center flex items-center justify-center gap-2 active:scale-[0.99] transition duration-150 shadow-sm cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">play_arrow</span>
+<span>이어서 하기</span>
+</button>
+</section>
+<!-- 3. Main Actions Section (게임 시작 및 메뉴) -->
+<section class="flex flex-col gap-3">
+<!-- New Game Big CTA Button -->
+<button class="w-full bg-[#3B5BDB] hover:bg-[#304fc2] text-white py-4 px-6 rounded-2xl font-bold text-lg text-center cta-shadow flex items-center justify-center gap-2.5 active:scale-[0.98] transition-all duration-150 group cursor-pointer">
+<span class="material-symbols-outlined text-[24px] transition-transform duration-200 group-hover:rotate-90">add_circle</span>
+<span class="tracking-tight">새 게임</span>
+</button>
+<!-- Companion Action Buttons Side-by-Side -->
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-surface-container-lowest border border-[#E5E7EB] text-[#1F2937] py-3.5 px-4 rounded-xl font-semibold text-center flex items-center justify-center gap-2 hover:bg-[#F9FAFB] active:scale-[0.98] transition shadow-xs cursor-pointer">
+<span class="material-symbols-outlined text-[20px] text-[#3B5BDB]">equalizer</span>
+<span class="text-sm">기록</span>
+</button>
+<button class="bg-surface-container-lowest border border-[#E5E7EB] text-[#1F2937] py-3.5 px-4 rounded-xl font-semibold text-center flex items-center justify-center gap-2 hover:bg-[#F9FAFB] active:scale-[0.98] transition shadow-xs cursor-pointer">
+<span class="material-symbols-outlined text-[20px] text-[#3B5BDB]">tune</span>
+<span class="text-sm">설정</span>
+</button>
+</div>
+</section>
+<!-- Difficulty Level Quick Selector Badges (Clean Bento Style) -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 border border-[#E5E7EB] soft-card-shadow">
+<div class="flex items-center justify-between mb-3 px-1">
+<span class="text-xs font-semibold text-[#6B7280]">빠른 난이도 선택</span>
+<span class="text-[11px] text-[#3B5BDB] font-medium cursor-pointer hover:underline">사용자 설정 →</span>
+</div>
+<div class="grid grid-cols-4 gap-2">
+<button class="py-2.5 rounded-xl text-xs font-semibold text-[#1F2937] bg-[#F5F6FA] hover:bg-[#EDF2FF] hover:text-[#3B5BDB] active:scale-95 transition-all text-center">
+            쉬움
+          </button>
+<button class="py-2.5 rounded-xl text-xs font-semibold text-[#1F2937] bg-[#F5F6FA] hover:bg-[#EDF2FF] hover:text-[#3B5BDB] active:scale-95 transition-all text-center">
+            보통
+          </button>
+<button class="py-2.5 rounded-xl text-xs font-semibold text-white bg-[#3B5BDB] shadow-xs active:scale-95 transition-all text-center">
+            어려움
+          </button>
+<button class="py-2.5 rounded-xl text-xs font-semibold text-[#1F2937] bg-[#F5F6FA] hover:bg-[#EDF2FF] hover:text-[#3B5BDB] active:scale-95 transition-all text-center">
+            전문가
+          </button>
+</div>
+</section>
+<!-- 4. "광고 제거" (Ad-free Promotion Card) -->
+<section class="bg-gradient-to-r from-white via-white to-[#F8FAFF] rounded-2xl p-4 border border-[#E5E7EB] soft-card-shadow flex items-center justify-between gap-3">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-xl bg-[#EDF2FF] flex items-center justify-center flex-shrink-0 text-[#3B5BDB]">
+<span class="material-symbols-outlined text-[20px] fill" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="min-w-0">
+<h3 class="text-sm font-semibold text-[#1F2937] leading-tight truncate">한 번 구매로 평생 광고 없이</h3>
+<p class="text-[12px] text-[#6B7280] font-normal mt-0.5 truncate">방해 없는 완벽한 몰입을 경험하세요</p>
+</div>
+</div>
+<button class="bg-[#EDF2FF] text-[#3B5BDB] hover:bg-[#DBE4FF] font-bold text-xs px-3.5 py-2.5 rounded-xl whitespace-nowrap transition active:scale-95 flex-shrink-0 cursor-pointer shadow-xs">
+          광고 제거 ₩3,300
+        </button>
+</section>
+<!-- 5. Footer Section -->
+<footer class="text-center pt-2 pb-6">
+<p class="text-xs text-[#9CA3AF] tracking-wide">스도쿠 장 (Sudoku JANG)</p>
+<p class="text-[11px] text-[#9CA3AF]/70 mt-1">v2.4.0 · Material 3 Zen Design</p>
+</footer>
+</main>
+<!-- Bottom Navigation Bar (Shared Component: BottomNavBar) -->
+<!-- The destination is the main top-level Home Screen, so active item is '홈' -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe max-w-md mx-auto bg-surface-container-lowest shadow-[0_-2px_12px_rgba(31,41,55,0.04)]">
+<!-- Tab 1: 홈 (Active) -->
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1.5 transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span class="text-label-sm font-label-sm mt-0.5">홈</span>
+</button>
+<!-- Tab 2: 통계 (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 transition-all duration-200 hover:text-primary active:scale-95">
+<span class="material-symbols-outlined text-[20px]">equalizer</span>
+<span class="text-label-sm font-label-sm mt-0.5">통계</span>
+</button>
+<!-- Tab 3: 데일리 (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 transition-all duration-200 hover:text-primary active:scale-95">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+<span class="text-label-sm font-label-sm mt-0.5">데일리</span>
+</button>
+<!-- Tab 4: 설정 (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 transition-all duration-200 hover:text-primary active:scale-95">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-label-sm font-label-sm mt-0.5">설정</span>
+</button>
+</nav>
+</div>
+</body></html>

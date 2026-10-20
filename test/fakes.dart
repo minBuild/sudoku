@@ -36,6 +36,7 @@ int wrongAt(int i) => solAt(i) % 9 + 1;
 class FakeAds implements AdGateway {
   int showCalls = 0;
   int cancelCalls = 0;
+  int warmUpCalls = 0;
   bool disabled = false;
   Completer<AdOutcome>? pending;
   Object? throwOnShow;
@@ -63,7 +64,7 @@ class FakeAds implements AdGateway {
   void disable() => disabled = true;
 
   @override
-  Future<void> warmUp() async {}
+  Future<void> warmUp() async => warmUpCalls++;
 
   @override
   bool privacyOptionsRequired = false;

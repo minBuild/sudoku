@@ -30,11 +30,20 @@ class SudokuApp extends StatefulWidget {
 class _SudokuAppState extends State<SudokuApp> {
   final _messenger = GlobalKey<ScaffoldMessengerState>();
   StreamSubscription<String>? _errors;
+  late final AppLifecycleListener _life;
 
   @override
   void initState() {
     super.initState();
     _errors = widget.deps.purchase.errors.listen(_showPurchaseError);
+    // 복귀 시 만료됐거나 비어 있는 캐시를 미리 채운다.
+    _life = AppLifecycleListener(
+      onResume: () {
+        if (!widget.deps.entitlement.adsRemoved.value) {
+          unawaited(widget.deps.ads.warmUp());
+        }
+      },
+    );
   }
 
   void _showPurchaseError(String msg) {
@@ -44,6 +53,7 @@ class _SudokuAppState extends State<SudokuApp> {
   @override
   void dispose() {
     _errors?.cancel();
+    _life.dispose();
     super.dispose();
   }
 

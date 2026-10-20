@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>스도쿠 설정 - 스도쿠 장</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Noto Sans KR -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-lowest": "#ffffff",
+            "error": "#ba1a1a",
+            "secondary": "#3956bf",
+            "outline-variant": "#c4c5d6",
+            "on-error-container": "#93000a",
+            "tertiary-fixed": "#dde2ef",
+            "on-primary-container": "#e2e5ff",
+            "on-error": "#ffffff",
+            "error-container": "#ffdad6",
+            "inverse-surface": "#27313f",
+            "surface-variant": "#d9e3f6",
+            "on-secondary-fixed": "#001453",
+            "tertiary-container": "#616772",
+            "on-tertiary-fixed": "#161c25",
+            "on-secondary-fixed-variant": "#1b3ca7",
+            "on-primary-fixed-variant": "#0736ba",
+            "on-background": "#121c2a",
+            "surface-bright": "#f8f9ff",
+            "secondary-container": "#7792ff",
+            "tertiary-fixed-dim": "#c1c6d3",
+            "surface-tint": "#3052d2",
+            "surface-dim": "#d0dbed",
+            "primary-fixed": "#dde1ff",
+            "on-surface-variant": "#444654",
+            "surface-container": "#e6eeff",
+            "on-secondary-container": "#002584",
+            "tertiary": "#494f5a",
+            "on-secondary": "#ffffff",
+            "on-primary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "outline": "#747686",
+            "on-tertiary-fixed-variant": "#414751",
+            "surface-container-high": "#dee9fc",
+            "surface-container-low": "#eff4ff",
+            "on-primary-fixed": "#001355",
+            "primary": "#1a40c2",
+            "on-surface": "#121c2a",
+            "surface-container-highest": "#d9e3f6",
+            "surface": "#f8f9ff",
+            "secondary-fixed-dim": "#b7c4ff",
+            "primary-container": "#3b5bdb",
+            "inverse-primary": "#b8c3ff",
+            "inverse-on-surface": "#eaf1ff",
+            "background": "#f8f9ff",
+            "primary-fixed-dim": "#b8c3ff",
+            "on-tertiary-container": "#e1e6f3",
+            "secondary-fixed": "#dde1ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.25rem",
+            "gutter": "0.75rem",
+            "space-sm": "0.5rem",
+            "space-xl": "1.75rem",
+            "space-md": "0.75rem",
+            "margin": "1.25rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Noto Sans KR", "Noto Sans", "sans-serif"],
+            "body-lg": ["Noto Sans KR", "Noto Sans", "sans-serif"],
+            "headline-sm": ["Noto Sans KR", "Noto Sans", "sans-serif"],
+            "label-lg": ["Noto Sans KR", "Noto Sans", "sans-serif"],
+            "body-sm": ["Noto Sans KR", "Noto Sans", "sans-serif"],
+            "label-sm": ["Noto Sans KR", "Noto Sans", "sans-serif"],
+            "grid-number": ["Noto Sans KR", "Noto Sans", "sans-serif"],
+            "headline-lg": ["Noto Sans KR", "Noto Sans", "sans-serif"],
+            "label-md": ["Noto Sans KR", "Noto Sans", "sans-serif"],
+            "grid-note": ["Noto Sans KR", "Noto Sans", "sans-serif"],
+            "body-md": ["Noto Sans KR", "Noto Sans", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "fontWeight": "500" }],
+            "grid-number": ["24px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "grid-note": ["10px", { "lineHeight": "12px", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1;
+    }
+    .pb-safe {
+      padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased flex flex-col justify-between min-h-screen selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Mobile Container Shell -->
+<div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-background relative shadow-2xl">
+<!-- Top App Bar (TopAppBar component standard without border lines) -->
+<header class="bg-surface sticky top-0 z-40 px-5 py-3.5 flex items-center justify-between shadow-[0_2px_10px_rgba(31,41,55,0.03)]">
+<div class="flex items-center gap-3">
+<button aria-label="뒤로가기" class="w-9 h-9 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container-high transition-colors active:scale-95 duration-150" type="button">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm font-bold tracking-tight text-on-surface">설정</h1>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="px-2.5 py-1 rounded-full bg-surface-container text-primary flex items-center gap-1 text-[11px] font-medium tracking-wide">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+<span>스도쿠 장</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas (Scrollable) -->
+<main class="flex-1 px-5 pt-4 pb-28 space-y-5 overflow-y-auto">
+<!-- GROUP 1: 게임 설정 -->
+<section class="space-y-2">
+<div class="flex items-center gap-1.5 px-1">
+<span class="material-symbols-outlined text-primary text-[18px]">sports_esports</span>
+<h2 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">게임 설정</h2>
+</div>
+<div class="bg-surface-container-lowest rounded-2xl p-1 shadow-[0_4px_20px_-2px_rgba(31,41,55,0.05),0_2px_6px_-1px_rgba(31,41,55,0.03)]">
+<!-- Item 1: 즉시 체크 기본값 -->
+<div class="p-3.5 flex items-center justify-between gap-3">
+<div class="space-y-0.5 pr-2">
+<span class="font-label-lg text-label-lg text-on-surface block">즉시 체크 기본값</span>
+<p class="font-body-sm text-body-sm text-outline">오답을 입력하는 즉시 표시합니다</p>
+</div>
+<!-- Material/iOS Switch (Active ON in Indigo) -->
+<button aria-checked="true" class="w-12 h-7 bg-primary-container rounded-full p-0.5 transition-colors duration-200 relative shrink-0 focus:outline-none focus:ring-2 focus:ring-primary-container focus:ring-offset-2" role="switch" type="button">
+<div class="w-6 h-6 bg-surface-container-lowest rounded-full shadow-sm transform translate-x-5 transition-transform duration-200 flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-primary-container font-bold">check</span>
+</div>
+</button>
+</div>
+<div class="h-[1px] bg-surface-container mx-3.5"></div>
+<!-- Item 2: 타이머 표시 -->
+<div class="p-3.5 flex items-center justify-between gap-3">
+<div class="space-y-0.5 pr-2">
+<span class="font-label-lg text-label-lg text-on-surface block">타이머 표시</span>
+<p class="font-body-sm text-body-sm text-outline">게임 진행 시간을 상단에 실시간으로 표시</p>
+</div>
+<button aria-checked="true" class="w-12 h-7 bg-primary-container rounded-full p-0.5 transition-colors duration-200 relative shrink-0 focus:outline-none" role="switch" type="button">
+<div class="w-6 h-6 bg-surface-container-lowest rounded-full shadow-sm transform translate-x-5 transition-transform duration-200 flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-primary-container font-bold">check</span>
+</div>
+</button>
+</div>
+<div class="h-[1px] bg-surface-container mx-3.5"></div>
+<!-- Item 3: 중복 숫자 하이라이트 -->
+<div class="p-3.5 flex items-center justify-between gap-3">
+<div class="space-y-0.5 pr-2">
+<span class="font-label-lg text-label-lg text-on-surface block">중복 숫자 하이라이트</span>
+<p class="font-body-sm text-body-sm text-outline">선택한 숫자와 동일한 모든 셀을 강조 표시</p>
+</div>
+<button aria-checked="true" class="w-12 h-7 bg-primary-container rounded-full p-0.5 transition-colors duration-200 relative shrink-0 focus:outline-none" role="switch" type="button">
+<div class="w-6 h-6 bg-surface-container-lowest rounded-full shadow-sm transform translate-x-5 transition-transform duration-200 flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-primary-container font-bold">check</span>
+</div>
+</button>
+</div>
+<div class="h-[1px] bg-surface-container mx-3.5"></div>
+<!-- Item 4: 남은 숫자 개수 숨기기 -->
+<div class="p-3.5 flex items-center justify-between gap-3">
+<div class="space-y-0.5 pr-2">
+<span class="font-label-lg text-label-lg text-on-surface block">숫자 완료 시 비활성화</span>
+<p class="font-body-sm text-body-sm text-outline">9개 모두 채워진 키패드 버튼 자동 흐림 처리</p>
+</div>
+<button aria-checked="false" class="w-12 h-7 bg-surface-container-highest rounded-full p-0.5 transition-colors duration-200 relative shrink-0 focus:outline-none" role="switch" type="button">
+<div class="w-6 h-6 bg-surface-container-lowest rounded-full shadow-sm transform translate-x-0 transition-transform duration-200"></div>
+</button>
+</div>
+</div>
+</section>
+<!-- GROUP 2: 프리미엄 및 결제 -->
+<section class="space-y-2">
+<div class="flex items-center gap-1.5 px-1">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+<h2 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">프리미엄 및 결제</h2>
+</div>
+<div class="bg-surface-container-lowest rounded-2xl p-1 shadow-[0_4px_20px_-2px_rgba(31,41,55,0.05),0_2px_6px_-1px_rgba(31,41,55,0.03)] overflow-hidden">
+<!-- 광고 제거 Promo Row -->
+<div class="p-4 flex items-center justify-between gap-3 bg-gradient-to-r from-surface-container-low via-surface-container-lowest to-surface-container-low rounded-xl m-1">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shadow-sm shrink-0">
+<span class="material-symbols-outlined text-[22px]">block</span>
+</div>
+<div class="space-y-0.5">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-[16px] text-on-surface font-bold">광고 제거</span>
+<span class="px-1.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant text-[10px] font-semibold">인기</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline">한 번 구매로 평생 광고 없이</p>
+</div>
+</div>
+<button class="bg-primary-container hover:bg-primary text-on-primary px-3.5 py-2 rounded-xl text-[13px] font-semibold tracking-tight shadow-[0_4px_12px_rgba(59,91,219,0.25)] active:scale-95 transition-all duration-150 shrink-0" type="button">
+              ₩3,300
+            </button>
+</div>
+<div class="h-[1px] bg-surface-container mx-3.5 my-1"></div>
+<!-- 구매 복원 Row -->
+<button class="w-full p-3.5 flex items-center justify-between rounded-xl hover:bg-surface-container-low active:bg-surface-container transition-colors text-left" type="button">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">history</span>
+</div>
+<div>
+<span class="font-label-lg text-label-lg text-on-surface block">구매 복원</span>
+<p class="font-body-sm text-body-sm text-outline">이전에 구매한 프리미엄 라이선스를 불러옵니다</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px]">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- GROUP 3: 정보 및 지원 -->
+<section class="space-y-2">
+<div class="flex items-center gap-1.5 px-1">
+<span class="material-symbols-outlined text-primary text-[18px]">info</span>
+<h2 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">정보 및 지원</h2>
+</div>
+<div class="bg-surface-container-lowest rounded-2xl p-1 shadow-[0_4px_20px_-2px_rgba(31,41,55,0.05),0_2px_6px_-1px_rgba(31,41,55,0.03)]">
+<!-- 개인정보 옵션 -->
+<button class="w-full p-3.5 flex items-center justify-between rounded-xl hover:bg-surface-container-low active:bg-surface-container transition-colors text-left" type="button">
+<div class="space-y-0.5 pr-2">
+<span class="font-label-lg text-label-lg text-on-surface block">개인정보 옵션</span>
+<p class="font-body-sm text-body-sm text-outline">광고 동의 설정을 확인하거나 변경합니다</p>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px] shrink-0">chevron_right</span>
+</button>
+<div class="h-[1px] bg-surface-container mx-3.5"></div>
+<!-- 이용약관 및 오픈소스 라이선스 -->
+<button class="w-full p-3.5 flex items-center justify-between rounded-xl hover:bg-surface-container-low active:bg-surface-container transition-colors text-left" type="button">
+<div class="space-y-0.5">
+<span class="font-label-lg text-label-lg text-on-surface block">이용약관 및 오픈소스 라이선스</span>
+<p class="font-body-sm text-body-sm text-outline">서비스 운영 정책과 오픈소스 고지 사항</p>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px] shrink-0">chevron_right</span>
+</button>
+<div class="h-[1px] bg-surface-container mx-3.5"></div>
+<!-- 앱 버전 -->
+<div class="p-3.5 flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface">앱 버전</span>
+<div class="flex items-center gap-1.5">
+<span class="font-body-md text-body-md text-primary font-semibold">v2.0.0</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[11px] font-medium">최신 버전</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer Info -->
+<footer class="pt-3 pb-4 text-center space-y-1">
+<p class="font-headline-sm text-[15px] font-bold text-on-surface tracking-tight">스도쿠 장 (Sudoku JANG)</p>
+<p class="font-body-sm text-[12px] text-outline">v2.0.0 · Mindful Indigo Sudoku</p>
+</footer>
+</main>
+<!-- Bottom Navigation Bar (BottomNavBar Anchor JSON executed strictly) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe max-w-md mx-auto bg-surface-container-lowest shadow-[0_-2px_12px_rgba(31,41,55,0.04)]">
+<!-- Tab 1: 홈 (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 transition-all duration-200 active:scale-95 hover:text-primary" type="button">
+<span class="material-symbols-outlined text-[24px]">grid_view</span>
+<span class="font-label-sm text-label-sm mt-0.5">홈</span>
+</button>
+<!-- Tab 2: 통계 (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 transition-all duration-200 active:scale-95 hover:text-primary" type="button">
+<span class="material-symbols-outlined text-[24px]">equalizer</span>
+<span class="font-label-sm text-label-sm mt-0.5">통계</span>
+</button>
+<!-- Tab 3: 데일리 (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 transition-all duration-200 active:scale-95 hover:text-primary" type="button">
+<span class="material-symbols-outlined text-[24px]">calendar_today</span>
+<span class="font-label-sm text-label-sm mt-0.5">데일리</span>
+</button>
+<!-- Tab 4: 설정 (ACTIVE - Semantic Match to Settings page) -->
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1.5 transition-all duration-200 active:scale-95" type="button">
+<span class="material-symbols-outlined fill text-[24px]">settings</span>
+<span class="font-label-sm text-label-sm font-semibold mt-0.5 text-on-primary-container">설정</span>
+</button>
+</nav>
+</div>
+</body></html>

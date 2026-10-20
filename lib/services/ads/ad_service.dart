@@ -43,18 +43,39 @@ class _Session {
 }
 
 class AdMobService implements AdGateway {
-  AdMobService({ConsentService? consent})
-    : _consent = consent ?? ConsentService();
+  AdMobService({ConsentService? consent, DateTime Function()? now})
+    : _consent = consent ?? ConsentService(),
+      _now = now ?? DateTime.now;
 
   final ConsentService _consent;
+  final DateTime Function() _now;
+
+  /// 전면광고는 로드 후 1시간이면 만료되므로 여유를 두고 폐기한다.
+  static const cacheTtl = Duration(minutes: 50);
 
   Future<bool>? _init;
   bool _disabled = false;
   AdPhase _phase = AdPhase.idle;
   _Session? _session;
   InterstitialAd? _cached;
+  DateTime? _cachedAt;
   Future<InterstitialAd?>? _loading;
   DateTime? _lastShownAt;
+
+  @visibleForTesting
+  static bool isExpired(DateTime loadedAt, DateTime now) =>
+      now.difference(loadedAt) > cacheTtl;
+
+  /// 만료된 캐시는 dispose 하고 비운 뒤 남은 캐시를 돌려준다.
+  InterstitialAd? _fresh() {
+    final ad = _cached;
+    if (ad != null && isExpired(_cachedAt!, _now())) {
+      ad.dispose();
+      _cached = null;
+      _cachedAt = null;
+    }
+    return _cached;
+  }
 
   @override
   AdPhase get phase => _phase;
@@ -68,7 +89,7 @@ class AdMobService implements AdGateway {
   @override
   Future<void> warmUp() async {
     try {
-      if (_disabled) return;
+      if (_disabled || _phase != AdPhase.idle) return;
       final ok = await (_init ??= _initialize());
       if (ok && !_disabled) await _preload();
     } catch (e) {
@@ -134,7 +155,8 @@ class AdMobService implements AdGateway {
     if (!ready || session.cancelled || _disabled) return AdOutcome.skipped;
 
     final ad =
-        _cached ?? await _preload().timeout(remaining(), onTimeout: () => null);
+        _fresh() ??
+        await _preload().timeout(remaining(), onTimeout: () => null);
     if (ad == null) return AdOutcome.skipped;
 
     final appResumed =
@@ -145,6 +167,7 @@ class AdMobService implements AdGateway {
 
     // ② show() 후 showWait 안에 표시돼야 한다.
     _cached = null;
+    _cachedAt = null;
     final showed = Completer<bool>();
     final result = Completer<AdOutcome>();
     void finish(AdOutcome o) {
@@ -193,7 +216,7 @@ class AdMobService implements AdGateway {
   }
 
   Future<InterstitialAd?> _preload() {
-    final cached = _cached;
+    final cached = _fresh();
     if (cached != null) return Future.value(cached);
     final unitId = AdIds.interstitial;
     if (_disabled || unitId == null || _init == null) return Future.value();
@@ -214,6 +237,7 @@ class AdMobService implements AdGateway {
               c.complete(null);
             } else {
               _cached = ad;
+              _cachedAt = _now();
               c.complete(ad);
             }
           },
@@ -245,5 +269,6 @@ class AdMobService implements AdGateway {
     _disabled = true;
     _cached?.dispose();
     _cached = null;
+    _cachedAt = null;
   }
 }

@@ -28,6 +28,29 @@ void main() {
     expect(find.byKey(const ValueKey('remove-ads-card')), findsNothing);
   });
 
+  for (final removed in [false, true]) {
+    testWidgets('앱 복귀 시 warmUp: 권리 ${removed ? '있음 → 0회' : '없음 → 1회'}', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({'ent_ads_removed_v1': removed});
+      final prefs = await SharedPreferences.getInstance();
+      final ads = FakeAds();
+      await tester.pumpWidget(SudokuApp(deps: fakeDeps(prefs, ads: ads)));
+      await tester.pump();
+
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+      final before = ads.warmUpCalls;
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pump();
+
+      expect(ads.warmUpCalls - before, removed ? 0 : 1);
+    });
+  }
+
   testWidgets('새 게임 → 난이도 → 준비 → 게임 화면', (tester) async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
