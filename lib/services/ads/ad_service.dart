@@ -5,6 +5,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'ad_ids.dart';
 import 'consent_service.dart';
+import 'tracking_authorization.dart';
 
 enum AdOutcome { shown, skipped, failed }
 
@@ -43,11 +44,16 @@ class _Session {
 }
 
 class AdMobService implements AdGateway {
-  AdMobService({ConsentService? consent, DateTime Function()? now})
-    : _consent = consent ?? ConsentService(),
-      _now = now ?? DateTime.now;
+  AdMobService({
+    ConsentService? consent,
+    TrackingAuthorization? att,
+    DateTime Function()? now,
+  }) : _consent = consent ?? ConsentService(),
+       _att = att ?? TrackingAuthorization(),
+       _now = now ?? DateTime.now;
 
   final ConsentService _consent;
+  final TrackingAuthorization _att;
   final DateTime Function() _now;
 
   /// 전면광고는 로드 후 1시간이면 만료되므로 여유를 두고 폐기한다.
@@ -100,6 +106,7 @@ class AdMobService implements AdGateway {
   Future<bool> _initialize() async {
     try {
       await _consent.gather();
+      await _att.requestIfNeeded();
       await MobileAds.instance.updateRequestConfiguration(
         RequestConfiguration(testDeviceIds: AdIds.testDeviceIds),
       );

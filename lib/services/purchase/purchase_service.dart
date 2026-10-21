@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 
 import '../../l10n/strings.dart';
 import 'entitlement_store.dart';
@@ -54,25 +55,37 @@ class PurchaseService implements PurchaseGateway {
   static const productId = 'remove_ads';
   static const _stepTimeout = Duration(seconds: 10);
 
-  PurchaseService(this._entitlement, {InAppPurchase? iap})
-    : _iapOverride = iap,
-      _state = ValueNotifier(
-        _entitlement.adsRemoved.value
-            ? const PurchaseOwned()
-            : const PurchaseLoading(),
-      );
+  PurchaseService(
+    this._entitlement, {
+    InAppPurchase? iap,
+    Future<void> Function()? iosSync,
+  }) : _iapOverride = iap,
+       _iosSyncOverride = iosSync,
+       _state = ValueNotifier(
+         _entitlement.adsRemoved.value
+             ? const PurchaseOwned()
+             : const PurchaseLoading(),
+       );
 
   final EntitlementStore _entitlement;
   final InAppPurchase? _iapOverride;
+  final Future<void> Function()? _iosSyncOverride;
   final ValueNotifier<PurchaseUiState> _state;
   final _errors = StreamController<String>.broadcast();
   StreamSubscription<List<PurchaseDetails>>? _sub;
   ProductDetails? _product;
   bool _busy = false;
+  bool _restoring = false;
 
   InAppPurchase get _iap => _iapOverride ?? InAppPurchase.instance;
 
+  Future<void> _iosSync() =>
+      _iosSyncOverride?.call() ??
+      _iap.getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>().sync();
+
   bool get _isAndroid => defaultTargetPlatform == TargetPlatform.android;
+
+  bool get _isIos => defaultTargetPlatform == TargetPlatform.iOS;
 
   @override
   ValueListenable<PurchaseUiState> get state => _state;
@@ -93,12 +106,13 @@ class PurchaseService implements PurchaseGateway {
     }
   }
 
-  /// isAvailable → queryProductDetails, 그다음 (Android) restorePurchases.
+  /// isAvailable → queryProductDetails, 그다음 restorePurchases.
   @override
   Future<void> bootstrap() async {
     await _queryProduct();
-    // Android 만 자동 복원. iOS 는 Apple ID 로그인 창이 뜰 수 있다 (D14).
-    if (_isAndroid && !_entitlement.adsRemoved.value) {
+    // iOS 도 자동 복원. SK2 restorePurchases 는 currentEntitlements 만 확인해
+    // 로그인 창을 띄우지 않는다. sync 는 사용자가 누른 복원에서만 부른다.
+    if (!_entitlement.adsRemoved.value) {
       try {
         await _iap.restorePurchases().timeout(_stepTimeout);
       } catch (e) {
@@ -155,12 +169,27 @@ class PurchaseService implements PurchaseGateway {
   }
 
   @override
-  Future<void> restore() async {
+  Future<void> restore() => _restore(userInitiated: true);
+
+  Future<void> _restore({required bool userInitiated}) async {
+    if (_restoring) return;
+    _restoring = true;
     try {
-      await _iap.restorePurchases().timeout(_stepTimeout);
+      if (_isIos && userInitiated) {
+        await _iosSync(); // Apple 인증 창 → 타임아웃 없음
+        await _iap.restorePurchases();
+      } else {
+        await _iap.restorePurchases().timeout(_stepTimeout);
+      }
+      if (userInitiated) {
+        await Future<void>.delayed(const Duration(milliseconds: 300));
+        if (!_entitlement.adsRemoved.value) _errors.add(S.restoreNone);
+      }
     } catch (e) {
       debugPrint('IAP restore 오류: $e');
-      _errors.add(S.restoreFailed);
+      if (userInitiated) _errors.add(S.restoreFailed);
+    } finally {
+      _restoring = false;
     }
   }
 
@@ -181,7 +210,7 @@ class PurchaseService implements PurchaseGateway {
               _revert();
               final msg = p.error?.message ?? '';
               if (_isAndroid && msg.contains('itemAlreadyOwned')) {
-                unawaited(restore());
+                unawaited(_restore(userInitiated: false));
               } else {
                 _errors.add(S.purchaseFailed);
               }

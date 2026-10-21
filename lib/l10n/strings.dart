@@ -25,6 +25,7 @@ abstract final class S {
   static const restoreRequested = '구매 내역을 확인하고 있어요';
   static const purchaseFailed = '결제를 완료하지 못했어요. 잠시 후 다시 시도해 주세요';
   static const restoreFailed = '구매 복원에 실패했어요. 잠시 후 다시 시도해 주세요';
+  static const restoreNone = '복원할 구매가 없어요';
   static const resultRemoveAdsLine = '광고 없는 플레이를 원하시나요?';
 
   static const chooseDifficulty = '난이도 선택';
