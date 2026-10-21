@@ -93,9 +93,22 @@ class PurchaseService implements PurchaseGateway {
     }
   }
 
-  /// isAvailable → queryProductDetails → (Android) restorePurchases.
+  /// isAvailable → queryProductDetails, 그다음 (Android) restorePurchases.
   @override
   Future<void> bootstrap() async {
+    await _queryProduct();
+    // Android 만 자동 복원. iOS 는 Apple ID 로그인 창이 뜰 수 있다 (D14).
+    if (_isAndroid && !_entitlement.adsRemoved.value) {
+      try {
+        await _iap.restorePurchases().timeout(_stepTimeout);
+      } catch (e) {
+        debugPrint('IAP restore 오류: $e'); // 사용자 동작이 아니므로 스낵바 없음
+      }
+    }
+  }
+
+  /// 스토어 연결과 상품 조회. throw 하지 않는다.
+  Future<void> _queryProduct() async {
     try {
       final available = await _iap.isAvailable().timeout(_stepTimeout);
       if (!available) {
@@ -116,11 +129,6 @@ class PurchaseService implements PurchaseGateway {
       );
       _product = p;
       _setIfNotOwned(_ready());
-
-      // Android 만 자동 복원. iOS 는 Apple ID 로그인 창이 뜰 수 있다 (D14).
-      if (_isAndroid && !_entitlement.adsRemoved.value) {
-        await _iap.restorePurchases().timeout(_stepTimeout);
-      }
     } catch (e) {
       debugPrint('IAP bootstrap 오류: $e');
       if (_product == null) {

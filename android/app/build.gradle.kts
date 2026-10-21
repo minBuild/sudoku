@@ -36,7 +36,7 @@ android {
         applicationId = "com.jang.sudoku"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = maxOf(flutter.minSdkVersion, 23)
+        minSdk = maxOf(flutter.minSdkVersion, 24)
         targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -61,6 +61,9 @@ android {
             signingConfig = if (keystorePropertiesFile.exists()) {
                 signingConfigs.getByName("release")
             } else {
+                if (gradle.startParameter.taskNames.any { it.contains("Release", ignoreCase = true) }) {
+                    logger.warn("key.properties 없음: release 를 debug 키로 서명합니다 → Play 업로드 불가")
+                }
                 signingConfigs.getByName("debug")
             }
             manifestPlaceholders["admobAppId"] = keystoreProperties.getProperty("admobAppId")

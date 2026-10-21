@@ -1,0 +1,6 @@
+# 복사해 android/key.properties 로 저장 (git 제외). 경로는 슬래시(/)로, 환경변수는 쓸 수 없음.
+# PKCS12 키스토어는 storePassword 와 keyPassword 가 같아야 한다.
+storeFile=C:/Users/<you>/keys/sudoku-upload.jks
+storePassword=TODO_
+keyAlias=upload
+keyPassword=TODO_

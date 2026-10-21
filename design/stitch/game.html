@@ -3,112 +3,113 @@
 <html class="h-full" lang="ko"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>스도쿠 - 집중 모드</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<title>스도쿠 게임</title>
+<!-- Google Fonts: Noto Sans KR -->
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
-          colors: {
-            "on-tertiary-fixed": "#161c25",
-            "on-tertiary": "#ffffff",
-            "error": "#ba1a1a",
-            "on-secondary-fixed-variant": "#1b3ca7",
-            "on-primary": "#ffffff",
-            "on-background": "#121c2a",
-            "secondary": "#3956bf",
-            "outline": "#747686",
-            "on-secondary-fixed": "#001453",
-            "surface-bright": "#f8f9ff",
-            "tertiary-fixed": "#dde2ef",
-            "primary-fixed": "#dde1ff",
-            "on-primary-fixed-variant": "#0736ba",
-            "surface-container": "#e6eeff",
+          "colors": {
             "primary-fixed-dim": "#b8c3ff",
-            "surface-container-highest": "#d9e3f6",
-            "on-surface": "#121c2a",
-            "on-primary-container": "#e2e5ff",
-            "surface-variant": "#d9e3f6",
-            "surface-container-high": "#dee9fc",
-            "on-tertiary-container": "#e1e6f3",
-            "secondary-fixed-dim": "#b7c4ff",
-            "tertiary": "#494f5a",
-            "surface-dim": "#d0dbed",
-            "primary-container": "#3b5bdb",
-            "inverse-primary": "#b8c3ff",
-            "on-error-container": "#93000a",
-            "background": "#f8f9ff",
-            "outline-variant": "#c4c5d6",
-            "surface-tint": "#3052d2",
-            "surface-container-low": "#eff4ff",
-            "primary": "#1a40c2",
-            "secondary-fixed": "#dde1ff",
-            "secondary-container": "#7792ff",
-            "on-secondary": "#ffffff",
-            "on-primary-fixed": "#001355",
-            "on-error": "#ffffff",
-            "surface-container-lowest": "#ffffff",
             "error-container": "#ffdad6",
-            "tertiary-container": "#616772",
-            "surface": "#f8f9ff",
-            "on-tertiary-fixed-variant": "#414751",
+            "on-surface": "#121c2a",
             "on-surface-variant": "#444654",
-            "inverse-on-surface": "#eaf1ff",
-            "tertiary-fixed-dim": "#c1c6d3",
+            "primary-fixed": "#dde1ff",
+            "secondary-container": "#dde2ef",
+            "primary": "#1a40c2",
+            "on-primary-fixed": "#001355",
+            "surface-container-low": "#eff4ff",
+            "on-secondary-fixed-variant": "#414751",
+            "tertiary-fixed-dim": "#ffb691",
+            "tertiary-fixed": "#ffdbcb",
+            "surface-container": "#e6eeff",
+            "on-error-container": "#93000a",
+            "on-secondary": "#ffffff",
+            "on-background": "#121c2a",
+            "outline": "#747686",
+            "error": "#ba1a1a",
+            "outline-variant": "#c4c5d6",
+            "on-primary-container": "#e2e5ff",
             "inverse-surface": "#27313f",
-            "on-secondary-container": "#002584"
+            "inverse-primary": "#b8c3ff",
+            "on-secondary-fixed": "#161c25",
+            "surface-bright": "#f8f9ff",
+            "secondary-fixed-dim": "#c1c6d3",
+            "secondary": "#595f69",
+            "surface-tint": "#3052d2",
+            "on-primary": "#ffffff",
+            "surface": "#f8f9ff",
+            "primary-container": "#3b5bdb",
+            "tertiary-container": "#ac4900",
+            "on-primary-fixed-variant": "#0736ba",
+            "background": "#f8f9ff",
+            "on-error": "#ffffff",
+            "surface-variant": "#d9e3f6",
+            "on-tertiary-fixed-variant": "#793100",
+            "surface-dim": "#d0dbed",
+            "on-secondary-container": "#5f656f",
+            "secondary-fixed": "#dde2ef",
+            "surface-container-high": "#dee9fc",
+            "on-tertiary": "#ffffff",
+            "on-tertiary-container": "#ffe0d2",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-fixed": "#341100",
+            "inverse-on-surface": "#eaf1ff",
+            "tertiary": "#863700",
+            "surface-container-highest": "#d9e3f6"
           },
-          borderRadius: {
+          "borderRadius": {
             "DEFAULT": "0.25rem",
             "lg": "0.5rem",
             "xl": "0.75rem",
             "full": "9999px"
           },
-          spacing: {
-            "space-lg": "1.25rem",
-            "space-sm": "0.5rem",
+          "spacing": {
             "space-xs": "0.25rem",
-            "space-xl": "1.75rem",
+            "space-md": "0.75rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1rem",
+            "space-xl": "1.25rem",
+            "space-2xl": "1.5rem",
             "margin": "1.25rem",
-            "gutter": "0.75rem",
-            "space-md": "0.75rem"
+            "gutter": "0.75rem"
           },
-          fontFamily: {
-            "label-lg": ["Noto Sans KR", "Noto Sans", "sans-serif"],
-            "grid-note": ["Noto Sans", "sans-serif"],
-            "body-md": ["Noto Sans KR", "Noto Sans", "sans-serif"],
-            "label-sm": ["Noto Sans KR", "Noto Sans", "sans-serif"],
-            "label-md": ["Noto Sans KR", "Noto Sans", "sans-serif"],
-            "body-lg": ["Noto Sans KR", "Noto Sans", "sans-serif"],
-            "headline-md": ["Noto Sans KR", "Noto Sans", "sans-serif"],
-            "headline-sm": ["Noto Sans KR", "Noto Sans", "sans-serif"],
-            "grid-number": ["Noto Sans", "sans-serif"],
-            "body-sm": ["Noto Sans KR", "Noto Sans", "sans-serif"],
-            "headline-lg": ["Noto Sans KR", "Noto Sans", "sans-serif"]
+          "fontFamily": {
+            "body-md": ["Noto Sans KR", "sans-serif"],
+            "label-md": ["Noto Sans KR", "sans-serif"],
+            "label-sm": ["Noto Sans KR", "sans-serif"],
+            "label-lg": ["Noto Sans KR", "sans-serif"],
+            "cell-display": ["Noto Sans KR", "sans-serif"],
+            "headline-md": ["Noto Sans KR", "sans-serif"],
+            "headline-lg-mobile": ["Noto Sans KR", "sans-serif"],
+            "body-sm": ["Noto Sans KR", "sans-serif"],
+            "body-lg": ["Noto Sans KR", "sans-serif"],
+            "headline-lg": ["Noto Sans KR", "sans-serif"],
+            "headline-sm": ["Noto Sans KR", "sans-serif"],
+            "note-display": ["Noto Sans KR", "sans-serif"]
           },
-          fontSize: {
-            "label-lg": ["14px", { lineHeight: "20px", fontWeight: "600" }],
-            "grid-note": ["9px", { lineHeight: "10px", fontWeight: "600" }],
-            "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
-            "label-sm": ["10px", { lineHeight: "14px", fontWeight: "500" }],
-            "label-md": ["12px", { lineHeight: "16px", fontWeight: "500" }],
-            "body-lg": ["16px", { lineHeight: "24px", fontWeight: "500" }],
-            "headline-md": ["22px", { lineHeight: "28px", fontWeight: "700" }],
-            "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }],
-            "grid-number": ["22px", { lineHeight: "26px", fontWeight: "600" }],
-            "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
-            "headline-lg": ["30px", { lineHeight: "38px", fontWeight: "700" }]
-          },
-          boxShadow: {
-            "level-1": "0 4px 20px -2px rgba(31, 41, 55, 0.05), 0 2px 6px -1px rgba(31, 41, 55, 0.03)",
-            "level-2": "0 6px 16px -2px rgba(59, 91, 219, 0.12)",
-            "active-cell": "0 0 0 2px #3B5BDB, 0 4px 12px rgba(59, 91, 219, 0.35)"
+          "fontSize": {
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "500" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "cell-display": ["24px", { "lineHeight": "28px", "fontWeight": "500" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "note-display": ["10px", { "lineHeight": "12px", "fontWeight": "400" }]
           }
         }
       }
@@ -116,18 +117,23 @@
   </script>
 <style>
     .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      display: inline-block;
-      vertical-align: middle;
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
       line-height: 1;
-    }
-    .material-symbols-outlined.fill-icon {
-      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+      vertical-align: middle;
     }
     /* Touch optimization */
-    * {
+    button {
       -webkit-tap-highlight-color: transparent;
-      user-select: none;
     }
   </style>
 <style>
@@ -136,578 +142,483 @@
     }
   </style>
   </head>
-<body class="bg-surface font-body-md text-on-surface h-full flex justify-center antialiased">
-<!-- Mobile Container (~390px viewport width) -->
-<main class="w-full max-w-[420px] min-h-screen bg-surface flex flex-col justify-between px-space-lg pt-3 pb-6 relative overflow-x-hidden">
-<!-- 1. Header (Task-focused In-Game Screen: TopAppBar suppressed for context-specific game header) -->
-<header class="flex items-center justify-between py-2">
-<button aria-label="뒤로 가기" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95 duration-150" type="button">
-<span class="material-symbols-outlined text-[26px]">arrow_back</span>
+<body class="bg-surface text-on-surface antialiased font-body-md select-none min-h-screen flex flex-col justify-between">
+<!-- Top App Bar & Game Status Band -->
+<header class="w-full bg-surface">
+<!-- JSON TopAppBar Implementation -->
+<div class="flex justify-between items-center w-full px-space-xl h-14 max-w-lg mx-auto">
+<div class="flex items-center gap-space-sm">
+<button aria-label="뒤로가기" class="w-10 h-10 flex items-center justify-center rounded-full text-secondary hover:bg-surface-container-high active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
 </button>
-<div class="flex flex-col items-center">
 <div class="flex items-center gap-1.5">
-<span class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">어려움</span>
-<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-primary font-label-sm text-label-sm font-semibold">단계 4</span>
+<span class="material-symbols-outlined text-primary text-headline-sm" data-icon="grid_4x4">grid_4x4</span>
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface tracking-tight">스도쿠</span>
 </div>
-<span class="font-body-sm text-body-sm text-outline">스도쿠 장</span>
 </div>
-<div class="flex items-center gap-1">
-<button aria-label="일시정지" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95 duration-150" type="button">
-<span class="material-symbols-outlined text-[24px]">pause_circle</span>
+<div class="flex items-center gap-2">
+<button aria-label="일시정지" class="w-9 h-9 flex items-center justify-center rounded-full text-secondary hover:bg-surface-container-high active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined" data-icon="pause">pause</span>
 </button>
-<button aria-label="더보기" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95 duration-150" type="button">
-<span class="material-symbols-outlined text-[22px]">more_vert</span>
+<button aria-label="설정" class="w-9 h-9 flex items-center justify-center rounded-full text-secondary hover:bg-surface-container-high active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
 </button>
+</div>
+</div>
+<!-- Status Metadata Band -->
+<div class="max-w-lg mx-auto px-space-xl pb-2 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<!-- Difficulty Pill -->
+<span class="bg-surface-container text-primary font-label-md text-label-sm px-2.5 py-1 rounded-full flex items-center font-semibold">
+          보통
+        </span>
+<!-- Timer Pill -->
+<div class="bg-surface-container-low text-secondary font-label-sm text-label-sm px-2.5 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]" data-icon="timer">timer</span>
+<span>12:34</span>
+</div>
+</div>
+<!-- Mistakes Counter Pill -->
+<div class="bg-error-container/40 text-on-error-container font-label-sm text-label-sm px-2.5 py-1 rounded-full flex items-center gap-1 border border-error-container">
+<span class="w-1.5 h-1.5 rounded-full bg-error inline-block"></span>
+<span>실수 1/3</span>
+</div>
 </div>
 </header>
-<!-- 2. Status Row / Info Chips Bar -->
-<section aria-label="게임 상태" class="grid grid-cols-4 gap-2 my-2.5">
-<!-- Timer Chip -->
-<div class="bg-surface-container-lowest rounded-xl py-2 px-2.5 flex flex-col items-center justify-center shadow-level-1 border border-surface-container">
-<span class="font-label-sm text-label-sm text-outline flex items-center gap-0.5">
-<span class="material-symbols-outlined text-[12px] text-outline">timer</span>시간
-        </span>
-<span class="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tight mt-0.5">12:34</span>
+<!-- Board Stage: Central Focus Canvas -->
+<main class="w-full flex-1 flex flex-col items-center justify-center px-margin max-w-lg mx-auto py-1">
+<div class="w-full aspect-square bg-surface-container-lowest rounded-2xl p-1.5 shadow-[0_4px_20px_-2px_rgba(26,64,194,0.06)] border border-outline-variant/30 flex items-center justify-center">
+<!-- 9x9 Sudoku Grid -->
+<div class="w-full h-full grid grid-cols-9 grid-rows-9 rounded-xl overflow-hidden bg-outline-variant/40 gap-px border-2 border-on-surface">
+<!-- ROW 1 -->
+<!-- Cell 0,0 (Matching '5') -->
+<div class="bg-[#DBE4FF] flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-primary font-headline-sm font-bold">5</span>
 </div>
-<!-- Mistake Counter Chip -->
-<div class="bg-surface-container-lowest rounded-xl py-2 px-2.5 flex flex-col items-center justify-center shadow-level-1 border border-surface-container">
-<span class="font-label-sm text-label-sm text-outline flex items-center gap-0.5">
-<span class="material-symbols-outlined text-[12px] text-error">error</span>실수
-        </span>
-<div class="flex items-center gap-0.5 mt-0.5">
-<span class="font-headline-sm text-headline-sm font-bold text-error">1</span>
-<span class="font-label-md text-label-md text-outline">/3</span>
+<!-- Cell 0,1 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">3</span>
 </div>
-</div>
-<!-- Score Chip -->
-<div class="bg-surface-container-lowest rounded-xl py-2 px-2.5 flex flex-col items-center justify-center shadow-level-1 border border-surface-container">
-<span class="font-label-sm text-label-sm text-outline flex items-center gap-0.5">
-<span class="material-symbols-outlined text-[12px] text-secondary">stars</span>점수
-        </span>
-<span class="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tight mt-0.5">2,450</span>
-</div>
-<!-- Instant Check Toggle Chip -->
-<button class="bg-surface-container-low border border-primary-fixed rounded-xl py-2 px-2 flex flex-col items-center justify-center hover:bg-surface-container transition-all active:scale-95" type="button">
-<span class="font-label-sm text-label-sm text-primary flex items-center gap-0.5 font-semibold">
-<span class="material-symbols-outlined text-[13px] fill-icon text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>검사
-        </span>
-<span class="font-label-md text-label-md font-bold text-primary mt-0.5">활성 ON</span>
-</button>
-</section>
-<!-- 3. 9x9 Sudoku Board Plate -->
-<section aria-label="9x9 스도쿠 보드" class="w-full aspect-square my-1 relative">
-<div class="w-full h-full bg-surface-container-lowest rounded-2xl shadow-level-1 border border-surface-container p-1.5 flex flex-col justify-between">
-<!-- Sudoku 9x9 Grid layout with 3x3 Block Boundaries -->
-<div class="grid grid-cols-9 grid-rows-9 w-full h-full select-none bg-surface-container-lowest">
-<!-- Row 1 -->
-<!-- 1,1 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">5</span>
-</button>
-<!-- 1,2 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">3</span>
-</button>
-<!-- 1,3 (3x3 border right) -->
-<button class="flex items-center justify-center border-r-2 border-b border-secondary/40 hover:bg-surface-container-low transition-colors">
-<div class="grid grid-cols-3 grid-rows-3 w-full h-full p-0.5 text-center leading-none">
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-secondary font-bold">2</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-secondary font-bold">4</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-secondary font-bold">7</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-</div>
-</button>
-<!-- 1,4 (Row related to selected cell [2,4]) -->
-<button class="flex items-center justify-center border-r border-b border-surface-container bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">6</span>
-</button>
-<!-- 1,5 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<div class="grid grid-cols-3 grid-rows-3 w-full h-full p-0.5 text-center leading-none">
-<span class="font-grid-note text-grid-note text-tertiary">1</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary">7</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary">9</span>
-</div>
-</button>
-<!-- 1,6 (3x3 border right) -->
-<button class="flex items-center justify-center border-r-2 border-b border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">7</span>
-</button>
-<!-- 1,7 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<div class="grid grid-cols-3 grid-rows-3 w-full h-full p-0.5 text-center leading-none">
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary">3</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary">8</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-</div>
-</button>
-<!-- 1,8 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">9</span>
-</button>
-<!-- 1,9 -->
-<button class="flex items-center justify-center border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">1</span>
-</button>
-<!-- Row 2 -->
-<!-- 2,1 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">6</span>
-</button>
-<!-- 2,2 (Same digit '7' highlight) -->
-<button class="flex items-center justify-center border-r border-b border-surface-container bg-surface-container-high transition-colors">
-<span class="font-grid-number text-grid-number text-primary font-bold">7</span>
-</button>
-<!-- 2,3 (3x3 border right) -->
-<button class="flex items-center justify-center border-r-2 border-b border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">2</span>
-</button>
-<!-- 2,4 (Related column & box) -->
-<button class="flex items-center justify-center border-r border-b border-surface-container bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">1</span>
-</button>
-<!-- 2,5 (SELECTED ACTIVE CELL) -->
-<button class="flex items-center justify-center border-r border-b border-surface-container bg-primary-container text-on-primary shadow-active-cell rounded-[6px] z-10 transition-transform scale-105">
-<span class="font-grid-number text-grid-number text-on-primary font-bold">7</span>
-</button>
-<!-- 2,6 (3x3 border right, row related) -->
-<button class="flex items-center justify-center border-r-2 border-b border-secondary/40 bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">9</span>
-</button>
-<!-- 2,7 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">3</span>
-</button>
-<!-- 2,8 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">4</span>
-</button>
-<!-- 2,9 -->
-<button class="flex items-center justify-center border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">8</span>
-</button>
-<!-- Row 3 (Bottom boundary of 3x3 block 1) -->
-<!-- 3,1 -->
-<button class="flex items-center justify-center border-r border-b-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">1</span>
-</button>
-<!-- 3,2 -->
-<button class="flex items-center justify-center border-r border-b-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">9</span>
-</button>
-<!-- 3,3 (Corner intersection) -->
-<button class="flex items-center justify-center border-r-2 border-b-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">8</span>
-</button>
-<!-- 3,4 (Box related) -->
-<button class="flex items-center justify-center border-r border-b-2 border-secondary/40 bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">3</span>
-</button>
-<!-- 3,5 (Column related) -->
-<button class="flex items-center justify-center border-r border-b-2 border-secondary/40 bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">4</span>
-</button>
-<!-- 3,6 (3x3 border right + bottom) -->
-<button class="flex items-center justify-center border-r-2 border-b-2 border-secondary/40 bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">2</span>
-</button>
-<!-- 3,7 -->
-<button class="flex items-center justify-center border-r border-b-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">5</span>
-</button>
-<!-- 3,8 -->
-<button class="flex items-center justify-center border-r border-b-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">6</span>
-</button>
-<!-- 3,9 (Same digit '7' highlight) -->
-<button class="flex items-center justify-center border-b-2 border-secondary/40 bg-surface-container-high transition-colors">
-<span class="font-grid-number text-grid-number text-primary font-bold">7</span>
-</button>
-<!-- Row 4 -->
-<!-- 4,1 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">8</span>
-</button>
-<!-- 4,2 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">5</span>
-</button>
-<!-- 4,3 -->
-<button class="flex items-center justify-center border-r-2 border-b border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">9</span>
-</button>
-<!-- 4,4 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<!-- User input correct digit -->
-<span class="font-grid-number text-grid-number text-primary font-semibold">7</span>
-</button>
-<!-- 4,5 (Column related) -->
-<button class="flex items-center justify-center border-r border-b border-surface-container bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">6</span>
-</button>
-<!-- 4,6 -->
-<button class="flex items-center justify-center border-r-2 border-b border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">1</span>
-</button>
-<!-- 4,7 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">4</span>
-</button>
-<!-- 4,8 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">2</span>
-</button>
-<!-- 4,9 -->
-<button class="flex items-center justify-center border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">3</span>
-</button>
-<!-- Row 5 -->
-<!-- 5,1 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">4</span>
-</button>
-<!-- 5,2 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">2</span>
-</button>
-<!-- 5,3 -->
-<button class="flex items-center justify-center border-r-2 border-b border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">6</span>
-</button>
-<!-- 5,4 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">8</span>
-</button>
-<!-- 5,5 (Column related) -->
-<button class="flex items-center justify-center border-r border-b border-surface-container bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">5</span>
-</button>
-<!-- 5,6 -->
-<button class="flex items-center justify-center border-r-2 border-b border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">3</span>
-</button>
-<!-- 5,7 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<!-- User input digit -->
-<span class="font-grid-number text-grid-number text-primary font-semibold">7</span>
-</button>
-<!-- 5,8 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">9</span>
-</button>
-<!-- 5,9 -->
-<button class="flex items-center justify-center border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<div class="grid grid-cols-3 grid-rows-3 w-full h-full p-0.5 text-center leading-none">
-<span class="font-grid-note text-grid-note text-secondary font-bold">1</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-secondary font-bold">5</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-</div>
-</button>
-<!-- Row 6 (Bottom boundary of 3x3 block 2) -->
-<!-- 6,1 (Same digit '7' highlight) -->
-<button class="flex items-center justify-center border-r border-b-2 border-secondary/40 bg-surface-container-high transition-colors">
-<span class="font-grid-number text-grid-number text-primary font-bold">7</span>
-</button>
-<!-- 6,2 -->
-<button class="flex items-center justify-center border-r border-b-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">1</span>
-</button>
-<!-- 6,3 -->
-<button class="flex items-center justify-center border-r-2 border-b-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">3</span>
-</button>
-<!-- 6,4 -->
-<button class="flex items-center justify-center border-r border-b-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">9</span>
-</button>
-<!-- 6,5 (CONFLICT / ERROR CELL DEMO: duplicated '2' causing clash) -->
-<button class="flex items-center justify-center border-r border-b-2 border-secondary/40 bg-error-container text-error rounded-sm transition-colors">
-<span class="font-grid-number text-grid-number text-error font-bold">2</span>
-</button>
-<!-- 6,6 -->
-<button class="flex items-center justify-center border-r-2 border-b-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">4</span>
-</button>
-<!-- 6,7 -->
-<button class="flex items-center justify-center border-r border-b-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">8</span>
-</button>
-<!-- 6,8 -->
-<button class="flex items-center justify-center border-r border-b-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">5</span>
-</button>
-<!-- 6,9 -->
-<button class="flex items-center justify-center border-b-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">6</span>
-</button>
-<!-- Row 7 -->
-<!-- 7,1 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">9</span>
-</button>
-<!-- 7,2 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">6</span>
-</button>
-<!-- 7,3 -->
-<button class="flex items-center justify-center border-r-2 border-b border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">1</span>
-</button>
-<!-- 7,4 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">5</span>
-</button>
-<!-- 7,5 (Column related) -->
-<button class="flex items-center justify-center border-r border-b border-surface-container bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">3</span>
-</button>
-<!-- 7,6 -->
-<button class="flex items-center justify-center border-r-2 border-b border-secondary/40 hover:bg-surface-container-low transition-colors">
-<!-- User input digit -->
-<span class="font-grid-number text-grid-number text-primary font-semibold">7</span>
-</button>
-<!-- 7,7 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">2</span>
-</button>
-<!-- 7,8 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<div class="grid grid-cols-3 grid-rows-3 w-full h-full p-0.5 text-center leading-none">
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-secondary font-bold">4</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-secondary font-bold">8</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-</div>
-</button>
-<!-- 7,9 -->
-<button class="flex items-center justify-center border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">4</span>
-</button>
-<!-- Row 8 -->
-<!-- 8,1 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">2</span>
-</button>
-<!-- 8,2 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">8</span>
-</button>
-<!-- 8,3 -->
-<button class="flex items-center justify-center border-r-2 border-b border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">4</span>
-</button>
-<!-- 8,4 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<div class="grid grid-cols-3 grid-rows-3 w-full h-full p-0.5 text-center leading-none">
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-secondary font-bold">2</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary">6</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-</div>
-</button>
-<!-- 8,5 (Column related) -->
-<button class="flex items-center justify-center border-r border-b border-surface-container bg-surface-container-low transition-colors">
-<!-- User input digit -->
-<span class="font-grid-number text-grid-number text-primary font-semibold">1</span>
-</button>
-<!-- 8,6 -->
-<button class="flex items-center justify-center border-r-2 border-b border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">9</span>
-</button>
-<!-- 8,7 -->
-<button class="flex items-center justify-center border-r border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">6</span>
-</button>
-<!-- 8,8 (Same digit '7' highlight) -->
-<button class="flex items-center justify-center border-r border-b border-surface-container bg-surface-container-high transition-colors">
-<span class="font-grid-number text-grid-number text-primary font-bold">7</span>
-</button>
-<!-- 8,9 -->
-<button class="flex items-center justify-center border-b border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">5</span>
-</button>
-<!-- Row 9 -->
-<!-- 9,1 -->
-<button class="flex items-center justify-center border-r border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">3</span>
-</button>
-<!-- 9,2 -->
-<button class="flex items-center justify-center border-r border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">4</span>
-</button>
-<!-- 9,3 -->
-<button class="flex items-center justify-center border-r-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">5</span>
-</button>
-<!-- 9,4 -->
-<button class="flex items-center justify-center border-r border-surface-container hover:bg-surface-container-low transition-colors">
-<div class="grid grid-cols-3 grid-rows-3 w-full h-full p-0.5 text-center leading-none">
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-secondary font-bold">2</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-secondary font-bold">6</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-secondary font-bold">8</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-</div>
-</button>
-<!-- 9,5 (Column related) -->
-<button class="flex items-center justify-center border-r border-surface-container bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">8</span>
-</button>
-<!-- 9,6 -->
-<button class="flex items-center justify-center border-r-2 border-secondary/40 hover:bg-surface-container-low transition-colors">
-<div class="grid grid-cols-3 grid-rows-3 w-full h-full p-0.5 text-center leading-none">
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-secondary font-bold">2</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-secondary font-bold">6</span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-<span class="font-grid-note text-grid-note text-tertiary"></span>
-</div>
-</button>
-<!-- 9,7 -->
-<button class="flex items-center justify-center border-r border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">1</span>
-</button>
-<!-- 9,8 -->
-<button class="flex items-center justify-center border-r border-surface-container hover:bg-surface-container-low transition-colors">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">3</span>
-</button>
-<!-- 9,9 -->
-<button class="flex items-center justify-center hover:bg-surface-container-low transition-colors">
-<!-- User input digit -->
-<span class="font-grid-number text-grid-number text-primary font-semibold">2</span>
-</button>
+<!-- Cell 0,2 (Related block) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r-2 border-r-on-surface border-outline-variant/40">
+<div class="grid grid-cols-3 gap-0.5 text-center w-full px-1">
+<span class="text-note-display font-note-display text-outline">1</span>
+<span class="text-note-display font-note-display text-transparent">·</span>
+<span class="text-note-display font-note-display text-outline">4</span>
 </div>
 </div>
-</section>
-<!-- 4. Action Tool Bar -->
-<section aria-label="작업 도구 모음" class="grid grid-cols-4 gap-3 my-2">
-<!-- Undo Action -->
-<button class="group flex flex-col items-center justify-center py-2 px-1 rounded-xl hover:bg-surface-container-low active:scale-95 transition-all relative" type="button">
-<div class="w-11 h-11 rounded-full bg-surface-container-lowest shadow-level-1 border border-surface-container flex items-center justify-center text-on-surface group-hover:text-primary transition-colors relative">
-<span class="material-symbols-outlined text-[22px]">undo</span>
-<span class="absolute -top-1 -right-1 bg-surface-container-high text-primary font-label-sm text-label-sm font-bold w-4 h-4 rounded-full flex items-center justify-center border border-surface-container-lowest">5</span>
+<!-- Cell 0,3 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">6</span>
 </div>
-<span class="font-label-md text-label-md text-on-surface-variant font-medium mt-1">되돌리기</span>
-</button>
-<!-- Erase Action -->
-<button class="group flex flex-col items-center justify-center py-2 px-1 rounded-xl hover:bg-surface-container-low active:scale-95 transition-all" type="button">
-<div class="w-11 h-11 rounded-full bg-surface-container-lowest shadow-level-1 border border-surface-container flex items-center justify-center text-on-surface group-hover:text-error transition-colors">
-<span class="material-symbols-outlined text-[22px]">backspace</span>
+<!-- Cell 0,4 (Related col to selection) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">7</span>
 </div>
-<span class="font-label-md text-label-md text-on-surface-variant font-medium mt-1">지우기</span>
-</button>
-<!-- Memo / Notes Mode Active (Distinct State) -->
-<button class="group flex flex-col items-center justify-center py-2 px-1 rounded-xl active:scale-95 transition-all" type="button">
-<div class="w-11 h-11 rounded-full bg-primary-container text-on-primary shadow-level-2 flex items-center justify-center transition-colors relative">
-<span class="material-symbols-outlined text-[22px] fill-icon" style="font-variation-settings: 'FILL' 1;">edit_note</span>
-<!-- Active Pill Indicator Dot -->
-<span class="absolute -bottom-0.5 w-1.5 h-1.5 rounded-full bg-surface-container-lowest"></span>
+<!-- Cell 0,5 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-primary-container font-headline-sm font-semibold">2</span>
 </div>
-<span class="font-label-md text-label-md text-primary font-bold mt-1">메모 ON</span>
-</button>
-<!-- Hint Action -->
-<button class="group flex flex-col items-center justify-center py-2 px-1 rounded-xl hover:bg-surface-container-low active:scale-95 transition-all relative" type="button">
-<div class="w-11 h-11 rounded-full bg-surface-container-lowest shadow-level-1 border border-surface-container flex items-center justify-center text-on-surface group-hover:text-secondary transition-colors relative">
-<span class="material-symbols-outlined text-[22px]">lightbulb</span>
-<span class="absolute -top-1 -right-1 bg-primary text-on-primary font-label-sm text-label-sm font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-sm">3</span>
+<!-- Cell 0,6 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">1</span>
 </div>
-<span class="font-label-md text-label-md text-on-surface-variant font-medium mt-1">힌트</span>
+<!-- Cell 0,7 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">9</span>
+</div>
+<!-- Cell 0,8 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">8</span>
+</div>
+<!-- ROW 2 -->
+<!-- Cell 1,0 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">6</span>
+</div>
+<!-- Cell 1,1 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<div class="grid grid-cols-3 gap-0.5 text-center w-full px-1">
+<span class="text-note-display font-note-display text-outline">7</span>
+<span class="text-note-display font-note-display text-transparent">·</span>
+<span class="text-note-display font-note-display text-outline">8</span>
+</div>
+</div>
+<!-- Cell 1,2 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-primary-container font-headline-sm font-semibold">9</span>
+</div>
+<!-- Cell 1,3 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">1</span>
+</div>
+<!-- Cell 1,4 (Related col) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">9</span>
+</div>
+<!-- Cell 1,5 (Matching '5') -->
+<div class="bg-[#DBE4FF] flex items-center justify-center border-b border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-primary font-headline-sm font-bold">5</span>
+</div>
+<!-- Cell 1,6 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">3</span>
+</div>
+<!-- Cell 1,7 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">4</span>
+</div>
+<!-- Cell 1,8 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-outline-variant/40">
+<span class="text-primary-container font-headline-sm font-semibold">2</span>
+</div>
+<!-- ROW 3 -->
+<!-- Cell 2,0 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b-2 border-b-on-surface border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">1</span>
+</div>
+<!-- Cell 2,1 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b-2 border-b-on-surface border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">9</span>
+</div>
+<!-- Cell 2,2 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b-2 border-b-on-surface border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">8</span>
+</div>
+<!-- Cell 2,3 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b-2 border-b-on-surface border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">3</span>
+</div>
+<!-- Cell 2,4 (Related col) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b-2 border-b-on-surface border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">4</span>
+</div>
+<!-- Cell 2,5 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b-2 border-b-on-surface border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">2</span>
+</div>
+<!-- Cell 2,6 (Matching '5') -->
+<div class="bg-[#DBE4FF] flex items-center justify-center border-b-2 border-b-on-surface border-r border-outline-variant/40">
+<span class="text-primary font-headline-sm font-bold">5</span>
+</div>
+<!-- Cell 2,7 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b-2 border-b-on-surface border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">6</span>
+</div>
+<!-- Cell 2,8 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b-2 border-b-on-surface border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">7</span>
+</div>
+<!-- ROW 4 -->
+<!-- Cell 3,0 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">8</span>
+</div>
+<!-- Cell 3,1 (Matching '5') -->
+<div class="bg-[#DBE4FF] flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-primary font-headline-sm font-bold">5</span>
+</div>
+<!-- Cell 3,2 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-primary-container font-headline-sm font-semibold">2</span>
+</div>
+<!-- Cell 3,3 (Related box) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r border-outline-variant/40">
+<div class="grid grid-cols-3 gap-0.5 text-center w-full px-1">
+<span class="text-note-display font-note-display text-outline">4</span>
+<span class="text-note-display font-note-display text-outline">7</span>
+</div>
+</div>
+<!-- Cell 3,4 (Related col & box) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">1</span>
+</div>
+<!-- Cell 3,5 (Related box) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">9</span>
+</div>
+<!-- Cell 3,6 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">4</span>
+</div>
+<!-- Cell 3,7 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">3</span>
+</div>
+<!-- Cell 3,8 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">6</span>
+</div>
+<!-- ROW 5 (Row contains ACTIVE SELECTED CELL at 4,4) -->
+<!-- Cell 4,0 (Related row) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">4</span>
+</div>
+<!-- Cell 4,1 (Related row) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">7</span>
+</div>
+<!-- Cell 4,2 (Related row) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">3</span>
+</div>
+<!-- Cell 4,3 (Related row & box) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-primary-container font-headline-sm font-semibold">8</span>
+</div>
+<!-- Cell 4,4 [CURRENTLY SELECTED ACTIVE CELL] -->
+<div class="bg-primary-container flex items-center justify-center border-b border-r border-outline-variant/40 relative z-10 shadow-sm ring-2 ring-primary">
+<span class="text-on-primary font-cell-display text-cell-display font-bold">5</span>
+</div>
+<!-- Cell 4,5 (Related row & box) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">6</span>
+</div>
+<!-- Cell 4,6 (Related row) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">2</span>
+</div>
+<!-- Cell 4,7 (Related row) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">1</span>
+</div>
+<!-- Cell 4,8 (Related row) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">9</span>
+</div>
+<!-- ROW 6 -->
+<!-- Cell 5,0 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b-2 border-b-on-surface border-r border-outline-variant/40">
+<span class="text-primary-container font-headline-sm font-semibold">9</span>
+</div>
+<!-- Cell 5,1 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b-2 border-b-on-surface border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">1</span>
+</div>
+<!-- Cell 5,2 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b-2 border-b-on-surface border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">6</span>
+</div>
+<!-- Cell 5,3 (Related box) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b-2 border-b-on-surface border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">2</span>
+</div>
+<!-- Cell 5,4 (Related col & box) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b-2 border-b-on-surface border-r border-outline-variant/40">
+<div class="grid grid-cols-3 gap-0.5 text-center w-full px-1">
+<span class="text-note-display font-note-display text-outline">3</span>
+</div>
+</div>
+<!-- Cell 5,5 (Related box) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b-2 border-b-on-surface border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">4</span>
+</div>
+<!-- Cell 5,6 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b-2 border-b-on-surface border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">7</span>
+</div>
+<!-- Cell 5,7 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b-2 border-b-on-surface border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">8</span>
+</div>
+<!-- Cell 5,8 (Matching '5') -->
+<div class="bg-[#DBE4FF] flex items-center justify-center border-b-2 border-b-on-surface border-outline-variant/40">
+<span class="text-primary font-headline-sm font-bold">5</span>
+</div>
+<!-- ROW 7 -->
+<!-- Cell 6,0 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">7</span>
+</div>
+<!-- Cell 6,1 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">6</span>
+</div>
+<!-- Cell 6,2 (Matching '5') -->
+<div class="bg-[#DBE4FF] flex items-center justify-center border-b border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-primary font-headline-sm font-bold">5</span>
+</div>
+<!-- Cell 6,3 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">9</span>
+</div>
+<!-- Cell 6,4 (Related col - DELIBERATE ERROR CELL) -->
+<div class="bg-[#FFE3E3] flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-[#FA5252] font-headline-sm font-bold">8</span>
+</div>
+<!-- Cell 6,5 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">1</span>
+</div>
+<!-- Cell 6,6 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<div class="grid grid-cols-3 gap-0.5 text-center w-full px-1">
+<span class="text-note-display font-note-display text-outline">3</span>
+<span class="text-note-display font-note-display text-transparent">·</span>
+<span class="text-note-display font-note-display text-outline">8</span>
+</div>
+</div>
+<!-- Cell 6,7 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-primary-container font-headline-sm font-semibold">2</span>
+</div>
+<!-- Cell 6,8 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">4</span>
+</div>
+<!-- ROW 8 -->
+<!-- Cell 7,0 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">2</span>
+</div>
+<!-- Cell 7,1 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">4</span>
+</div>
+<!-- Cell 7,2 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">1</span>
+</div>
+<!-- Cell 7,3 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<div class="grid grid-cols-3 gap-0.5 text-center w-full px-1">
+<span class="text-note-display font-note-display text-outline">5</span>
+<span class="text-note-display font-note-display text-transparent">·</span>
+<span class="text-note-display font-note-display text-outline">7</span>
+</div>
+</div>
+<!-- Cell 7,4 (Related col) -->
+<div class="bg-surface-container-low flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-primary-container font-headline-sm font-semibold">3</span>
+</div>
+<!-- Cell 7,5 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">7</span>
+</div>
+<!-- Cell 7,6 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">9</span>
+</div>
+<!-- Cell 7,7 (Matching '5') -->
+<div class="bg-[#DBE4FF] flex items-center justify-center border-b border-r border-outline-variant/40">
+<span class="text-primary font-headline-sm font-bold">5</span>
+</div>
+<!-- Cell 7,8 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-b border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">3</span>
+</div>
+<!-- ROW 9 -->
+<!-- Cell 8,0 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">3</span>
+</div>
+<!-- Cell 8,1 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">8</span>
+</div>
+<!-- Cell 8,2 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">7</span>
+</div>
+<!-- Cell 8,3 (Matching '5') -->
+<div class="bg-[#DBE4FF] flex items-center justify-center border-r border-outline-variant/40">
+<span class="text-primary font-headline-sm font-bold">5</span>
+</div>
+<!-- Cell 8,4 (Related col) -->
+<div class="bg-surface-container-low flex items-center justify-center border-r border-outline-variant/40">
+<div class="grid grid-cols-3 gap-0.5 text-center w-full px-1">
+<span class="text-note-display font-note-display text-outline">6</span>
+</div>
+</div>
+<!-- Cell 8,5 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-r-2 border-r-on-surface border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">8</span>
+</div>
+<!-- Cell 8,6 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-r border-outline-variant/40">
+<span class="text-on-surface font-headline-sm font-bold">6</span>
+</div>
+<!-- Cell 8,7 -->
+<div class="bg-surface-container-lowest flex items-center justify-center border-r border-outline-variant/40">
+<div class="grid grid-cols-3 gap-0.5 text-center w-full px-1">
+<span class="text-note-display font-note-display text-outline">7</span>
+</div>
+</div>
+<!-- Cell 8,8 -->
+<div class="bg-surface-container-lowest flex items-center justify-center">
+<span class="text-on-surface font-headline-sm font-bold">1</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Control Dock: Utilities & Numeric Keypad -->
+<footer class="w-full max-w-lg mx-auto px-margin pb-6 pt-2 flex flex-col gap-3">
+<!-- Action Toolbar (Undo, Erase, Notes Toggle - strictly no hint) -->
+<div class="grid grid-cols-3 gap-3 w-full">
+<!-- 1. Undo Button -->
+<button class="h-12 bg-surface-container-lowest hover:bg-surface-container active:scale-95 transition-all rounded-xl border border-outline-variant/50 flex items-center justify-center gap-2 text-on-surface shadow-sm" type="button">
+<span class="material-symbols-outlined text-secondary" data-icon="undo">undo</span>
+<span class="font-label-md text-label-md">되돌리기</span>
 </button>
-</section>
-<!-- 5. Number Keypad (1 - 9) with Remaining Counts -->
-<section aria-label="숫자 입력 키패드" class="mt-1 mb-2">
-<div class="grid grid-cols-9 gap-1.5 w-full">
+<!-- 2. Erase Button -->
+<button class="h-12 bg-surface-container-lowest hover:bg-surface-container active:scale-95 transition-all rounded-xl border border-outline-variant/50 flex items-center justify-center gap-2 text-on-surface shadow-sm" type="button">
+<span class="material-symbols-outlined text-secondary" data-icon="backspace">backspace</span>
+<span class="font-label-md text-label-md">지우기</span>
+</button>
+<!-- 3. Note Mode Button (Active State: ON) -->
+<button class="h-12 bg-surface-container hover:bg-surface-container-high active:scale-95 transition-all rounded-xl border border-primary/40 flex items-center justify-center gap-1.5 text-primary shadow-sm relative" type="button">
+<span class="material-symbols-outlined text-primary text-[19px]" data-icon="edit">edit</span>
+<span class="font-label-md text-label-md font-semibold">메모</span>
+<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary text-on-primary leading-none ml-0.5">ON</span>
+</button>
+</div>
+<!-- Numeric Input Keypad 1-9 (Ergonomic layout) -->
+<div class="grid grid-cols-9 gap-1.5 w-full pt-1">
 <!-- Key 1 -->
-<button class="flex flex-col items-center justify-center py-2 bg-surface-container-lowest rounded-xl shadow-level-1 border border-surface-container hover:border-primary active:bg-surface-container-high transition-all active:scale-95" type="button">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">1</span>
-<span class="font-label-sm text-[9px] text-outline font-medium">남은 2</span>
+<button class="aspect-[1/1.3] bg-surface-container-lowest active:bg-surface-container rounded-xl border border-outline-variant/50 flex flex-col items-center justify-center shadow-sm active:scale-95 transition-transform" type="button">
+<span class="text-on-surface font-headline-sm font-bold">1</span>
+<span class="text-[10px] text-outline font-label-sm">2</span>
 </button>
 <!-- Key 2 -->
-<button class="flex flex-col items-center justify-center py-2 bg-surface-container-lowest rounded-xl shadow-level-1 border border-surface-container hover:border-primary active:bg-surface-container-high transition-all active:scale-95" type="button">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">2</span>
-<span class="font-label-sm text-[9px] text-outline font-medium">남은 1</span>
+<button class="aspect-[1/1.3] bg-surface-container-lowest active:bg-surface-container rounded-xl border border-outline-variant/50 flex flex-col items-center justify-center shadow-sm active:scale-95 transition-transform" type="button">
+<span class="text-on-surface font-headline-sm font-bold">2</span>
+<span class="text-[10px] text-outline font-label-sm">1</span>
 </button>
 <!-- Key 3 -->
-<button class="flex flex-col items-center justify-center py-2 bg-surface-container-lowest rounded-xl shadow-level-1 border border-surface-container hover:border-primary active:bg-surface-container-high transition-all active:scale-95" type="button">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">3</span>
-<span class="font-label-sm text-[9px] text-outline font-medium">남은 2</span>
+<button class="aspect-[1/1.3] bg-surface-container-lowest active:bg-surface-container rounded-xl border border-outline-variant/50 flex flex-col items-center justify-center shadow-sm active:scale-95 transition-transform" type="button">
+<span class="text-on-surface font-headline-sm font-bold">3</span>
+<span class="text-[10px] text-outline font-label-sm">3</span>
 </button>
 <!-- Key 4 -->
-<button class="flex flex-col items-center justify-center py-2 bg-surface-container-lowest rounded-xl shadow-level-1 border border-surface-container hover:border-primary active:bg-surface-container-high transition-all active:scale-95" type="button">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">4</span>
-<span class="font-label-sm text-[9px] text-outline font-medium">남은 1</span>
+<button class="aspect-[1/1.3] bg-surface-container-lowest active:bg-surface-container rounded-xl border border-outline-variant/50 flex flex-col items-center justify-center shadow-sm active:scale-95 transition-transform" type="button">
+<span class="text-on-surface font-headline-sm font-bold">4</span>
+<span class="text-[10px] text-outline font-label-sm">2</span>
 </button>
-<!-- Key 5 -->
-<button class="flex flex-col items-center justify-center py-2 bg-surface-container-lowest rounded-xl shadow-level-1 border border-surface-container hover:border-primary active:bg-surface-container-high transition-all active:scale-95" type="button">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">5</span>
-<span class="font-label-sm text-[9px] text-outline font-medium">남은 3</span>
+<!-- Key 5 (Currently Active / Highlighted in matching tone) -->
+<button class="aspect-[1/1.3] bg-surface-container border-2 border-primary rounded-xl flex flex-col items-center justify-center shadow-sm active:scale-95 transition-transform" type="button">
+<span class="text-primary font-headline-sm font-bold">5</span>
+<span class="text-[10px] text-primary font-label-sm font-semibold">1</span>
 </button>
 <!-- Key 6 -->
-<button class="flex flex-col items-center justify-center py-2 bg-surface-container-lowest rounded-xl shadow-level-1 border border-surface-container hover:border-primary active:bg-surface-container-high transition-all active:scale-95" type="button">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">6</span>
-<span class="font-label-sm text-[9px] text-outline font-medium">남은 2</span>
+<button class="aspect-[1/1.3] bg-surface-container-lowest active:bg-surface-container rounded-xl border border-outline-variant/50 flex flex-col items-center justify-center shadow-sm active:scale-95 transition-transform" type="button">
+<span class="text-on-surface font-headline-sm font-bold">6</span>
+<span class="text-[10px] text-outline font-label-sm">2</span>
 </button>
-<!-- Key 7 (Active / Selected Digit Highlight) -->
-<button class="flex flex-col items-center justify-center py-2 bg-surface-container-high border-2 border-primary-container rounded-xl shadow-level-2 transition-all active:scale-95" type="button">
-<span class="font-grid-number text-grid-number text-primary font-bold">7</span>
-<span class="font-label-sm text-[9px] text-primary font-bold">선택됨</span>
+<!-- Key 7 -->
+<button class="aspect-[1/1.3] bg-surface-container-lowest active:bg-surface-container rounded-xl border border-outline-variant/50 flex flex-col items-center justify-center shadow-sm active:scale-95 transition-transform" type="button">
+<span class="text-on-surface font-headline-sm font-bold">7</span>
+<span class="text-[10px] text-outline font-label-sm">3</span>
 </button>
 <!-- Key 8 -->
-<button class="flex flex-col items-center justify-center py-2 bg-surface-container-lowest rounded-xl shadow-level-1 border border-surface-container hover:border-primary active:bg-surface-container-high transition-all active:scale-95" type="button">
-<span class="font-grid-number text-grid-number text-on-surface font-bold">8</span>
-<span class="font-label-sm text-[9px] text-outline font-medium">남은 1</span>
+<button class="aspect-[1/1.3] bg-surface-container-lowest active:bg-surface-container rounded-xl border border-outline-variant/50 flex flex-col items-center justify-center shadow-sm active:scale-95 transition-transform" type="button">
+<span class="text-on-surface font-headline-sm font-bold">8</span>
+<span class="text-[10px] text-outline font-label-sm">2</span>
 </button>
-<!-- Key 9 (Completed Digit - Disabled/Dimmed State) -->
-<button class="flex flex-col items-center justify-center py-2 bg-surface-container-low rounded-xl border border-transparent opacity-30 cursor-not-allowed" disabled="" type="button">
-<span class="material-symbols-outlined text-[16px] text-outline font-bold">check</span>
-<span class="font-label-sm text-[9px] text-outline font-semibold">완료</span>
+<!-- Key 9 (Depleted example: placed count completed) -->
+<button class="aspect-[1/1.3] bg-surface-container-lowest opacity-40 pointer-events-none rounded-xl border border-outline-variant/40 flex flex-col items-center justify-center shadow-none" type="button">
+<span class="text-outline font-headline-sm font-medium">9</span>
+<span class="text-[10px] text-outline font-label-sm">✓</span>
 </button>
 </div>
-</section>
-<!-- 6. Zen Focus Bottom Indicator (Safe Area Spacing) -->
-<footer class="flex items-center justify-center pt-2">
-<div class="w-32 h-1 bg-outline-variant/60 rounded-full"></div>
 </footer>
-</main>
 </body></html>
