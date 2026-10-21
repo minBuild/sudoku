@@ -15,8 +15,8 @@ abstract final class AdIds {
   /// AdMob 앱 미등록 → '' (릴리스 Android 는 skipped).
   static const androidProd = '';
 
-  /// AdMob 앱 미등록 → '' (릴리스 iOS 는 skipped). README §광고 ID 위치
-  static const iosProd = '';
+  /// iOS 전면광고 단위 sudoku_pregame_interstitial_ios. README §광고 ID 위치
+  static const iosProd = 'ca-app-pub-7432278320907197/4247876859';
 
   @visibleForTesting
   static final unitRe = RegExp(r'^ca-app-pub-\d{16}/\d{10}$');

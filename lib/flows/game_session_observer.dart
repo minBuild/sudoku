@@ -10,6 +10,7 @@ import '../services/record_store.dart';
 import '../services/settings_store.dart';
 
 /// 부수효과(기록, 세이브, 결과 시트 호출, 라이프사이클)를 status 전이마다 1회 처리한다 (D10).
+/// ATT 등 시스템 창(inactive) 동안 타이머 정지.
 class GameSessionObserver {
   static const saveDebounce = Duration(milliseconds: 500);
 
@@ -23,7 +24,11 @@ class GameSessionObserver {
        _prev = _c.status,
        _savedRevision = _c.revision {
     _c.addListener(_onChanged);
-    _life = AppLifecycleListener(onHide: handleHide, onShow: handleShow);
+    _life = AppLifecycleListener(
+      onInactive: handleInactive,
+      onHide: handleHide,
+      onResume: handleShow,
+    );
     // 새 판이 시작되는 지점에서 기존 세이브를 덮어쓴다 (D18).
     _saves?.write(_c.snapshot());
   }
@@ -105,6 +110,14 @@ class GameSessionObserver {
     if (state == null || state == AppLifecycleState.resumed) {
       _c.resume();
     } else {
+      _resumeOnShow = true;
+    }
+  }
+
+  @visibleForTesting
+  void handleInactive() {
+    if (_c.status == GameStatus.playing) {
+      _c.pause();
       _resumeOnShow = true;
     }
   }

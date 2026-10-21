@@ -7,11 +7,6 @@ import 'package:sudoku/services/ads/ad_ids.dart';
 const sample = '3940256099942544';
 const sampleAppId = 'ca-app-pub-3940256099942544~1458002511';
 
-/// iOS AdMob 앱이 등록되지 않았으면 실제 ID 테스트를 건너뛴다.
-final Object _iosSkip = AdIds.iosProd.isEmpty
-    ? 'iOS AdMob 미등록: README 참고'
-    : false;
-
 /// [keyPattern] 뒤의 첫 AdMob ID. 줄끝 앵커가 없어 CRLF 에도 안전하다.
 String? grab(String path, String keyPattern) => RegExp(
   '$keyPattern\\s*=\\s*"?(ca-app-pub-[0-9~/]+)',
@@ -50,12 +45,18 @@ void main() {
     final appId = grab(release, r'GAD_APPLICATION_ID(?!\[)');
     expect(appId, matches(RegExp(r'^ca-app-pub-\d{16}~\d{10}$')));
     expect(pub(_pubRe, appId!), publisher);
-  }, skip: _iosSkip);
+  });
 
   test('Debug 와 Profile 의 App ID 는 샘플', () {
     expect(grab(debug, 'GAD_APPLICATION_ID'), sampleAppId);
     expect(grab(release, r'GAD_APPLICATION_ID\[config=Profile\]'), sampleAppId);
-  }, skip: _iosSkip);
+  });
+
+  test('README 에 iOS 단위 ID 와 App ID 가 기록돼 있다', () {
+    final readme = File('README.md').readAsStringSync();
+    expect(readme, contains(AdIds.iosProd));
+    expect(readme, contains(grab(release, r'GAD_APPLICATION_ID(?!\[)')!));
+  });
 
   test('dart-define 자리표시자는 무시하고, 유효한 값은 덮어쓴다', () {
     expect(
@@ -68,7 +69,7 @@ void main() {
     );
     final override = 'ca-app-pub-${pub(_pubRe, AdIds.iosProd)}/1234567890';
     expect(AdIds.resolve(release: true, ios: true, env: override), override);
-  }, skip: _iosSkip);
+  });
 
   test('Android 릴리스는 비어 있거나 iOS 와 같은 게시자의 다른 ID', () {
     final android = AdIds.resolve(release: true, ios: false);

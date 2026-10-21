@@ -3,8 +3,21 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+typedef LoadAndShowForm =
+    Future<void> Function(OnConsentFormDismissedListener listener);
+
 /// UMP 동의. 예외는 모두 삼키고 로그만 남긴다.
 class ConsentService {
+  ConsentService({ConsentInformation? info, LoadAndShowForm? loadAndShow})
+    : _info = info ?? ConsentInformation.instance,
+      _loadAndShow =
+          loadAndShow ?? ConsentForm.loadAndShowConsentFormIfRequired;
+
+  /// 갱신이 응답하지 않으면 폼을 생략하고 ATT 로 넘어간다 (D7).
+  static const updateTimeout = Duration(seconds: 10);
+
+  final ConsentInformation _info;
+  final LoadAndShowForm _loadAndShow;
   bool _privacyOptionsRequired = false;
 
   bool get privacyOptionsRequired => _privacyOptionsRequired;
@@ -13,26 +26,34 @@ class ConsentService {
   Future<void> gather() async {
     try {
       final updated = Completer<void>();
-      ConsentInformation.instance.requestConsentInfoUpdate(
+      _info.requestConsentInfoUpdate(
         ConsentRequestParameters(),
-        () => updated.complete(),
+        () {
+          if (!updated.isCompleted) updated.complete();
+        },
         (e) {
           debugPrint('UMP update 실패: ${e.errorCode} ${e.message}');
-          updated.complete();
+          if (!updated.isCompleted) updated.complete();
         },
       );
-      await updated.future;
+      final ok = await updated.future
+          .then((_) => true)
+          .timeout(updateTimeout, onTimeout: () => false);
+      if (!ok) {
+        debugPrint('UMP update timeout → 폼 생략');
+        return;
+      }
 
+      // 사용자가 입력하는 단계라 타임아웃을 두지 않는다.
       final dismissed = Completer<void>();
-      await ConsentForm.loadAndShowConsentFormIfRequired((e) {
+      await _loadAndShow((e) {
         if (e != null) debugPrint('UMP form: ${e.errorCode} ${e.message}');
         if (!dismissed.isCompleted) dismissed.complete();
       });
       await dismissed.future;
 
       _privacyOptionsRequired =
-          await ConsentInformation.instance
-              .getPrivacyOptionsRequirementStatus() ==
+          await _info.getPrivacyOptionsRequirementStatus() ==
           PrivacyOptionsRequirementStatus.required;
     } catch (e) {
       debugPrint('UMP 오류: $e');
@@ -41,7 +62,7 @@ class ConsentService {
 
   Future<bool> canRequestAds() async {
     try {
-      return await ConsentInformation.instance.canRequestAds();
+      return await _info.canRequestAds();
     } catch (e) {
       debugPrint('UMP canRequestAds 오류: $e');
       return false;

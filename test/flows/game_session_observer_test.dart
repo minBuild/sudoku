@@ -149,6 +149,60 @@ void main() {
     expect(c.status, GameStatus.playing);
   });
 
+  test('inactive → resume 은 pause 후 resume', () {
+    start([0, 1]);
+    obs.startWhenVisible();
+    obs.handleInactive();
+    expect(c.status, GameStatus.paused);
+    obs.handleShow();
+    expect(c.status, GameStatus.playing);
+    obs.handleShow(); // 두 번째는 no-op
+    expect(c.status, GameStatus.playing);
+  });
+
+  test('paused 에서 inactive 는 no-op 이고 resume 도 하지 않는다', () {
+    start([0, 1]);
+    expect(c.status, GameStatus.paused);
+    obs.handleInactive();
+    expect(c.status, GameStatus.paused);
+    obs.handleShow();
+    expect(c.status, GameStatus.paused);
+  });
+
+  test('solved 상태에서 inactive → resume 이 와도 status 그대로', () {
+    fakeAsync((fa) {
+      start([0]);
+      obs.startWhenVisible();
+      c.select(0);
+      c.input(solAt(0));
+      fa.flushMicrotasks();
+      obs.handleInactive();
+      obs.handleShow();
+      expect(c.status, GameStatus.solved);
+    });
+  });
+
+  test('inactive → hide → show 는 pause 1회, 저장 1회, 최종 playing', () {
+    fakeAsync((fa) {
+      start([0, 1]);
+      obs.startWhenVisible();
+      final writes = saves.writes;
+      var pauses = 0;
+      var prev = c.status;
+      c.addListener(() {
+        if (c.status != prev && c.status == GameStatus.paused) pauses++;
+        prev = c.status;
+      });
+      obs.handleInactive();
+      obs.handleHide();
+      fa.elapse(const Duration(seconds: 1));
+      expect(pauses, 1);
+      expect(saves.writes - writes, 1);
+      obs.handleShow();
+      expect(c.status, GameStatus.playing);
+    });
+  });
+
   test('solved 상태에서 onShow 가 와도 status 그대로', () {
     fakeAsync((fa) {
       start([0]);

@@ -1,4 +1,4 @@
 #include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
 #include "Generated.xcconfig"
-// TODO: 실제 iOS App ID로 교체
-GAD_APPLICATION_ID=ca-app-pub-3940256099942544~1458002511
+GAD_APPLICATION_ID=ca-app-pub-7432278320907197~4407658951
+GAD_APPLICATION_ID[config=Profile]=ca-app-pub-3940256099942544~1458002511
