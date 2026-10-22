@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/sudoku_controller.dart';
-import '../l10n/strings.dart';
+import '../l10n/l10n.dart';
 import '../models/game_status.dart';
 import '../theme/app_theme.dart';
 
@@ -66,7 +66,7 @@ class _NumberKey extends StatelessWidget {
     return Semantics(
       button: true,
       enabled: active,
-      label: S.remainingLabel(n, left.clamp(0, 9)),
+      label: context.l10n.remainingLabel(n, left.clamp(0, 9)),
       excludeSemantics: true,
       child: Opacity(
         opacity: done ? 0.4 : 1,

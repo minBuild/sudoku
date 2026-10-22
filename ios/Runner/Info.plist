@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>ko</string>
+	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>Sudoku</string>
 	<key>CFBundleExecutable</key>
@@ -45,7 +45,12 @@
 	<true/>
 	<key>CFBundleLocalizations</key>
 	<array>
+		<string>en</string>
 		<string>ko</string>
+		<string>fr</string>
+		<string>es</string>
+		<string>ja</string>
+		<string>pt</string>
 	</array>
 	<key>GADApplicationIdentifier</key>
 	<string>$(GAD_APPLICATION_ID)</string>
@@ -253,7 +258,7 @@
 		</dict>
 	</array>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>맞춤형 광고를 제공하기 위해 기기 식별자를 사용합니다. 허용하지 않아도 앱은 정상적으로 이용할 수 있어요.</string>
+	<string>Your device identifier is used to show personalized ads. You can use the app normally even if you don't allow it.</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UIApplicationSceneManifest</key>

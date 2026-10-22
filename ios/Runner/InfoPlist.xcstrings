@@ -1,0 +1,47 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSUserTrackingUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your device identifier is used to show personalized ads. You can use the app normally even if you don't allow it."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "맞춤형 광고를 제공하기 위해 기기 식별자를 사용합니다. 허용하지 않아도 앱은 정상적으로 이용할 수 있어요."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'identifiant de votre appareil est utilisé pour afficher des publicités personnalisées. Vous pouvez utiliser l'app normalement même si vous ne l'autorisez pas."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El identificador de tu dispositivo se usa para mostrar anuncios personalizados. Puedes usar la app con normalidad aunque no lo permitas."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パーソナライズされた広告を表示するためにデバイスの識別子を使用します。許可しなくてもアプリは通常どおりご利用いただけます。"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O identificador do seu dispositivo é usado para mostrar anúncios personalizados. Você pode usar o app normalmente mesmo sem permitir."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

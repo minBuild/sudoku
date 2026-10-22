@@ -1,14 +1,6 @@
 enum Difficulty { easy, normal, hard, expert, hell }
 
 extension DifficultyRules on Difficulty {
-  String get label => switch (this) {
-    Difficulty.easy => '쉬움',
-    Difficulty.normal => '보통',
-    Difficulty.hard => '어려움',
-    Difficulty.expert => '전문가',
-    Difficulty.hell => '지옥',
-  };
-
   /// 생성기가 뚫으려고 시도하는 빈칸 수.
   int get targetHoles => switch (this) {
     Difficulty.easy => 38,

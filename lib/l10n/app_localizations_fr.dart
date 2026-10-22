@@ -1,0 +1,324 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for French (`fr`).
+class AppLocalizationsFr extends AppLocalizations {
+  AppLocalizationsFr([String locale = 'fr']) : super(locale);
+
+  @override
+  String get appTitle => 'Sudoku';
+
+  @override
+  String get appBadge => 'JANG';
+
+  @override
+  String get tagline =>
+      'Une concentration sereine, une pause quotidienne pour l\'esprit';
+
+  @override
+  String get newGame => 'Nouvelle partie';
+
+  @override
+  String get records => 'Historique';
+
+  @override
+  String get settings => 'Paramètres';
+
+  @override
+  String get continueTitle => 'Partie en cours';
+
+  @override
+  String continueDetail(double progress, String time) {
+    final intl.NumberFormat progressNumberFormat =
+        intl.NumberFormat.percentPattern(localeName);
+    final String progressString = progressNumberFormat.format(progress);
+
+    return '$progressString terminé · $time écoulé';
+  }
+
+  @override
+  String get overwriteTitle => 'Commencer une nouvelle partie ?';
+
+  @override
+  String get overwriteBody => 'La partie en cours sera perdue.';
+
+  @override
+  String get saveIncompatible =>
+      'La partie enregistrée d\'une ancienne version ne pouvait pas être reprise et a été supprimée.';
+
+  @override
+  String get cancel => 'Annuler';
+
+  @override
+  String get removeAds => 'Supprimer les pubs';
+
+  @override
+  String removeAdsWithPrice(String price) {
+    return 'Supprimer les pubs $price';
+  }
+
+  @override
+  String get removeAdsDesc => 'Un seul achat, sans pub pour toujours';
+
+  @override
+  String get removeAdsLongDesc =>
+      'Supprimez définitivement toutes les publicités en un seul achat et concentrez-vous pleinement sur le puzzle.';
+
+  @override
+  String get adsRemoved => 'Pubs supprimées';
+
+  @override
+  String get purchasePending => 'En cours';
+
+  @override
+  String get storeUnavailable => 'Impossible de se connecter à la boutique';
+
+  @override
+  String get restorePurchases => 'Restaurer les achats';
+
+  @override
+  String get restoreRequested => 'Vérification de vos achats';
+
+  @override
+  String get purchaseFailed =>
+      'Le paiement n\'a pas pu aboutir. Veuillez réessayer plus tard';
+
+  @override
+  String get restoreFailed =>
+      'Impossible de restaurer les achats. Veuillez réessayer plus tard';
+
+  @override
+  String get restoreNone => 'Aucun achat à restaurer';
+
+  @override
+  String get resultRemoveAdsLine => 'Envie de jouer sans pub ?';
+
+  @override
+  String get chooseDifficulty => 'Choisir la difficulté';
+
+  @override
+  String difficultyRule(int max) {
+    String _temp0 = intl.Intl.pluralLogic(
+      max,
+      locale: localeName,
+      other:
+          'Partie terminée après $max erreurs · Annuler ne réduit pas les erreurs',
+      one:
+          'Partie terminée après $max erreur · Annuler ne réduit pas les erreurs',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get preparing => 'La partie va commencer';
+
+  @override
+  String get preparingSub => 'Création d\'un nouveau puzzle…';
+
+  @override
+  String get puzzleFailed =>
+      'Impossible de créer le puzzle. Veuillez réessayer';
+
+  @override
+  String get back => 'Retour';
+
+  @override
+  String get more => 'Plus';
+
+  @override
+  String get restartSame => 'Recommencer';
+
+  @override
+  String get restartConfirmTitle => 'Recommencer ce puzzle depuis le début ?';
+
+  @override
+  String get restartConfirmBody =>
+      'Les chiffres saisis, le temps et les erreurs seront réinitialisés.';
+
+  @override
+  String get instantCheck => 'Vérification immédiate';
+
+  @override
+  String mistakes(int count, int max) {
+    return 'Erreurs $count/$max';
+  }
+
+  @override
+  String get undo => 'Annuler';
+
+  @override
+  String get erase => 'Effacer';
+
+  @override
+  String get memo => 'Notes';
+
+  @override
+  String get memoOn => 'Notes actives';
+
+  @override
+  String get mistakeKept => 'Annuler ne réduit pas le nombre d\'erreurs';
+
+  @override
+  String cellEmpty(int row, int column) {
+    return 'Ligne $row, colonne $column, vide';
+  }
+
+  @override
+  String cellValue(int row, int column, int value) {
+    return 'Ligne $row, colonne $column, $value';
+  }
+
+  @override
+  String remainingLabel(int number, int count) {
+    return '$number, reste $count';
+  }
+
+  @override
+  String get cleared => 'Réussi !';
+
+  @override
+  String get gameOver => 'Partie terminée';
+
+  @override
+  String clearedSub(String difficulty) {
+    return 'Vous avez terminé le niveau $difficulty';
+  }
+
+  @override
+  String gameOverSub(int max) {
+    String _temp0 = intl.Intl.pluralLogic(
+      max,
+      locale: localeName,
+      other: 'Vous avez atteint $max erreurs',
+      one: 'Vous avez atteint $max erreur',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get newBest => '🏆 Nouveau record';
+
+  @override
+  String get time => 'Temps';
+
+  @override
+  String get mistakeCount => 'Erreurs';
+
+  @override
+  String mistakeTimes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count fois',
+      one: '$count fois',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get difficulty => 'Difficulté';
+
+  @override
+  String get home => 'Accueil';
+
+  @override
+  String get all => 'Tous';
+
+  @override
+  String get bestRecords => 'Meilleurs temps';
+
+  @override
+  String get bestRecordsSub => 'Temps le plus rapide par difficulté';
+
+  @override
+  String recentRecords(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Parties récentes ($count)',
+      one: 'Partie récente ($count)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get noRecords => 'Aucune partie pour l\'instant';
+
+  @override
+  String get noRecordsSub => 'Terminez un puzzle pour le voir ici';
+
+  @override
+  String get clearTime => 'Temps de résolution';
+
+  @override
+  String get checkOff => 'Sans vérif.';
+
+  @override
+  String recordMistakes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count erreurs',
+      one: '$count erreur',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String recordDate(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return '$dateString';
+  }
+
+  @override
+  String get clearAll => 'Tout supprimer';
+
+  @override
+  String get clearAllTitle => 'Supprimer tout l\'historique ?';
+
+  @override
+  String get clearAllBody =>
+      'Les parties supprimées ne peuvent pas être récupérées.';
+
+  @override
+  String get delete => 'Supprimer';
+
+  @override
+  String get instantCheckDefault => 'Vérification immédiate par défaut';
+
+  @override
+  String get instantCheckDesc => 'Signale une erreur dès sa saisie';
+
+  @override
+  String get privacyOptions => 'Options de confidentialité';
+
+  @override
+  String get privacyOptionsDesc =>
+      'Consultez ou modifiez vos paramètres de consentement publicitaire';
+
+  @override
+  String get appVersion => 'Version de l\'app';
+
+  @override
+  String get footer => 'Sudoku JANG';
+
+  @override
+  String get difficultyEasy => 'Facile';
+
+  @override
+  String get difficultyNormal => 'Moyen';
+
+  @override
+  String get difficultyHard => 'Difficile';
+
+  @override
+  String get difficultyExpert => 'Expert';
+
+  @override
+  String get difficultyHell => 'Enfer';
+}

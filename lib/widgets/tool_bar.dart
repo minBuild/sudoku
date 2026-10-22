@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/sudoku_controller.dart';
-import '../l10n/strings.dart';
+import '../l10n/l10n.dart';
 import '../models/game_status.dart';
 import '../theme/app_theme.dart';
 
@@ -19,7 +19,7 @@ class GameToolBar extends StatelessWidget {
         Expanded(
           child: _ToolButton(
             icon: Icons.undo_rounded,
-            label: S.undo,
+            label: context.l10n.undo,
             onPressed: playing && c.canUndo ? c.undo : null,
           ),
         ),
@@ -27,7 +27,7 @@ class GameToolBar extends StatelessWidget {
         Expanded(
           child: _ToolButton(
             icon: Icons.backspace_outlined,
-            label: S.erase,
+            label: context.l10n.erase,
             onPressed: playing ? c.erase : null,
           ),
         ),
@@ -35,8 +35,8 @@ class GameToolBar extends StatelessWidget {
         Expanded(
           child: _ToolButton(
             icon: Icons.edit_outlined,
-            label: S.memo,
-            activeLabel: S.memoOn,
+            label: context.l10n.memo,
+            activeLabel: context.l10n.memoOn,
             active: c.noteMode,
             onPressed: playing ? c.toggleNote : null,
           ),

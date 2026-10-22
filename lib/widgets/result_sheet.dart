@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../l10n/strings.dart';
+import '../l10n/l10n.dart';
+import '../l10n/difficulty_label.dart';
 import '../controllers/sudoku_controller.dart';
 import '../models/difficulty.dart';
 import '../services/purchase/entitlement_store.dart';
@@ -90,7 +91,7 @@ class ResultSheet extends StatelessWidget {
               runSpacing: 4,
               children: [
                 Text(
-                  solved ? S.cleared : S.gameOver,
+                  solved ? context.l10n.cleared : context.l10n.gameOver,
                   style: text.headlineMedium,
                 ),
                 if (solved && isNewBest)
@@ -104,7 +105,7 @@ class ResultSheet extends StatelessWidget {
                       borderRadius: BorderRadius.circular(9999),
                     ),
                     child: Text(
-                      S.newBest,
+                      context.l10n.newBest,
                       style: text.labelSmall?.copyWith(
                         color: const Color(0xFFB86E00),
                       ),
@@ -115,8 +116,8 @@ class ResultSheet extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               solved
-                  ? S.clearedSub(difficulty.label)
-                  : S.gameOverSub(SudokuController.maxWrong),
+                  ? context.l10n.clearedSub(difficulty.label(context.l10n))
+                  : context.l10n.gameOverSub(SudokuController.maxWrong),
               textAlign: TextAlign.center,
               style: text.bodyMedium?.copyWith(color: AppTheme.textSecondary),
             ),
@@ -130,11 +131,18 @@ class ResultSheet extends StatelessWidget {
               child: IntrinsicHeight(
                 child: Row(
                   children: [
-                    _Stat(S.time, formatClock(elapsedSeconds)),
+                    _Stat(context.l10n.time, formatClock(elapsedSeconds)),
                     const VerticalDivider(width: 1),
-                    _Stat(S.mistakeCount, S.mistakeTimes(wrongCount)),
+                    _Stat(
+                      context.l10n.mistakeCount,
+                      context.l10n.mistakeTimes(wrongCount),
+                    ),
                     const VerticalDivider(width: 1),
-                    _Stat(S.difficulty, difficulty.label, accent: true),
+                    _Stat(
+                      context.l10n.difficulty,
+                      difficulty.label(context.l10n),
+                      accent: true,
+                    ),
                   ],
                 ),
               ),
@@ -146,7 +154,7 @@ class ResultSheet extends StatelessWidget {
               ),
               onPressed: () => Navigator.pop(context, ResultAction.newGame),
               icon: const Icon(Icons.play_arrow_rounded),
-              label: Text(S.newGame),
+              label: Text(context.l10n.newGame),
             ),
             const SizedBox(height: 8),
             FilledButton.tonalIcon(
@@ -157,7 +165,7 @@ class ResultSheet extends StatelessWidget {
               ),
               onPressed: () => Navigator.pop(context, ResultAction.retry),
               icon: const Icon(Icons.refresh_rounded),
-              label: Text(S.restartSame),
+              label: Text(context.l10n.restartSame),
             ),
             const SizedBox(height: 4),
             TextButton.icon(
@@ -166,7 +174,7 @@ class ResultSheet extends StatelessWidget {
               ),
               onPressed: () => Navigator.pop(context, ResultAction.home),
               icon: const Icon(Icons.grid_view_rounded, size: 18),
-              label: Text(S.home),
+              label: Text(context.l10n.home),
             ),
             ValueListenableBuilder<bool>(
               valueListenable: adsRemoved,
@@ -225,8 +233,8 @@ class _RemoveAdsLine extends StatelessWidget {
       valueListenable: purchase.state,
       builder: (context, state, _) {
         final label = state is PurchaseReady
-            ? S.removeAdsWithPrice(state.price)
-            : S.removeAds;
+            ? context.l10n.removeAdsWithPrice(state.price)
+            : context.l10n.removeAds;
         return TextButton(
           style: TextButton.styleFrom(
             foregroundColor: AppTheme.textSecondary,
@@ -234,7 +242,7 @@ class _RemoveAdsLine extends StatelessWidget {
           ),
           onPressed: state is PurchaseReady ? purchase.buy : null,
           child: Text(
-            '${S.resultRemoveAdsLine} $label',
+            '${context.l10n.resultRemoveAdsLine} $label',
             textAlign: TextAlign.center,
           ),
         );

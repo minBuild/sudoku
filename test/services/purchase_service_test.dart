@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sudoku/l10n/strings.dart';
 import 'package:sudoku/services/purchase/entitlement_store.dart';
 import 'package:sudoku/services/purchase/purchase_service.dart';
 
@@ -116,7 +115,7 @@ void main() {
       final fake = _FakeIap(_empty);
       var syncCalls = 0;
       final service = await _service(fake, iosSync: () async => syncCalls++);
-      final errors = <String>[];
+      final errors = <PurchaseError>[];
       service.errors.listen(errors.add);
 
       await service.restore();
@@ -124,7 +123,7 @@ void main() {
 
       expect(syncCalls, 1);
       expect(fake.restoreCalls, 1);
-      expect(errors, [S.restoreNone]);
+      expect(errors, [PurchaseError.restoreNone]);
     },
   );
 
@@ -154,7 +153,7 @@ void main() {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     final fake = _FakeIap(_empty)..ownsRemoveAds = true;
     final service = await _service(fake, iosSync: () async {});
-    final errors = <String>[];
+    final errors = <PurchaseError>[];
     service.errors.listen(errors.add);
 
     await service.restore();

@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'app_deps.dart';
-import 'l10n/strings.dart';
+import 'l10n/l10n.dart';
 import 'screens/home_screen.dart';
 import 'services/ads/ad_service.dart';
 import 'services/game_save_store.dart';
@@ -29,7 +28,7 @@ class SudokuApp extends StatefulWidget {
 
 class _SudokuAppState extends State<SudokuApp> {
   final _messenger = GlobalKey<ScaffoldMessengerState>();
-  StreamSubscription<String>? _errors;
+  StreamSubscription<PurchaseError>? _errors;
   late final AppLifecycleListener _life;
 
   @override
@@ -46,9 +45,19 @@ class _SudokuAppState extends State<SudokuApp> {
     );
   }
 
-  void _showPurchaseError(String msg) {
-    _messenger.currentState?.showSnackBar(SnackBar(content: Text(msg)));
-  }
+  // 문구는 Localizations 아래에서 그려지는 SnackBar 안에서 번역한다.
+  void _showPurchaseError(PurchaseError e) =>
+      _messenger.currentState?.showSnackBar(
+        SnackBar(
+          content: Builder(
+            builder: (c) => Text(switch (e) {
+              PurchaseError.purchaseFailed => c.l10n.purchaseFailed,
+              PurchaseError.restoreFailed => c.l10n.restoreFailed,
+              PurchaseError.restoreNone => c.l10n.restoreNone,
+            }),
+          ),
+        ),
+      );
 
   @override
   void dispose() {
@@ -71,17 +80,13 @@ class _SudokuAppState extends State<SudokuApp> {
         Provider<GameSaveStore?>.value(value: deps.saves),
       ],
       child: MaterialApp(
-        title: S.footer,
+        onGenerateTitle: (c) => c.l10n.footer,
         debugShowCheckedModeBanner: false,
         scaffoldMessengerKey: _messenger,
         theme: AppTheme.light(),
-        locale: const Locale('ko'),
-        supportedLocales: const [Locale('ko')],
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
+        // 기기 언어를 따르고, 미지원 언어는 첫 항목(en)으로 폴백한다.
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
         home: const HomeScreen(),
       ),
     );

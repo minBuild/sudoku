@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -105,5 +106,93 @@ void main() {
         '#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"',
       ),
     );
+  });
+
+  group('지역화', () {
+    const langs = {'en', 'ko', 'fr', 'es', 'ja', 'pt'};
+    const koAtt = '맞춤형 광고를 제공하기 위해 기기 식별자를 사용합니다. 허용하지 않아도 앱은 정상적으로 이용할 수 있어요.';
+
+    String? plistString(String key) => RegExp(
+      '<key>${RegExp.escape(key)}</key>\\s*<string>([^<]*)</string>',
+    ).firstMatch(_read(plistPath))?.group(1);
+
+    Map<String, dynamic> attLocalizations() {
+      final doc =
+          jsonDecode(_read('ios/Runner/InfoPlist.xcstrings'))
+              as Map<String, dynamic>;
+      expect(doc['sourceLanguage'], 'en');
+      final strings = doc['strings'] as Map<String, dynamic>;
+      final att = strings['NSUserTrackingUsageDescription'] as Map;
+      return att['localizations'] as Map<String, dynamic>;
+    }
+
+    String attValue(Map<String, dynamic> locs, String lang) =>
+        (locs[lang] as Map)['stringUnit']['value'] as String;
+
+    test('CFBundleLocalizations 는 6개이고 ARB 언어와 같다', () {
+      final m = RegExp(
+        r'<key>CFBundleLocalizations</key>\s*<array>([\s\S]*?)</array>',
+      ).firstMatch(_read(plistPath));
+      final plistLangs = RegExp(
+        r'<string>([^<]+)</string>',
+      ).allMatches(m!.group(1)!).map((e) => e.group(1)!).toSet();
+      expect(plistLangs, langs);
+
+      final arbLangs = Directory('lib/l10n')
+          .listSync()
+          .map((f) => RegExp(r'app_(\w+)\.arb$').firstMatch(f.path)?.group(1))
+          .whereType<String>()
+          .toSet();
+      expect(arbLangs, plistLangs);
+    });
+
+    test('CFBundleDevelopmentRegion 은 en', () {
+      expect(plistString('CFBundleDevelopmentRegion'), 'en');
+    });
+
+    test('InfoPlist.xcstrings: ATT 문구 6개 언어 모두 번역됨', () {
+      final locs = attLocalizations();
+      expect(locs.keys.toSet(), langs);
+      for (final l in langs) {
+        final unit = (locs[l] as Map)['stringUnit'] as Map;
+        expect(unit['state'], 'translated', reason: l);
+        expect((unit['value'] as String).trim(), isNotEmpty, reason: l);
+      }
+    });
+
+    test('xcstrings ko 는 기존 문구, en 은 Info.plist 원문과 같다', () {
+      final locs = attLocalizations();
+      expect(attValue(locs, 'ko'), koAtt);
+      expect(
+        attValue(locs, 'en'),
+        plistString('NSUserTrackingUsageDescription'),
+      );
+    });
+
+    test('pbxproj: Runner 리소스에만 xcstrings, knownRegions 6개 언어', () {
+      final pbx = _read(pbxprojPath);
+      String block(String header) {
+        final start = pbx.indexOf(header);
+        expect(start, isNot(-1), reason: header);
+        return pbx.substring(start, pbx.indexOf('};', start));
+      }
+
+      expect(
+        block('97C146EC1CF9000F007C117D /* Resources */ = {'),
+        contains('InfoPlist.xcstrings in Resources'),
+      );
+      expect(
+        block('331C807F294A63A400263BE5 /* Resources */ = {'),
+        isNot(contains('InfoPlist.xcstrings')),
+      );
+      final regions = RegExp(r'knownRegions = \(([^)]*)\)')
+          .firstMatch(pbx)!
+          .group(1)!
+          .split(',')
+          .map((e) => e.trim())
+          .where((e) => e.isNotEmpty)
+          .toSet();
+      expect(regions, containsAll(langs));
+    });
   });
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../flows/game_launcher.dart';
-import '../l10n/strings.dart';
+import '../l10n/l10n.dart';
 import '../services/game_save_store.dart';
 import '../services/settings_store.dart';
 import '../theme/app_theme.dart';
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
       settings.markSaveIncompatibleNoticeShown();
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(S.saveIncompatible)));
+      ).showSnackBar(SnackBar(content: Text(context.l10n.saveIncompatible)));
     }
   }
 
@@ -49,16 +49,16 @@ class _HomeScreenState extends State<HomeScreen> {
       final ok = await showDialog<bool>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: Text(S.overwriteTitle),
-          content: Text(S.overwriteBody),
+          title: Text(context.l10n.overwriteTitle),
+          content: Text(context.l10n.overwriteBody),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: Text(S.cancel),
+              child: Text(context.l10n.cancel),
             ),
             FilledButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: Text(S.newGame),
+              child: Text(context.l10n.newGame),
             ),
           ],
         ),
@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Expanded(
                               child: _SecondaryButton(
                                 icon: Icons.emoji_events_outlined,
-                                label: S.records,
+                                label: context.l10n.records,
                                 onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute<void>(
@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Expanded(
                               child: _SecondaryButton(
                                 icon: Icons.settings_outlined,
-                                label: S.settings,
+                                label: context.l10n.settings,
                                 onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute<void>(
@@ -185,7 +185,7 @@ class _PrimaryButton extends StatelessWidget {
     ),
     onPressed: onPressed,
     icon: const Icon(Icons.play_arrow_rounded),
-    label: Text(S.newGame),
+    label: Text(context.l10n.newGame),
   );
 }
 

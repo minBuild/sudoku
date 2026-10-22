@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../l10n/strings.dart';
+import '../l10n/l10n.dart';
 import '../theme/app_theme.dart';
 
 /// 로고 이미지 + "스도쿠 [JANG]" 워드마크.
@@ -27,7 +27,7 @@ class AppLogo extends StatelessWidget {
           crossAxisAlignment: WrapCrossAlignment.center,
           spacing: 8,
           children: [
-            Text(S.appTitle, style: text.displaySmall),
+            Text(context.l10n.appTitle, style: text.displaySmall),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
@@ -35,9 +35,9 @@ class AppLogo extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6),
                 border: Border.all(color: AppTheme.primaryTintPressed),
               ),
-              child: const Text(
-                S.appBadge,
-                style: TextStyle(
+              child: Text(
+                context.l10n.appBadge,
+                style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.5,
@@ -50,7 +50,7 @@ class AppLogo extends StatelessWidget {
         if (showTagline) ...[
           const SizedBox(height: 6),
           Text(
-            S.tagline,
+            context.l10n.tagline,
             textAlign: TextAlign.center,
             style: text.bodyMedium?.copyWith(color: AppTheme.textSecondary),
           ),

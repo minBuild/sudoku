@@ -25,13 +25,15 @@ Flutter 스도쿠 앱. Android 먼저 출시하고, iOS는 코드와 설정을 �
    - 이름 불일치(AdMob `스도쿠` / iOS 홈 `Sudoku` / 스토어 `Sudoku JANG` / Android `sudoku JANG`)는 의도된 상태입니다. AdMob 앱 이름을 바꿔도 App ID는 바뀌지 않습니다.
 8. App Store 가격이 ₩990이 아닐 수 있음(4번과 연결)
 9. 광고 노출 정책: 첫 판부터, 15분 간격
-10. 광고 제거 가격: 기존 결정 ₩990과 권장가 ₩2,200~2,900대가 다름 → 콘솔 등록 전에 확정
+10. 광고 제거 가격: **현재 결정 미정**(IAP 상품 미등록). 권장가 1회 구매 ₩1,900(메모), 이전 결정 ₩990. 콘솔 등록 전에 확정
 
-권장 가격(2026-10-22 메모): 1회 구매 ₩2,200~2,900대. 확정 전까지 콘솔 상품 등록(C3·F3) 보류.
+**현재 결정**: 미정(IAP 상품 미등록). 권장 가격(2026-10-22 메모): 1회 구매 **₩1,900**. App Store는 KRW 가격 목록에 ₩1,900이 있는지 확인이 필요하고, 없으면 사용자 확인 대상입니다. 확정 전까지 콘솔 상품 등록(C3·F3)은 보류합니다.
 
-(이전 결정) **가격 정책(끝자리 내림)**: 기준가 ₩1,000에서 끝자리를 내려 ₩990. Play는 ₩990을 그대로 입력합니다. App Store는 KRW 가격 목록에 ₩990이 있으면 그 값을, 없으면 ₩990 이하에서 가장 높은 가격을 쓰며, 이 경우 사용자 확인이 필요합니다. 해외 가격은 USD $0.99를 기준으로 콘솔이 자동 환산합니다. 앱 코드에는 가격 숫자를 넣지 않고 `ProductDetails.price`만 표시합니다.
+(이전 결정, 확정 아님) **가격 정책(끝자리 내림)**: 기준가 ₩1,000에서 끝자리를 내려 ₩990. Play는 ₩990을 그대로 입력합니다. App Store는 KRW 가격 목록에 ₩990이 있으면 그 값을, 없으면 ₩990 이하에서 가장 높은 가격을 쓰며, 이 경우 사용자 확인이 필요합니다. 해외 가격은 USD $0.99를 기준으로 콘솔이 자동 환산합니다. 앱 코드에는 가격 숫자를 넣지 않고 `ProductDetails.price`만 표시합니다.
 
 ## 가격표
+
+아래 ₩990 값은 이전 결정입니다. 현재는 미정이며 권장가는 ₩1,900입니다(위 메모).
 
 | 스토어 | 상품 ID | 설정 가격 | 확인일 | 앱 표시값(`ProductDetails.price`) |
 |---|---|---|---|---|
@@ -40,10 +42,26 @@ Flutter 스도쿠 앱. Android 먼저 출시하고, iOS는 코드와 설정을 �
 
 빈칸은 콘솔에 등록하고 QA를 마친 뒤 채웁니다. 가격 검증은 logcat의 `IAP price=… raw=… cur=KRW` 로그로 합니다.
 
+## 지원 언어
+
+| 언어 | 코드 | 번역 상태 | 출시 게이트 |
+|---|---|---|---|
+| 한국어(템플릿) | ko | 원문 | 검수 필수 |
+| 영어(폴백) | en | AI 초벌 | 검수 필수 |
+| 프랑스어·스페인어·일본어·포르투갈어(브라질식) | fr·es·ja·pt | AI 초벌 | 검수하거나, 미완이면 플랜 B로 제외 |
+
+- 기기 언어를 따르고, 지원하지 않는 언어는 영어로 표시합니다. 키가 빠지면 생성 단계에서 한국어 값으로 채웁니다.
+- 날짜는 언어별 월·일 형식, 진행률은 언어별 퍼센트 형식입니다. 시간(`mm:ss`)과 가격(스토어 표시값)은 바꾸지 않습니다.
+- 문구를 추가·수정하는 방법: `lib/l10n/app_ko.arb` 수정 → 나머지 5개 ARB 수정 → `flutter pub get`(생성물 갱신) → 생성물까지 커밋.
+- **플랜 B(검수 미완 언어 제외)**: `lib/l10n/app_xx.arb` 삭제 → `flutter pub get` → Info.plist `CFBundleLocalizations`와 `ios/Runner/InfoPlist.xcstrings`에서 해당 언어 제거 → 생성물 diff 포함 커밋. `ios_config_test`가 ARB와 plist 언어 목록이 같은지 검사합니다.
+- iOS ATT 문구는 `ios/Runner/InfoPlist.xcstrings`에 언어별로 있습니다. 홈 화면 이름은 모든 언어에서 `Sudoku`입니다(사용자 확인 7).
+- Android 13 이상의 앱별 언어 설정(`localeConfig`)은 지원하지 않습니다. 기기 언어만 따릅니다.
+
 ## 빌드
 
 ```powershell
 flutter pub get
+git diff --exit-code -- lib/l10n        # 커밋된 생성물이 ARB와 같은지
 dart format --output=none --set-exit-if-changed lib test
 flutter analyze
 flutter test
@@ -95,6 +113,9 @@ flutter build ipa --release            # 실제 단위(송출 검증·심사용)
 for d in $(grep '^DART_DEFINES=' ios/Flutter/Generated.xcconfig | cut -d= -f2- | tr ',' ' '); do echo "$d" | base64 -D; echo; done
 xcodebuild -showBuildSettings -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release | grep GAD_APPLICATION_ID
 xcodebuild -showBuildSettings -workspace ios/Runner.xcworkspace -scheme Runner -configuration Profile | grep GAD_APPLICATION_ID
+# 지역화 확인: .lproj 6개, ko 는 한국어 ATT 문구. 빠졌으면 Xcode 에서 InfoPlist.xcstrings 를 Runner 타깃에 다시 추가
+ls -d build/ios/archive/Runner.xcarchive/Products/Applications/Runner.app/{en,ko,fr,es,ja,pt}.lproj/InfoPlist.strings
+plutil -p build/ios/archive/Runner.xcarchive/Products/Applications/Runner.app/ko.lproj/InfoPlist.strings
 open build/ios/archive/Runner.xcarchive   # Organizer > Distribute App > App Store Connect (업로드만)
 ```
 
@@ -157,3 +178,7 @@ open build/ios/archive/Runner.xcarchive   # Organizer > Distribute App > App Sto
 - 짧은 광고를 원하면 광고 유형에서 '동영상만'을 해제하고 텍스트·이미지·리치 미디어를 허용할지 결정합니다(몇 초 뒤 닫힘, 필 레이트 상승, 앱 업데이트 불필요).
 - 콘솔 빈도 제한(Frequency capping)은 설정하지 않습니다. 앱은 광고 직후 다음 광고를 미리 받아 두므로, 제한이 걸리면 15분 뒤 판에서 광고가 빠집니다.
 - 첫 실행 직후 ATT 창이 뜨기 전에 새 게임을 누르면 첫 판 광고가 생략될 수 있으며, 다음 새 게임에서 나옵니다.
+- 번역 검수: en·ko 필수. ATT·개인정보 옵션·개인정보처리방침 같은 법적 문구는 검수 전 출시 금지.
+- 스토어 등록정보 번역(App Store Connect·Play): 기본 언어가 한국어라서 **영어 등록정보는 출시 필수**, 나머지 4개 언어는 권장. 언어별 스크린샷 포함.
+- AdMob UMP 메시지(GDPR·IDFA)의 언어에 앱 지원 6개 언어와 EEA 지역 언어를 추가.
+- 개인정보처리방침 영어본 작성·호스팅(UMP GDPR 메시지가 링크함). App Store Connect에는 언어별 방침 URL 입력(같은 URL도 가능).

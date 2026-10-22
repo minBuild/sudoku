@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../app.dart';
 import '../app_deps.dart';
-import '../l10n/strings.dart';
+import '../l10n/l10n.dart';
 import '../services/purchase/purchase_service.dart';
 import '../theme/app_theme.dart';
 
@@ -21,7 +21,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _restore() {
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(SnackBar(content: Text(S.restoreRequested)));
+    ).showSnackBar(SnackBar(content: Text(context.l10n.restoreRequested)));
     _deps.purchase.restore();
   }
 
@@ -29,7 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(title: Text(S.settings)),
+      appBar: AppBar(title: Text(context.l10n.settings)),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: AppTheme.maxContentWidth),
@@ -56,11 +56,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               vertical: 4,
                             ),
                             title: Text(
-                              S.instantCheckDefault,
+                              context.l10n.instantCheckDefault,
                               style: text.titleMedium,
                             ),
                             subtitle: Text(
-                              S.instantCheckDesc,
+                              context.l10n.instantCheckDesc,
                               style: text.bodySmall,
                             ),
                             value: _instantCheck,
@@ -76,11 +76,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 horizontal: 20,
                               ),
                               title: Text(
-                                S.privacyOptions,
+                                context.l10n.privacyOptions,
                                 style: text.titleMedium,
                               ),
                               subtitle: Text(
-                                S.privacyOptionsDesc,
+                                context.l10n.privacyOptionsDesc,
                                 style: text.bodySmall,
                               ),
                               trailing: const Icon(Icons.chevron_right_rounded),
@@ -92,7 +92,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 20,
                             ),
-                            title: Text(S.appVersion, style: text.titleMedium),
+                            title: Text(
+                              context.l10n.appVersion,
+                              style: text.titleMedium,
+                            ),
                             trailing: Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 10,
@@ -119,7 +122,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 24),
               Text(
-                S.footer,
+                context.l10n.footer,
                 textAlign: TextAlign.center,
                 style: text.bodySmall,
               ),
@@ -166,10 +169,10 @@ class _RemoveAdsSection extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(S.removeAds, style: text.headlineSmall),
+                    Text(context.l10n.removeAds, style: text.headlineSmall),
                     const SizedBox(height: 2),
                     Text(
-                      S.removeAdsLongDesc,
+                      context.l10n.removeAdsLongDesc,
                       style: text.bodyMedium?.copyWith(
                         color: AppTheme.textSecondary,
                       ),
@@ -185,24 +188,24 @@ class _RemoveAdsSection extends StatelessWidget {
             builder: (context, state, _) => switch (state) {
               PurchaseReady(:final price) => FilledButton(
                 onPressed: deps.purchase.buy,
-                child: Text(S.removeAdsWithPrice(price)),
+                child: Text(context.l10n.removeAdsWithPrice(price)),
               ),
               PurchasePending() => FilledButton(
                 onPressed: null,
-                child: Text(S.purchasePending),
+                child: Text(context.l10n.purchasePending),
               ),
               PurchaseOwned() => FilledButton.icon(
                 onPressed: null,
                 icon: const Icon(Icons.check_rounded),
-                label: Text(S.adsRemoved),
+                label: Text(context.l10n.adsRemoved),
               ),
               PurchaseUnavailable() => FilledButton(
                 onPressed: null,
-                child: Text(S.storeUnavailable),
+                child: Text(context.l10n.storeUnavailable),
               ),
               PurchaseLoading() => FilledButton(
                 onPressed: null,
-                child: Text(S.removeAds),
+                child: Text(context.l10n.removeAds),
               ),
             },
           ),
@@ -213,7 +216,7 @@ class _RemoveAdsSection extends StatelessWidget {
               foregroundColor: AppTheme.primary,
             ),
             onPressed: onRestore,
-            child: Text(S.restorePurchases),
+            child: Text(context.l10n.restorePurchases),
           ),
         ],
       ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 
 import '../../controllers/sudoku_controller.dart';
-import '../../l10n/strings.dart';
+import '../../l10n/l10n.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/sudoku_colors.dart';
 
@@ -60,12 +60,14 @@ class BoardPainter extends CustomPainter {
     required this.revision,
     required this.colors,
     required this.cache,
+    required this.l10n,
   });
 
   final SudokuController c;
   final int revision;
   final SudokuColors colors;
   final BoardTextCache cache;
+  final AppLocalizations l10n;
 
   static const radius = 12.0;
 
@@ -172,7 +174,7 @@ class BoardPainter extends CustomPainter {
           key: ValueKey('cell$i'),
           rect: Rect.fromLTWH(i % 9 * cell, i ~/ 9 * cell, cell, cell),
           properties: SemanticsProperties(
-            label: S.cell(i ~/ 9 + 1, i % 9 + 1, c.valueAt(i)),
+            label: _cellLabel(i ~/ 9 + 1, i % 9 + 1, c.valueAt(i)),
             selected: c.selected == i,
             textDirection: TextDirection.ltr,
           ),
@@ -180,7 +182,13 @@ class BoardPainter extends CustomPainter {
     ];
   };
 
+  /// 보드 셀의 스크린리더 라벨. [value] 가 0 이면 빈 칸.
+  String _cellLabel(int row, int column, int value) => value == 0
+      ? l10n.cellEmpty(row, column)
+      : l10n.cellValue(row, column, value);
+
   @override
   bool shouldRebuildSemantics(BoardPainter oldDelegate) =>
-      oldDelegate.revision != revision;
+      oldDelegate.revision != revision ||
+      oldDelegate.l10n.localeName != l10n.localeName;
 }

@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart' show Locale;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoku/app_deps.dart';
+import 'package:sudoku/l10n/app_localizations.dart';
 import 'package:sudoku/models/sudoku_puzzle.dart';
 import 'package:sudoku/services/ads/ad_schedule.dart';
 import 'package:sudoku/services/ads/ad_service.dart';
@@ -11,6 +13,9 @@ import 'package:sudoku/services/purchase/entitlement_store.dart';
 import 'package:sudoku/services/purchase/purchase_service.dart';
 import 'package:sudoku/services/record_store.dart';
 import 'package:sudoku/services/settings_store.dart';
+
+/// 위젯 테스트 기본 로케일(en_US)의 문구.
+final l10nEn = lookupAppLocalizations(const Locale('en'));
 
 /// 유효한 완성판.
 List<List<int>> solvedGrid() => List.generate(
@@ -81,12 +86,12 @@ class FakePurchase implements PurchaseGateway {
   @override
   final ValueNotifier<PurchaseUiState> state;
 
-  final errorsController = StreamController<String>.broadcast();
+  final errorsController = StreamController<PurchaseError>.broadcast();
   int buyCalls = 0;
   int restoreCalls = 0;
 
   @override
-  Stream<String> get errors => errorsController.stream;
+  Stream<PurchaseError> get errors => errorsController.stream;
 
   @override
   Future<void> buy() async => buyCalls++;

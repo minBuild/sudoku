@@ -8,8 +8,8 @@ import 'package:provider/provider.dart';
 import '../app_deps.dart';
 import '../controllers/sudoku_controller.dart';
 import '../flows/game_session_observer.dart';
-import '../l10n/strings.dart';
-import '../models/difficulty.dart';
+import '../l10n/l10n.dart';
+import '../l10n/difficulty_label.dart';
 import '../models/game_status.dart';
 import '../services/settings_store.dart';
 import '../theme/app_theme.dart';
@@ -75,7 +75,7 @@ class _GameScreenState extends State<GameScreen> {
         _settings.markMistakeHintShown();
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(S.mistakeKept)));
+        ).showSnackBar(SnackBar(content: Text(context.l10n.mistakeKept)));
     }
   }
 
@@ -119,16 +119,16 @@ class _GameScreenState extends State<GameScreen> {
         final ok = await showDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text(S.restartConfirmTitle),
-            content: Text(S.restartConfirmBody),
+            title: Text(context.l10n.restartConfirmTitle),
+            content: Text(context.l10n.restartConfirmBody),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(ctx, false),
-                child: Text(S.cancel),
+                child: Text(context.l10n.cancel),
               ),
               FilledButton(
                 onPressed: () => Navigator.pop(ctx, true),
-                child: Text(S.restartSame),
+                child: Text(context.l10n.restartSame),
               ),
             ],
           ),
@@ -240,7 +240,7 @@ class _TopBar extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-            tooltip: S.back,
+            tooltip: context.l10n.back,
             onPressed: () => Navigator.maybePop(context),
             icon: const Icon(Icons.arrow_back_rounded),
             color: AppTheme.textSecondary,
@@ -272,7 +272,7 @@ class _TopBar extends StatelessWidget {
                     const SizedBox(width: 6),
                     Flexible(
                       child: Text(
-                        c.difficulty.label,
+                        c.difficulty.label(context.l10n),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.headlineSmall,
@@ -284,7 +284,7 @@ class _TopBar extends StatelessWidget {
             ),
           ),
           PopupMenuButton<_MenuAction>(
-            tooltip: S.more,
+            tooltip: context.l10n.more,
             icon: const Icon(Icons.more_vert_rounded),
             iconColor: AppTheme.textSecondary,
             onSelected: onMenu,
@@ -292,13 +292,13 @@ class _TopBar extends StatelessWidget {
               PopupMenuItem(
                 value: _MenuAction.restart,
                 enabled: !c.status.isOver,
-                child: Text(S.restartSame),
+                child: Text(context.l10n.restartSame),
               ),
               CheckedPopupMenuItem(
                 value: _MenuAction.instantCheck,
                 checked: c.instantCheck,
                 enabled: !c.status.isOver,
-                child: Text(S.instantCheck),
+                child: Text(context.l10n.instantCheck),
               ),
             ],
           ),
@@ -330,7 +330,10 @@ class _Chips extends StatelessWidget {
           if (c.instantCheck)
             StatChip(
               icon: Icons.close_rounded,
-              text: S.mistakes(c.wrongCount, SudokuController.maxWrong),
+              text: context.l10n.mistakes(
+                c.wrongCount,
+                SudokuController.maxWrong,
+              ),
               color: c.wrongCount >= SudokuController.maxWrong - 1
                   ? colors.warning
                   : AppTheme.text,

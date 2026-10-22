@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../app_deps.dart';
 import '../flows/game_launcher.dart';
-import '../l10n/strings.dart';
+import '../l10n/l10n.dart';
 import '../models/difficulty.dart';
 import '../services/purchase/purchase_service.dart';
 import '../theme/app_theme.dart';
@@ -51,7 +51,7 @@ class _PrepareScreenState extends State<PrepareScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(S.puzzleFailed)));
+      ).showSnackBar(SnackBar(content: Text(context.l10n.puzzleFailed)));
       Navigator.pop(context);
     }
   }
@@ -97,13 +97,13 @@ class _PrepareScreenState extends State<PrepareScreen> {
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      S.preparing,
+                      context.l10n.preparing,
                       textAlign: TextAlign.center,
                       style: text.headlineSmall,
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      S.preparingSub,
+                      context.l10n.preparingSub,
                       textAlign: TextAlign.center,
                       style: text.bodyMedium?.copyWith(
                         color: AppTheme.textSecondary,
@@ -147,7 +147,7 @@ class _RemoveAdsButton extends StatelessWidget {
                       ),
                       onPressed: onPressed,
                       icon: const Icon(Icons.auto_awesome_outlined, size: 18),
-                      label: Text(S.removeAdsWithPrice(state.price)),
+                      label: Text(context.l10n.removeAdsWithPrice(state.price)),
                     )
                   : const SizedBox.shrink(),
             ),

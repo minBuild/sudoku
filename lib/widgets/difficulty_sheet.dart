@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../controllers/sudoku_controller.dart';
-import '../l10n/strings.dart';
+import '../l10n/l10n.dart';
+import '../l10n/difficulty_label.dart';
 import '../models/difficulty.dart';
 import '../theme/app_theme.dart';
 
@@ -27,7 +28,7 @@ class DifficultySheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(S.chooseDifficulty, style: text.headlineSmall),
+            Text(context.l10n.chooseDifficulty, style: text.headlineSmall),
             const SizedBox(height: 16),
             for (final d in Difficulty.values) ...[
               _DifficultyTile(d: d),
@@ -35,7 +36,7 @@ class DifficultySheet extends StatelessWidget {
             ],
             const SizedBox(height: 8),
             Text(
-              S.difficultyRule(SudokuController.maxWrong),
+              context.l10n.difficultyRule(SudokuController.maxWrong),
               textAlign: TextAlign.center,
               style: text.bodySmall,
             ),
@@ -68,7 +69,7 @@ class _DifficultyTile extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    d.label,
+                    d.label(context.l10n),
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),

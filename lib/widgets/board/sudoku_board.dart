@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/sudoku_controller.dart';
+import '../../l10n/l10n.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/sudoku_colors.dart';
 import 'board_painter.dart';
@@ -72,6 +73,7 @@ class SudokuBoardState extends State<SudokuBoard>
                   revision: c.revision,
                   colors: colors,
                   cache: _cache,
+                  l10n: context.l10n,
                 ),
               ),
             ),

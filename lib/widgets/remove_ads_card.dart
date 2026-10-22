@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../l10n/strings.dart';
+import '../l10n/l10n.dart';
 import '../services/purchase/entitlement_store.dart';
 import '../services/purchase/purchase_service.dart';
 import '../theme/app_theme.dart';
@@ -43,12 +43,15 @@ class RemoveAdsCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 6),
                             Flexible(
-                              child: Text(S.removeAds, style: text.titleMedium),
+                              child: Text(
+                                context.l10n.removeAds,
+                                style: text.titleMedium,
+                              ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 2),
-                        Text(S.removeAdsDesc, style: text.bodySmall),
+                        Text(context.l10n.removeAdsDesc, style: text.bodySmall),
                       ],
                     ),
                   ),
@@ -60,10 +63,10 @@ class RemoveAdsCard extends StatelessWidget {
                         fit: BoxFit.scaleDown,
                         child: Text(
                           ready
-                              ? S.removeAdsWithPrice(state.price)
+                              ? context.l10n.removeAdsWithPrice(state.price)
                               : pending
-                              ? S.purchasePending
-                              : S.removeAds,
+                              ? context.l10n.purchasePending
+                              : context.l10n.removeAds,
                         ),
                       ),
                     ),

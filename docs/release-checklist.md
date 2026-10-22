@@ -21,7 +21,7 @@
 |---|---|---|---|
 | R1 | 디자인 새로, 깔끔하게 | 완료 (2.0 리디자인, Stitch 대응). 회귀 점검만 진행 | A6 |
 | R2 | 게임 시작 시 10초 정도 광고 | iOS 단위 ID 반영, 맥 빌드와 E3 후 송출. Android 미등록. 광고 길이는 앱이 정할 수 없음(README 표) | E1 · E3 · D4. 첫 판부터 15분 간격(README) |
-| R3 | 평생 광고 제거 990원(끝자리 내림) | 코드 하드코딩 0건, `ProductDetails.price`만 표시. 콘솔 상품 등록 남음. 권장가 ₩2,200~2,900대 메모, ₩990과 달라 확정 필요 | C3 · F3 |
+| R3 | 평생 광고 제거 990원(끝자리 내림) | 코드 하드코딩 0건, `ProductDetails.price`만 표시. 콘솔 상품 등록 남음. 권장가 1회 구매 ₩1,900 메모(README), 이전 결정 ₩990과 달라 확정 필요 | C3 · F3 |
 
 ## A. 코드·빌드 (AI)
 
@@ -34,6 +34,7 @@
 | [x] | A4 Billing 8 이상 요건: `in_app_purchase_android 0.5.5`가 billing 9.1.0 사용 → 충족 | AI | - | `pubspec.lock` |
 | [x] | A5 문서 초안 (이 문서, 개인정보처리방침, 스토어 등록정보) | AI | - | `docs/` 파일 3개 |
 | [ ] | A6 스토어 스크린샷을 에뮬레이터로 캡처 (후속 작업) | AI | - | 휴대폰 스크린샷 2장 이상 |
+| [x] | A7 다국어(ko·en·fr·es·ja·pt) ARB 분리, 폴백 en, iOS CFBundleLocalizations·InfoPlist.xcstrings | AI | - | test/l10n/*, ios_config_test 통과 |
 
 ## B. 서명
 
@@ -57,7 +58,7 @@
 | [ ] | C4 라이선스 테스터 등록. 구매·취소·pending·복원 테스트는 내부 테스트 링크로 설치한 빌드에서만 | 사용자 | C2 | 테스트 구매 성공, 재설치 후 자동 복원 |
 | [ ] | C5 스토어 등록 정보([store-listing.md](store-listing.md)): 아이콘 512, 피처 그래픽 1024×500, 휴대폰 스크린샷 2장 이상, 웹사이트는 E4 도메인 루트 | 사용자 | A6 | 등록정보 저장 |
 | [ ] | C6 앱 콘텐츠: 방침 URL, 광고 포함 = 예, 광고 ID 사용 = 예, 데이터 보안, 콘텐츠 등급, 타깃 연령 13세 이상 | 사용자 | D2 | 앱 콘텐츠 페이지 모두 완료 |
-| [ ] | C7 프로덕션 게시 | 사용자 | C2~C6 | 스토어 페이지 공개 |
+| [ ] | C7 프로덕션 게시 | 사용자 | C2~C6 · G1 · G2 · G3 · G4 | 스토어 페이지 공개 |
 
 ## D. 개인정보·동의
 
@@ -65,7 +66,7 @@
 |---|---|---|---|---|
 | [ ] | D1 [개인정보처리방침](privacy-policy.md) 초안을 채움 | 사용자 | - | `TODO_` 검색 결과 0건 |
 | [ ] | D2 GitHub Pages 사용자 사이트(`<user>.github.io`) 또는 자체 도메인에 호스팅 | 사용자 | D1 | 로그인 없이 열림 |
-| [ ] | D3 UMP 메시지. C4 ATT 채널이 있으면 IDFA 메시지는 선택, ATT 블록을 제거했으면 필수(없으면 ATT 창이 뜨지 않아 App Store 5.1.2 반려 위험). GDPR 메시지는 D2 이후 | 사용자 | D2 | AdMob > 개인정보 보호 및 메시지에서 게시 상태 |
+| [ ] | D3 UMP 메시지. C4 ATT 채널이 있으면 IDFA 메시지는 선택, ATT 블록을 제거했으면 필수(없으면 ATT 창이 뜨지 않아 App Store 5.1.2 반려 위험). GDPR 메시지는 D2 이후. 메시지 언어에 앱 지원 6개 언어(ko·en·fr·es·ja·pt)와 EEA 지역 언어 추가. EEA 언어의 Google 기본 번역 여부는 콘솔에서 확인 | 사용자 | D2 | AdMob > 개인정보 보호 및 메시지에서 게시 상태 |
 | [ ] | D4 테스트 기기 등록. 실기기 릴리스 테스트 전에 반드시. 광고는 클릭하지 않음. 내부 테스트 빌드도 실제 광고를 받음 | 사용자 | E1 | `--dart-define-from-file=config/ads.release.json`의 `ADMOB_TEST_DEVICES`, 광고에 "테스트 광고" 표시 |
 
 ## E. AdMob
@@ -85,15 +86,25 @@
 | [ ] | F0 맥북 준비: Xcode 26 이상(iOS 26 SDK, 업로드 전 Apple 공지로 최소 요건 재확인), CocoaPods, Flutter 3.47.7, Xcode에서 Signing Team 선택 | 사용자 | - | `flutter doctor`, `pod --version` |
 | [ ] | F1 Bundle ID `com.jang.sudoku` 등록, App Store Connect 앱 생성 | 사용자 | - | App Store Connect 앱 목록 |
 | [ ] | F2 유료 앱 계약 | 사용자 | - | 계약 상태 "활성" |
-| [ ] | F3 `remove_ads` 가격 **가격 확정 후**(README §사용자 확인 10) ₩990. 목록에 없으면 ₩990 이하 최고가, **사용자 확인 필요**. 결과는 README 가격표 | 사용자 | F1 · F2 | Sandbox에서 표시 가격 |
+| [ ] | F3 `remove_ads` 가격 **가격 확정 후**(README §사용자 확인 10) ₩990. 목록에 없으면 ₩990 이하 최고가, **사용자 확인 필요**. 결과는 README 가격표. Apple KRW 가격 목록에 ₩1,900(권장가)이 있는지도 확인해 README §사용자 확인 10에 기록 | 사용자 | F1 · F2 | Sandbox에서 표시 가격 |
 | [ ] | F4 App Privacy 라벨(기기 ID, 광고 데이터, 추적 = 예)과 방침 URL | 사용자 | D2 | App Privacy 페이지, **TestFlight 실기기에서 ATT 창이 뜨는지 확인(필수)** |
 | [ ] | F4b 마케팅 URL·지원 URL = E4 도메인 루트(AdMob이 app-ads.txt를 찾는 위치) | 사용자 | D2 · F1 | App Store Connect 앱 정보·버전 페이지 URL |
-| [ ] | F5 [README "맥북에서 할 순서"](../README.md#맥북에서-할-순서): `pod install`, 시뮬레이터 확인, `flutter build ipa`, `-showBuildSettings`로 `GAD_APPLICATION_ID`가 Release=실제·Profile=샘플인지 확인, Organizer 업로드. 샘플 단위 빌드 게이트: 심사용 빌드는 `DART_DEFINES`에 `ADMOB_INTERSTITIAL_IOS`가 없어야 하고, `+N`이 TestFlight 빌드보다 커야 하며(같은 번호 재업로드 금지), 실제 단위 빌드는 D4 이후. 실제 단위 빌드는 첫 판부터 광고가 나오므로 D4 이후 실행, 테스트 중 광고 클릭 금지 | 사용자 | F0 · A1-iOS | Organizer 업로드 완료, TestFlight 빌드 표시 |
+| [ ] | F5 [README "맥북에서 할 순서"](../README.md#맥북에서-할-순서): `pod install`, 시뮬레이터 확인, `flutter build ipa`, `-showBuildSettings`로 `GAD_APPLICATION_ID`가 Release=실제·Profile=샘플인지 확인, Organizer 업로드. 샘플 단위 빌드 게이트: 심사용 빌드는 `DART_DEFINES`에 `ADMOB_INTERSTITIAL_IOS`가 없어야 하고, `+N`이 TestFlight 빌드보다 커야 하며(같은 번호 재업로드 금지), 실제 단위 빌드는 D4 이후. 실제 단위 빌드는 첫 판부터 광고가 나오므로 D4 이후 실행, 테스트 중 광고 클릭 금지. 아카이브 `.lproj/InfoPlist.strings` 6개 확인(README) | 사용자 | F0 · A1-iOS | Organizer 업로드 완료, TestFlight 빌드 표시 |
 | [ ] | F6 Sandbox 구매·복원, 구매 없는 계정에서 "복원할 구매가 없어요" 표시 | 사용자 | F3 · F5 | 구매 후 광고 사라짐, 재설치 후 자동 복원 |
-| [ ] | F6b 실기기 QA(아래 표). 결과를 표에 기록 | 사용자 | F5 · F6 · D4 | 14개 상황 모두 기대 결과 |
+| [ ] | F6b 실기기 QA(아래 표). 결과를 표에 기록 | 사용자 | F5 · F6 · D4 | 21개 상황 모두 기대 결과 |
 | [ ] | F7 버전 페이지 "앱 내 구입"에 `remove_ads` 첨부(심사용 스크린샷 포함, 빠지면 반려) | 사용자 | F3 | 버전 페이지 앱 내 구입 목록 |
 | [ ] | F8 심사 메모: "새 게임 시작 시 전면광고(첫 판부터, 이후 15분 간격), 광고 제거는 비소모성 IAP, 설정 > 구매 복원. ATT 창은 첫 실행 시 홈 화면이 뜬 직후 표시됩니다. 설정 > 개인정보 보호 및 보안 > 추적 > '앱이 추적을 요청하도록 허용'이 꺼져 있으면 iOS가 창을 띄우지 않습니다." | 사용자 | - | 앱 심사 정보 메모란 |
-| [ ] | F9 심사 제출 | 사용자 | F1~F8 | 심사 상태 |
+| [ ] | F9 심사 제출 | 사용자 | F1~F8 · G1~G5 | 심사 상태 |
+
+## G. 다국어(사용자)
+
+| [ ] | 항목 | 담당 | 선행 | 어떻게 확인하나 |
+|---|---|---|---|---|
+| [ ] | G1 en·ko 번역 검수(`lib/l10n/app_en.arb`, `app_ko.arb`) | 사용자 | A7 | 검수자·날짜 기록 |
+| [ ] | G2 **법적 문구 검수(검수 전 출시 금지)**: ATT 문구(`InfoPlist.xcstrings` 6개 언어), `privacyOptions*`, 개인정보처리방침 | 사용자 | A7 | 검수자·날짜 기록 |
+| [ ] | G3 fr·es·ja·pt 검수. 미완이면 README 플랜 B로 해당 언어 제외 후 출시 | 사용자 | A7 | 검수 완료 또는 제외 커밋 |
+| [ ] | G4 영어 스토어 등록정보(Play·App Store Connect) **출시 필수**. 나머지 4개 언어는 권장. 언어별 스크린샷 | 사용자 | C5 · F1 | 콘솔 등록정보 언어 목록 |
+| [ ] | G5 개인정보처리방침 영어본 호스팅, App Store Connect 언어별 방침 URL | 사용자 | D2 | 로그인 없이 열림 |
 
 ### F6b 실기기 QA
 
@@ -113,6 +124,15 @@
 | 12 | 15분 경과 후 이어하기 / 같은 퍼즐 다시 / 재시작 | 광고 없음 | |
 | 13 | 새 게임 연타 | 광고 1회 | |
 | 14 | 광고 중 앱 강제 종료 후 재실행 → 새 게임 | 광고(의도된 동작) | |
+| 15 | 이어하기 저장이 있는 상태에서 기기 언어 변경 | 이어하기 카드의 난이도 이름이 새 언어로 표시(스크린샷) | |
+| 16 | 기록 화면 날짜, 6개 언어 | 월·일 표기가 자연스러움(es 약어 점 등, 스크린샷) | |
+| 17 | 이어하기 진행률 %, fr·es | 숫자와 % 사이 공백이 자연스러움(스크린샷) | |
+| 18 | 기기 언어 `de` / `zh-Hant` / `fr-CA` | en / en / fr | |
+| 19 | 프랑스어 기기에서 첫 실행 | ATT 창 문구가 프랑스어, UMP 폼 언어는 D3 설정에 따름 | |
+| 20 | 320pt 폭 기기(iPhone SE 1세대급), fr·es·pt | 홈·게임·설정에서 글자 잘림이나 겹침 없음 | |
+| 21 | 지원하지 않는 언어 기기 첫 실행 | ATT 창이 영어 | |
+
+게임 중 언어 변경 시 상태 유지와 폴백 규칙은 `test/l10n/locale_test.dart`가, 360dp·1.3배 글자 overflow는 `test/l10n/layout_test.dart`가 검증합니다.
 
 15분 경계(14:59/15:00)와 시계 역행은 `test/services/ad_schedule_test.dart`가 검증합니다.
 
@@ -122,9 +142,10 @@ UMP 갱신 무응답 시나리오는 실기기에서 재현할 수 없으므로 
 
 | 블록 | 남음 / 전체 |
 |---|---|
-| A | 3 / 7 |
+| A | 3 / 8 |
 | B | 4 / 4 |
 | C | 8 / 8 |
 | D | 4 / 4 |
 | E | 4 / 5 |
 | F | 12 / 12 |
+| G | 5 / 5 |

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../l10n/strings.dart';
-import '../models/difficulty.dart';
+import '../l10n/l10n.dart';
+import '../l10n/difficulty_label.dart';
 import '../services/game_save_store.dart';
 import '../theme/app_theme.dart';
 import '../util/format.dart';
@@ -48,13 +48,16 @@ class ContinueCard extends StatelessWidget {
                         spacing: 6,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          Text(S.continueTitle, style: text.titleMedium),
-                          _Badge(meta.difficulty.label),
+                          Text(
+                            context.l10n.continueTitle,
+                            style: text.titleMedium,
+                          ),
+                          _Badge(meta.difficulty.label(context.l10n)),
                         ],
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        S.continueDetail(
+                        context.l10n.continueDetail(
                           meta.filledRatio,
                           formatClock(meta.elapsedMs ~/ 1000),
                         ),

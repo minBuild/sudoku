@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../l10n/strings.dart';
+import '../l10n/l10n.dart';
+import '../l10n/difficulty_label.dart';
 import '../models/difficulty.dart';
 import '../models/game_record.dart';
 import '../services/record_store.dart';
@@ -37,17 +38,17 @@ class _RecordsScreenState extends State<RecordsScreen> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(S.clearAllTitle),
-        content: Text(S.clearAllBody),
+        title: Text(context.l10n.clearAllTitle),
+        content: Text(context.l10n.clearAllBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: Text(S.cancel),
+            child: Text(context.l10n.cancel),
           ),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: AppTheme.error),
             onPressed: () => Navigator.pop(ctx, true),
-            child: Text(S.delete),
+            child: Text(context.l10n.delete),
           ),
         ],
       ),
@@ -63,10 +64,10 @@ class _RecordsScreenState extends State<RecordsScreen> {
     final hasRecords = records != null && records.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.records),
+        title: Text(context.l10n.records),
         actions: [
           IconButton(
-            tooltip: S.clearAll,
+            tooltip: context.l10n.clearAll,
             onPressed: hasRecords ? _clearAll : null,
             icon: const Icon(Icons.delete_outline_rounded),
           ),
@@ -106,7 +107,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
           ),
           sliver: SliverToBoxAdapter(
             child: Text(
-              S.recentRecords(filtered.length),
+              context.l10n.recentRecords(filtered.length),
               style: text.headlineSmall,
             ),
           ),
@@ -154,8 +155,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
       ),
       child: Row(
         children: [
-          chip(S.all, null),
-          for (final d in Difficulty.values) chip(d.label, d),
+          chip(context.l10n.all, null),
+          for (final d in Difficulty.values) chip(d.label(context.l10n), d),
         ],
       ),
     );
@@ -203,8 +204,8 @@ class _BestCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(S.bestRecords, style: text.titleMedium),
-                    Text(S.bestRecordsSub, style: text.bodySmall),
+                    Text(context.l10n.bestRecords, style: text.titleMedium),
+                    Text(context.l10n.bestRecordsSub, style: text.bodySmall),
                   ],
                 ),
               ),
@@ -230,7 +231,7 @@ class _BestCard extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(d.label, style: text.bodySmall),
+                            Text(d.label(context.l10n), style: text.bodySmall),
                             const SizedBox(height: 2),
                             FittedBox(
                               fit: BoxFit.scaleDown,
@@ -281,17 +282,20 @@ class _RecordTile extends StatelessWidget {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               _Badge(
-                record.difficulty.label,
+                record.difficulty.label(context.l10n),
                 bg: AppTheme.primaryTint,
                 fg: AppTheme.primary,
               ),
               if (!record.instantCheck)
                 _Badge(
-                  S.checkOff,
+                  context.l10n.checkOff,
                   bg: Color(0xFFF3F4F6),
                   fg: AppTheme.textSecondary,
                 ),
-              Text(S.recordDate(record.finishedAt), style: text.bodySmall),
+              Text(
+                context.l10n.recordDate(record.finishedAt),
+                style: text.bodySmall,
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -302,7 +306,7 @@ class _RecordTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(S.clearTime, style: text.bodySmall),
+                    Text(context.l10n.clearTime, style: text.bodySmall),
                     Text(
                       formatClock(record.elapsedSeconds),
                       style: text.headlineMedium?.copyWith(
@@ -332,7 +336,7 @@ class _RecordTile extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      S.recordMistakes(record.wrongCount),
+                      context.l10n.recordMistakes(record.wrongCount),
                       style: text.labelSmall?.copyWith(
                         color: AppTheme.textSecondary,
                       ),
@@ -385,10 +389,10 @@ class _Empty extends StatelessWidget {
             color: AppTheme.textSecondary,
           ),
           const SizedBox(height: 12),
-          Text(S.noRecords, style: text.titleMedium),
+          Text(context.l10n.noRecords, style: text.titleMedium),
           const SizedBox(height: 4),
           Text(
-            S.noRecordsSub,
+            context.l10n.noRecordsSub,
             textAlign: TextAlign.center,
             style: text.bodySmall,
           ),

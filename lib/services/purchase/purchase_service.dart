@@ -4,8 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 
-import '../../l10n/strings.dart';
 import 'entitlement_store.dart';
+
+/// 스낵바로 알릴 구매 오류. 문구는 UI 에서 번역한다.
+enum PurchaseError { purchaseFailed, restoreFailed, restoreNone }
 
 sealed class PurchaseUiState {
   const PurchaseUiState();
@@ -39,8 +41,8 @@ final class PurchaseOwned extends PurchaseUiState {
 abstract interface class PurchaseGateway {
   ValueListenable<PurchaseUiState> get state;
 
-  /// 스낵바용 메시지.
-  Stream<String> get errors;
+  /// 스낵바용 오류.
+  Stream<PurchaseError> get errors;
 
   /// Ready 에서만 동작한다. 중복 호출은 무시.
   Future<void> buy();
@@ -71,7 +73,7 @@ class PurchaseService implements PurchaseGateway {
   final InAppPurchase? _iapOverride;
   final Future<void> Function()? _iosSyncOverride;
   final ValueNotifier<PurchaseUiState> _state;
-  final _errors = StreamController<String>.broadcast();
+  final _errors = StreamController<PurchaseError>.broadcast();
   StreamSubscription<List<PurchaseDetails>>? _sub;
   ProductDetails? _product;
   bool _busy = false;
@@ -91,7 +93,7 @@ class PurchaseService implements PurchaseGateway {
   ValueListenable<PurchaseUiState> get state => _state;
 
   @override
-  Stream<String> get errors => _errors.stream;
+  Stream<PurchaseError> get errors => _errors.stream;
 
   /// runApp 전에 동기로 구독한다 (D13).
   void listen() {
@@ -164,7 +166,7 @@ class PurchaseService implements PurchaseGateway {
     } catch (e) {
       debugPrint('IAP buy 오류: $e');
       _busy = false;
-      _errors.add(S.purchaseFailed);
+      _errors.add(PurchaseError.purchaseFailed);
     }
   }
 
@@ -183,11 +185,13 @@ class PurchaseService implements PurchaseGateway {
       }
       if (userInitiated) {
         await Future<void>.delayed(const Duration(milliseconds: 300));
-        if (!_entitlement.adsRemoved.value) _errors.add(S.restoreNone);
+        if (!_entitlement.adsRemoved.value) {
+          _errors.add(PurchaseError.restoreNone);
+        }
       }
     } catch (e) {
       debugPrint('IAP restore 오류: $e');
-      if (userInitiated) _errors.add(S.restoreFailed);
+      if (userInitiated) _errors.add(PurchaseError.restoreFailed);
     } finally {
       _restoring = false;
     }
@@ -212,7 +216,7 @@ class PurchaseService implements PurchaseGateway {
               if (_isAndroid && msg.contains('itemAlreadyOwned')) {
                 unawaited(_restore(userInitiated: false));
               } else {
-                _errors.add(S.purchaseFailed);
+                _errors.add(PurchaseError.purchaseFailed);
               }
             case PurchaseStatus.canceled:
               _busy = false;
