@@ -33,7 +33,6 @@ abstract interface class AdGateway {
 }
 
 class AdPolicy {
-  static const minInterval = Duration.zero;
   static const loadWait = Duration(seconds: 3);
   static const showWait = Duration(seconds: 5);
 }
@@ -66,7 +65,6 @@ class AdMobService implements AdGateway {
   InterstitialAd? _cached;
   DateTime? _cachedAt;
   Future<InterstitialAd?>? _loading;
-  DateTime? _lastShownAt;
 
   @visibleForTesting
   static bool isExpired(DateTime loadedAt, DateTime now) =>
@@ -121,12 +119,7 @@ class AdMobService implements AdGateway {
   @override
   Future<AdOutcome> showPreGameAd() async {
     final unitId = AdIds.interstitial;
-    final last = _lastShownAt;
-    if (_disabled ||
-        _phase != AdPhase.idle ||
-        unitId == null ||
-        (last != null &&
-            DateTime.now().difference(last) < AdPolicy.minInterval)) {
+    if (_disabled || _phase != AdPhase.idle || unitId == null) {
       return AdOutcome.skipped;
     }
 
@@ -216,7 +209,6 @@ class AdMobService implements AdGateway {
       }
       return result.future;
     }
-    _lastShownAt = DateTime.now();
 
     // ③ 표시된 뒤에는 타임아웃 없이 콜백만 기다린다.
     return result.future;

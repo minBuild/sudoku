@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/difficulty.dart';
 import 'models/sudoku_puzzle.dart';
+import 'services/ads/ad_schedule.dart';
 import 'services/ads/ad_service.dart';
 import 'services/game_save_store.dart';
 import 'services/purchase/entitlement_store.dart';
@@ -24,7 +25,8 @@ class AppDeps {
     required this.settings,
     required this.saves,
     required this.generate,
-  });
+    AdSchedule? adSchedule,
+  }) : adSchedule = adSchedule ?? AdSchedule();
 
   /// entitlement 동기 로드 + purchase 스트림 동기 구독 (D13).
   factory AppDeps.production(SharedPreferences prefs) {
@@ -55,4 +57,5 @@ class AppDeps {
   final SettingsStore settings;
   final GameSaveStore? saves;
   final PuzzleFactory generate;
+  final AdSchedule adSchedule;
 }

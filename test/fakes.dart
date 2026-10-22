@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoku/app_deps.dart';
 import 'package:sudoku/models/sudoku_puzzle.dart';
+import 'package:sudoku/services/ads/ad_schedule.dart';
 import 'package:sudoku/services/ads/ad_service.dart';
 import 'package:sudoku/services/game_save_store.dart';
 import 'package:sudoku/services/purchase/entitlement_store.dart';
@@ -103,6 +104,7 @@ AppDeps fakeDeps(
   FakePurchase? purchase,
   PuzzleFactory? generate,
   bool withSaves = false,
+  AdSchedule? schedule,
 }) => AppDeps(
   prefs: prefs,
   entitlement: EntitlementStore(prefs),
@@ -112,4 +114,5 @@ AppDeps fakeDeps(
   settings: SettingsStore(prefs),
   saves: withSaves ? GameSaveStore(prefs) : null,
   generate: generate ?? (_) async => puzzleWithHoles([0, 1, 2]),
+  adSchedule: schedule,
 );

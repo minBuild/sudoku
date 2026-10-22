@@ -34,6 +34,7 @@ class _PrepareScreenState extends State<PrepareScreen> {
       generate: _deps.generate,
       ads: _deps.ads,
       adsRemoved: _deps.entitlement.adsRemoved,
+      schedule: _deps.adSchedule,
     );
     try {
       final r = await launcher.prepare(d);

@@ -8,6 +8,7 @@ import '../models/difficulty.dart';
 import '../models/saved_game.dart';
 import '../models/sudoku_puzzle.dart';
 import '../screens/game_screen.dart';
+import '../services/ads/ad_schedule.dart';
 import '../services/ads/ad_service.dart';
 
 class PrepareResult {
@@ -17,34 +18,47 @@ class PrepareResult {
 }
 
 /// 새 퍼즐 준비: 생성 ∥ 광고.
+/// 광고는 첫 새 게임부터, 이후 [AdSchedule.defaultInterval] 간격.
 class GameLauncher {
   GameLauncher({
     required PuzzleFactory generate,
     required AdGateway ads,
     required ValueListenable<bool> adsRemoved,
+    required AdSchedule schedule,
   }) : _generate = generate,
        _ads = ads,
-       _adsRemoved = adsRemoved;
+       _adsRemoved = adsRemoved,
+       _schedule = schedule;
 
   static const minVisible = Duration(milliseconds: 300);
 
   final PuzzleFactory _generate;
   final AdGateway _ads;
   final ValueListenable<bool> _adsRemoved;
+  final AdSchedule _schedule;
 
   /// 생성 ∥ 광고. 둘 다 끝나야 반환한다 (D5).
   /// 생성이 실패하면 광고가 끝난 뒤 [ParallelWaitError] (D6).
   Future<PrepareResult> prepare(Difficulty d) async {
     final sw = Stopwatch()..start();
-    final Future<AdOutcome> ad = _adsRemoved.value
-        ? Future.value(AdOutcome.skipped)
-        : _safeAd();
+    final ad = _gatedAd();
     final (puzzle, outcome) = await (_generate(d), ad).wait;
     if (outcome != AdOutcome.shown) {
       final rest = minVisible - sw.elapsed;
       if (rest > Duration.zero) await Future<void>.delayed(rest);
     }
     return PrepareResult(puzzle, outcome);
+  }
+
+  Future<AdOutcome> _gatedAd() async {
+    if (_adsRemoved.value || !_schedule.tryClaim()) return AdOutcome.skipped;
+    var o = AdOutcome.failed;
+    try {
+      o = await _safeAd();
+    } finally {
+      _schedule.release(shown: o == AdOutcome.shown); // .wait 실패와 무관 (D11)
+    }
+    return o;
   }
 
   Future<AdOutcome> _safeAd() {
