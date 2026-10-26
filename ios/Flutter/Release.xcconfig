@@ -2,3 +2,6 @@
 #include "Generated.xcconfig"
 GAD_APPLICATION_ID=ca-app-pub-7432278320907197~4407658951
 GAD_APPLICATION_ID[config=Profile]=ca-app-pub-3940256099942544~1458002511
+
+// google_mobile_ads 9.x: GoogleMobileAds_Beta.h 비모듈 헤더 (Runner 가 플러그인 모듈을 import 할 때)
+CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES=YES
