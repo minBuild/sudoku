@@ -203,7 +203,10 @@ class _Stat extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Column(
           children: [
-            Text(label, style: text.bodySmall),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(label, style: text.bodySmall, maxLines: 1),
+            ),
             const SizedBox(height: 4),
             FittedBox(
               fit: BoxFit.scaleDown,

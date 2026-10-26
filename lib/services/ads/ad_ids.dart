@@ -12,8 +12,9 @@ abstract final class AdIds {
   static const androidSample = 'ca-app-pub-3940256099942544/8691691433';
   static const iosSample = 'ca-app-pub-3940256099942544/5135589807';
 
-  /// AdMob 앱 미등록 → '' (릴리스 Android 는 skipped).
-  static const androidProd = '';
+  /// Android 전면광고 단위 sudoku_pregame_interstitial_android.
+  /// App ID 는 build.gradle.kts `prodAdmobAppId`. README §광고 ID 위치
+  static const androidProd = 'ca-app-pub-7432278320907197/4341485430';
 
   /// iOS 전면광고 단위 sudoku_pregame_interstitial_ios. README §광고 ID 위치
   static const iosProd = 'ca-app-pub-7432278320907197/4247876859';

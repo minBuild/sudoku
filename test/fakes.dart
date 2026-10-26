@@ -110,6 +110,8 @@ AppDeps fakeDeps(
   PuzzleFactory? generate,
   bool withSaves = false,
   AdSchedule? schedule,
+  Future<bool> Function(Uri)? openUrl,
+  Uri? privacyPolicyUri,
 }) => AppDeps(
   prefs: prefs,
   entitlement: EntitlementStore(prefs),
@@ -120,4 +122,6 @@ AppDeps fakeDeps(
   saves: withSaves ? GameSaveStore(prefs) : null,
   generate: generate ?? (_) async => puzzleWithHoles([0, 1, 2]),
   adSchedule: schedule,
+  openUrl: openUrl,
+  privacyPolicyUri: privacyPolicyUri,
 );

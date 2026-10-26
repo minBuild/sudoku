@@ -316,7 +316,7 @@ class _Chips extends StatelessWidget {
     final c = context.watch<SudokuController>();
     final colors = SudokuColors.of(context);
     return Align(
-      alignment: Alignment.centerLeft,
+      alignment: AlignmentDirectional.centerStart,
       child: Wrap(
         spacing: 8,
         runSpacing: 8,

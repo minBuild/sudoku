@@ -10,6 +10,11 @@ if (keystorePropertiesFile.exists()) {
 // Google 샘플 AdMob App ID (Android)
 val testAdmobAppId = "ca-app-pub-3940256099942544~3347511713"
 
+// 공개값(APK 평문). README §광고 ID 위치
+val prodAdmobAppId = "ca-app-pub-7432278320907197~1580424878"
+require(prodAdmobAppId.isEmpty() || Regex("""ca-app-pub-\d{16}~\d{10}""").matches(prodAdmobAppId)) { "prodAdmobAppId 형식 오류" }
+val releaseRequested = gradle.startParameter.taskNames.any { it.contains("Release", ignoreCase = true) }
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -61,13 +66,15 @@ android {
             signingConfig = if (keystorePropertiesFile.exists()) {
                 signingConfigs.getByName("release")
             } else {
-                if (gradle.startParameter.taskNames.any { it.contains("Release", ignoreCase = true) }) {
+                if (releaseRequested) {
                     logger.warn("key.properties 없음: release 를 debug 키로 서명합니다 → Play 업로드 불가")
                 }
                 signingConfigs.getByName("debug")
             }
-            manifestPlaceholders["admobAppId"] = keystoreProperties.getProperty("admobAppId")
-                ?: testAdmobAppId.also { logger.warn("admobAppId 없음: 테스트 App ID 사용") }
+            manifestPlaceholders["admobAppId"] = prodAdmobAppId.ifEmpty {
+                if (releaseRequested) logger.warn("prodAdmobAppId 비어 있음: 테스트 App ID, 광고 skipped")
+                testAdmobAppId
+            }
         }
     }
 }

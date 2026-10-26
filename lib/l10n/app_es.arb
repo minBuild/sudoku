@@ -73,6 +73,8 @@
   "instantCheckDesc": "Marca los errores en cuanto los introduces",
   "privacyOptions": "Opciones de privacidad",
   "privacyOptionsDesc": "Consulta o cambia tu configuración de consentimiento de anuncios",
+  "privacyPolicy": "Política de privacidad",
+  "openLinkFailed": "No se pudo abrir el enlace",
   "appVersion": "Versión de la app",
   "footer": "Sudoku JANG",
   "difficultyEasy": "Fácil",

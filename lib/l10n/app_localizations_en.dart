@@ -296,6 +296,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get privacyOptionsDesc => 'Review or change your ad consent settings';
 
   @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get openLinkFailed => 'Couldn\'t open the link';
+
+  @override
   String get appVersion => 'App Version';
 
   @override

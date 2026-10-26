@@ -134,7 +134,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
 
   Widget _filterChips() {
     Widget chip(String label, Difficulty? d) => Padding(
-      padding: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsetsDirectional.only(end: 8),
       child: ChoiceChip(
         label: Text(label),
         selected: _filter == d,

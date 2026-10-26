@@ -4,18 +4,49 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 /// ARB 정합성. 순수 Dart 로 파일을 읽어 대조한다.
-const _langs = ['ko', 'en', 'fr', 'es', 'ja', 'pt'];
+/// 언어 목록은 lib/l10n/app_*.arb 에서 모은다.
+final _langs = [
+  for (final f in Directory('lib/l10n').listSync().whereType<File>())
+    if (RegExp(r'app_(\w+)\.arb$').firstMatch(f.path) case final m?)
+      m.group(1)!,
+]..sort();
 
-/// en 과 같은 값이어도 되는 키(실제 철자가 같은 단어).
-const _sameAsEn = {
-  'fr': {'appBadge', 'appTitle', 'footer', 'memo', 'difficultyExpert'},
-  'es': {'appBadge', 'appTitle', 'footer', 'difficultyNormal'},
-  'pt': {'appBadge', 'appTitle', 'footer', 'difficultyNormal'},
-  'ja': {'appBadge'},
+/// 번역 대상이 아닌 브랜드 키.
+const _brandKeys = {'appBadge', 'appTitle', 'footer'};
+
+/// en 과 반드시 달라야 하는 핵심 키.
+const _coreKeys = {'newGame', 'settings', 'records', 'cancel', 'undo'};
+
+/// 값의 80% 이상이 이 문자 범위를 포함해야 하는 언어.
+const _scripts = {
+  'ar': r'؀-ۿ',
+  'he': r'֐-׿',
+  'hi': r'ऀ-ॿ',
+  'th': r'฀-๿',
+  'el': r'Ͱ-Ͽ',
+  'ru': r'Ѐ-ӿ',
+  'uk': r'Ѐ-ӿ',
+  'ja': r'぀-ヿ一-鿿',
+  'zh': r'一-鿿',
+  'zh_Hant': r'一-鿿',
+  'ko': r'가-힣',
 };
 
-/// ko 와 같은 값이어도 되는 키.
-const _sameAsKo = {'appBadge'};
+/// other 외에 반드시 있어야 하는 복수형 범주.
+const _pluralCategories = {
+  'ru': ['few', 'many'],
+  'uk': ['few', 'many'],
+  'pl': ['few', 'many'],
+  'cs': ['few'],
+  'sk': ['few'],
+  'hr': ['few'],
+  'ro': ['few'],
+  'ar': ['zero', 'two', 'few', 'many'],
+  'he': ['two'],
+};
+
+final _hangul = RegExp(r'[가-힣]');
+final _plural = RegExp(r'^\{\w+, plural,');
 
 Map<String, dynamic> _arb(String lang) =>
     jsonDecode(File('lib/l10n/app_$lang.arb').readAsStringSync())
@@ -27,8 +58,10 @@ Map<String, String> _messages(Map<String, dynamic> arb) => {
 };
 
 /// `{name}` 과 ICU `{name, plural, …}` 의 변수 이름.
-Set<String> _placeholders(String v) =>
-    RegExp(r'\{(\w+)\s*[,}]').allMatches(v).map((m) => m.group(1)!).toSet();
+/// `=1{…}`, `one{…}` 같은 분기는 제외한다 (범주와 `{` 사이에 공백 금지).
+Set<String> _placeholders(String v) => RegExp(
+  r'(?<![\w=])\{(\w+)\s*[,}]',
+).allMatches(v).map((m) => m.group(1)!).toSet();
 
 /// 플레이스홀더만 있어 번역할 글자가 없는 값(예: `{date}`).
 bool _placeholderOnly(String v) =>
@@ -38,15 +71,17 @@ void main() {
   final arbs = {for (final l in _langs) l: _arb(l)};
   final msgs = {for (final l in _langs) l: _messages(arbs[l]!)};
   final template = msgs['ko']!;
+  final en = msgs['en']!;
 
-  test('ARB 6개가 있고 @@locale 이 파일명과 같다', () {
-    final files = Directory('lib/l10n')
-        .listSync()
-        .whereType<File>()
-        .map((f) => f.uri.pathSegments.last)
-        .where((n) => n.endsWith('.arb'))
-        .toSet();
-    expect(files, {for (final l in _langs) 'app_$l.arb'});
+  /// 브랜드 키와 플레이스홀더만 있는 값을 뺀 번역 대상.
+  Map<String, String> translatable(String l) => {
+    for (final e in msgs[l]!.entries)
+      if (!_brandKeys.contains(e.key) && !_placeholderOnly(e.value))
+        e.key: e.value,
+  };
+
+  test('ARB 파일명이 @@locale 과 같다', () {
+    expect(_langs, containsAll(['ko', 'en', 'zh', 'zh_Hant']));
     for (final l in _langs) {
       expect(arbs[l]!['@@locale'], l, reason: l);
     }
@@ -78,16 +113,57 @@ void main() {
     }
   });
 
-  test('복붙 방지: ko·en 값을 그대로 쓰지 않는다', () {
-    final en = msgs['en']!;
+  test('핵심 키는 en 이 아닌 모든 언어에서 en 과 다르다', () {
+    for (final l in _langs.where((l) => l != 'en')) {
+      for (final k in _coreKeys) {
+        expect(msgs[l]![k], isNot(en[k]), reason: '$l.$k');
+      }
+    }
+  });
+
+  test('ko 가 아닌 언어에 한글이 없다', () {
     for (final l in _langs.where((l) => l != 'ko')) {
-      for (final e in msgs[l]!.entries) {
-        if (_placeholderOnly(e.value)) continue;
-        if (!_sameAsKo.contains(e.key)) {
-          expect(e.value, isNot(template[e.key]), reason: '$l.${e.key} = ko');
-        }
-        if (l != 'en' && !_sameAsEn[l]!.contains(e.key)) {
-          expect(e.value, isNot(en[e.key]), reason: '$l.${e.key} = en');
+      for (final e in translatable(l).entries) {
+        expect(_hangul.hasMatch(e.value), isFalse, reason: '$l.${e.key}');
+      }
+    }
+  });
+
+  test('문자 체계: 값의 80% 이상이 해당 문자를 포함한다', () {
+    for (final MapEntry(key: l, value: range) in _scripts.entries) {
+      expect(_langs, contains(l));
+      final re = RegExp('[$range]');
+      final values = translatable(l).values;
+      final hit = values.where(re.hasMatch).length;
+      expect(hit / values.length, greaterThanOrEqualTo(0.8), reason: l);
+    }
+  });
+
+  test('번체는 간체와 40% 이상 다르다', () {
+    final hans = translatable('zh');
+    final hant = translatable('zh_Hant');
+    final diff = hant.keys.where((k) => hant[k] != hans[k]).length;
+    expect(diff / hant.length, greaterThanOrEqualTo(0.4));
+  });
+
+  test('브랜드: appBadge 는 JANG, footer 에 Sudoku JANG', () {
+    for (final l in _langs) {
+      expect(msgs[l]!['appBadge'], 'JANG', reason: l);
+      expect(msgs[l]!['footer'], contains('Sudoku JANG'), reason: l);
+    }
+  });
+
+  test('복수형 범주: other 와 언어별 필수 범주가 있다', () {
+    final pluralKeys = template.keys.where(
+      (k) => _plural.hasMatch(template[k]!),
+    );
+    expect(pluralKeys, isNotEmpty);
+    for (final l in _langs) {
+      for (final k in pluralKeys) {
+        final v = msgs[l]![k]!;
+        expect(_plural.hasMatch(v), isTrue, reason: '$l.$k');
+        for (final c in ['other', ...?_pluralCategories[l]]) {
+          expect(v, contains('$c{'), reason: '$l.$k $c');
         }
       }
     }

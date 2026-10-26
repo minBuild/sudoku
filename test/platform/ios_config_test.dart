@@ -109,7 +109,19 @@ void main() {
   });
 
   group('지역화', () {
-    const langs = {'en', 'ko', 'fr', 'es', 'ja', 'pt'};
+    /// ARB 언어 코드 → Apple 지역화 코드.
+    String appleCode(String arb) => switch (arb) {
+      'zh' => 'zh-Hans',
+      'zh_Hant' => 'zh-Hant',
+      _ => arb,
+    };
+
+    final langs = Directory('lib/l10n')
+        .listSync()
+        .map((f) => RegExp(r'app_(\w+)\.arb$').firstMatch(f.path)?.group(1))
+        .whereType<String>()
+        .map(appleCode)
+        .toSet();
     const koAtt = '맞춤형 광고를 제공하기 위해 기기 식별자를 사용합니다. 허용하지 않아도 앱은 정상적으로 이용할 수 있어요.';
 
     String? plistString(String key) => RegExp(
@@ -129,28 +141,26 @@ void main() {
     String attValue(Map<String, dynamic> locs, String lang) =>
         (locs[lang] as Map)['stringUnit']['value'] as String;
 
-    test('CFBundleLocalizations 는 6개이고 ARB 언어와 같다', () {
+    test('ARB 언어에 en·ko·간체·번체가 있다', () {
+      expect(langs, containsAll(['en', 'ko', 'zh-Hans', 'zh-Hant']));
+    });
+
+    test('CFBundleLocalizations 가 ARB 언어와 같다', () {
       final m = RegExp(
         r'<key>CFBundleLocalizations</key>\s*<array>([\s\S]*?)</array>',
       ).firstMatch(_read(plistPath));
       final plistLangs = RegExp(
         r'<string>([^<]+)</string>',
-      ).allMatches(m!.group(1)!).map((e) => e.group(1)!).toSet();
-      expect(plistLangs, langs);
-
-      final arbLangs = Directory('lib/l10n')
-          .listSync()
-          .map((f) => RegExp(r'app_(\w+)\.arb$').firstMatch(f.path)?.group(1))
-          .whereType<String>()
-          .toSet();
-      expect(arbLangs, plistLangs);
+      ).allMatches(m!.group(1)!).map((e) => e.group(1)!).toList();
+      expect(plistLangs.toSet(), langs);
+      expect(plistLangs.length, langs.length, reason: '중복 없음');
     });
 
     test('CFBundleDevelopmentRegion 은 en', () {
       expect(plistString('CFBundleDevelopmentRegion'), 'en');
     });
 
-    test('InfoPlist.xcstrings: ATT 문구 6개 언어 모두 번역됨', () {
+    test('InfoPlist.xcstrings: ATT 문구가 ARB 언어 모두 번역됨', () {
       final locs = attLocalizations();
       expect(locs.keys.toSet(), langs);
       for (final l in langs) {
@@ -169,7 +179,7 @@ void main() {
       );
     });
 
-    test('pbxproj: Runner 리소스에만 xcstrings, knownRegions 6개 언어', () {
+    test('pbxproj: Runner 리소스에만 xcstrings, knownRegions 는 ARB 언어 + Base', () {
       final pbx = _read(pbxprojPath);
       String block(String header) {
         final start = pbx.indexOf(header);
@@ -189,10 +199,11 @@ void main() {
           .firstMatch(pbx)!
           .group(1)!
           .split(',')
-          .map((e) => e.trim())
+          .map((e) => e.replaceAll('"', '').trim())
           .where((e) => e.isNotEmpty)
           .toSet();
-      expect(regions, containsAll(langs));
+      expect(regions, contains('Base'));
+      expect(regions.difference({'Base'}), langs);
     });
   });
 }

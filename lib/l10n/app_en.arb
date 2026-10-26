@@ -73,6 +73,8 @@
   "instantCheckDesc": "Show wrong entries as soon as you enter them",
   "privacyOptions": "Privacy Options",
   "privacyOptionsDesc": "Review or change your ad consent settings",
+  "privacyPolicy": "Privacy Policy",
+  "openLinkFailed": "Couldn't open the link",
   "appVersion": "App Version",
   "footer": "Sudoku JANG",
   "difficultyEasy": "Easy",

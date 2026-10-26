@@ -22,7 +22,7 @@
 ### 구현 시 주의 (생성물과 실제 앱의 차이)
 - **가격 숫자는 구현하지 않는다.** `settings` 화면의 "₩4,900" 은 Stitch 가 임의로 넣은 값이다. 실제 앱은 스토어의 `ProductDetails.price` 만 표시한다(TASK_SPEC D17).
 - Stitch 가 임의로 덧붙인 요소는 구현하지 않는다: 일시정지 버튼, 잔여 개수 배지, 승률, "숫자 중복 강조"·"자동 메모 정리"·이용약관·문의하기 항목, PRO 배지, 공유/XP 류.
-- 실제 기능과 문구는 `lib/l10n/strings.dart` 를 따른다.
+- 실제 기능과 문구는 `lib/l10n/app_*.arb` 를 따른다.
 
 ## 디자인 토큰
 값은 `lib/theme/app_theme.dart` 와 같다 (Stitch 시스템의 Material 이름 색은 약간 달라도 아래 값 기준).

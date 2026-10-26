@@ -298,6 +298,12 @@ class AppLocalizationsPt extends AppLocalizations {
       'Consulte ou altere suas configurações de consentimento de anúncios';
 
   @override
+  String get privacyPolicy => 'Política de Privacidade';
+
+  @override
+  String get openLinkFailed => 'Não foi possível abrir o link';
+
+  @override
   String get appVersion => 'Versão do app';
 
   @override

@@ -286,10 +286,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get privacyOptionsDesc => '広告の同意設定を確認または変更します';
 
   @override
+  String get privacyPolicy => 'プライバシーポリシー';
+
+  @override
+  String get openLinkFailed => 'リンクを開けませんでした';
+
+  @override
   String get appVersion => 'アプリのバージョン';
 
   @override
-  String get footer => '数独 JANG';
+  String get footer => '数独 (Sudoku JANG)';
 
   @override
   String get difficultyEasy => 'かんたん';

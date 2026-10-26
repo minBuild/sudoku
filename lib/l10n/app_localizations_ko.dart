@@ -286,6 +286,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get privacyOptionsDesc => '광고 동의 설정을 확인하거나 변경합니다';
 
   @override
+  String get privacyPolicy => '개인정보처리방침';
+
+  @override
+  String get openLinkFailed => '링크를 열 수 없어요';
+
+  @override
   String get appVersion => '앱 버전';
 
   @override

@@ -25,6 +25,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _deps.purchase.restore();
   }
 
+  bool _opening = false;
+
+  // 연타 방지. 열지 못하면 스낵바로 알린다.
+  Future<void> _open(Uri u) async {
+    if (_opening) return;
+    _opening = true;
+    try {
+      final ok = await _deps.openUrl(u);
+      if (!ok && mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(context.l10n.openLinkFailed)));
+      }
+    } finally {
+      _opening = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
@@ -85,6 +103,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                               trailing: const Icon(Icons.chevron_right_rounded),
                               onTap: _deps.ads.showPrivacyOptionsForm,
+                            ),
+                          ],
+                          if (_deps.privacyPolicyUri case final u?) ...[
+                            const Divider(indent: 20, endIndent: 20),
+                            ListTile(
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                              ),
+                              title: Text(
+                                context.l10n.privacyPolicy,
+                                style: text.titleMedium,
+                              ),
+                              trailing: const Icon(Icons.open_in_new_rounded),
+                              onTap: () => _open(u),
                             ),
                           ],
                           const Divider(indent: 20, endIndent: 20),

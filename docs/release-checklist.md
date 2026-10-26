@@ -4,15 +4,24 @@
 > [README §가격표](../README.md#가격표)와 README 광고 섹션에만 둡니다.
 > Android를 먼저 출시하고, iOS(F 블록)는 맥북에서 로컬로 빌드·업로드합니다(이후 CI).
 
-## 사용자가 바로 할 작업 5개
+## 사용자가 바로 할 작업
+
+### iOS(맥북) 트랙 5개 — README "맥북 출시까지 남은 일"과 같은 순서
+
+1. [ ] IAP 가격 결정(유일한 결정 블로커. 사용자가 말한 가격 ₩990, ₩1,900은 AI 메모) → F3
+2. [ ] [개인정보처리방침](privacy-policy.md)의 `TODO_` 채우기(공개 연락처는 사용자가 정함)·호스팅 → `lib/services/legal_links.dart` URL 반영 (D1·D2·A8)
+3. [ ] App Store Connect 앱 생성(기본 언어 English(U.S.) + 한국어 현지화)·유료 앱 계약·`remove_ads` (F1·F2·F3)
+4. [ ] 맥 빌드·TestFlight·테스트 기기 등록 (F5·D4)
+5. [ ] 제출 (F9)
+
+### Android 트랙
 
 1. [ ] 업로드 키스토어 생성 (B1)
-2. [ ] [개인정보처리방침](privacy-policy.md)의 `TODO_` 항목을 채우고 호스팅 (D1·D2)
+2. [ ] `android/key.properties` 작성 (B2)
 3. [ ] Play Console에 앱 생성 (C1, C0 결과 앱이 없을 때만)
-4. [ ] AdMob 테스트 기기 등록 (D4)
-5. [ ] `android/key.properties` 작성 (B2)
+4. [x] AdMob Android 앱·전면 단위 등록 (E1-Android → A1-Android, 2026-10-26 완료)
 
-> 추가: E1-iOS 완료(2026-10-22). E1-Android는 이번 범위 밖이라 Android 릴리스 광고는 `skipped`.
+> 추가: E1-iOS 완료(2026-10-22), E1-Android 완료(2026-10-26).
 > 2026-10-22 콘솔 재대조(E1-iOS) 결과: 일치. 광고 정책 변경: 첫 판부터 15분 간격.
 
 ## 사용자 요구 충족 상태
@@ -20,7 +29,7 @@
 | # | 요구 | 상태 | 남은 일 |
 |---|---|---|---|
 | R1 | 디자인 새로, 깔끔하게 | 완료 (2.0 리디자인, Stitch 대응). 회귀 점검만 진행 | A6 |
-| R2 | 게임 시작 시 10초 정도 광고 | iOS 단위 ID 반영, 맥 빌드와 E3 후 송출. Android 미등록. 광고 길이는 앱이 정할 수 없음(README 표) | E1 · E3 · D4. 첫 판부터 15분 간격(README) |
+| R2 | 게임 시작 시 10초 정도 광고 | iOS·Android 단위 ID 반영, 빌드와 E3 후 송출. 광고 길이는 앱이 정할 수 없음(README 표) | E1 · E3 · D4. 첫 판부터 15분 간격(README) |
 | R3 | 평생 광고 제거 990원(끝자리 내림) | 코드 하드코딩 0건, `ProductDetails.price`만 표시. 콘솔 상품 등록 남음. 권장가 1회 구매 ₩1,900 메모(README), 이전 결정 ₩990과 달라 확정 필요 | C3 · F3 |
 
 ## A. 코드·빌드 (AI)
@@ -28,13 +37,14 @@
 | [ ] | 항목 | 담당 | 선행 | 어떻게 확인하나 |
 |---|---|---|---|---|
 | [x] | A1-iOS iOS App ID(`Release.xcconfig`, Profile 은 샘플 줄)와 단위 ID(`ad_ids.dart` `iosProd`) 반영 | AI | E1-iOS | `test/services/ad_ids_test.dart` 통과(skip 0건) |
-| [ ] | A1-Android Android App ID(`key.properties` `admobAppId`)와 단위 ID(`ad_ids.dart` `androidProd`) 반영 | AI | E1-Android | `ad_ids_test` Android 케이스 |
+| [x] | A1-Android Android App ID(`build.gradle.kts` `prodAdmobAppId`)와 단위 ID(`ad_ids.dart` `androidProd`) 반영 | AI | E1-Android | `ad_ids_test` Android 짝 불변식, `flutter build appbundle --release` 경고에 `prodAdmobAppId 비어 있음` 없음 |
 | [ ] | A2 업로드할 때마다 `pubspec.yaml` 버전의 `+N`을 1씩 올림 (현재 `2.0.0+3`). C0의 최고 versionCode보다 커야 함 | AI | C0 | `aapt2 dump badging`의 `versionCode` |
 | [x] | A3 Manifest 점검: `APPLICATION_ID`, `AD_ID`, `BILLING`, targetSdk 36, minSdk 24 | AI | - | `aapt2 dump badging` / `dump xmltree` |
 | [x] | A4 Billing 8 이상 요건: `in_app_purchase_android 0.5.5`가 billing 9.1.0 사용 → 충족 | AI | - | `pubspec.lock` |
 | [x] | A5 문서 초안 (이 문서, 개인정보처리방침, 스토어 등록정보) | AI | - | `docs/` 파일 3개 |
 | [ ] | A6 스토어 스크린샷을 에뮬레이터로 캡처 (후속 작업) | AI | - | 휴대폰 스크린샷 2장 이상 |
-| [x] | A7 다국어(ko·en·fr·es·ja·pt) ARB 분리, 폴백 en, iOS CFBundleLocalizations·InfoPlist.xcstrings | AI | - | test/l10n/*, ios_config_test 통과 |
+| [x] | A7 다국어 33개 언어(README §지원 언어) ARB, 폴백 en, 해석 콜백(`no→nb`, `zh-TW/HK/MO→번체`, 2순위 언어), iOS CFBundleLocalizations·InfoPlist.xcstrings·knownRegions | AI | - | test/l10n/*, ios_config_test 통과 |
+| [x] | A8 앱 내 개인정보처리방침 링크(설정, `url_launcher`). URL 호스팅 후 활성: `privacyPolicyUrl`이 비면 행 숨김 | AI | D2(활성) | `settings_privacy_link_test`, URL 반영 후 `legal_links_test` skip 0 |
 
 ## B. 서명
 
@@ -66,15 +76,15 @@
 |---|---|---|---|---|
 | [ ] | D1 [개인정보처리방침](privacy-policy.md) 초안을 채움 | 사용자 | - | `TODO_` 검색 결과 0건 |
 | [ ] | D2 GitHub Pages 사용자 사이트(`<user>.github.io`) 또는 자체 도메인에 호스팅 | 사용자 | D1 | 로그인 없이 열림 |
-| [ ] | D3 UMP 메시지. C4 ATT 채널이 있으면 IDFA 메시지는 선택, ATT 블록을 제거했으면 필수(없으면 ATT 창이 뜨지 않아 App Store 5.1.2 반려 위험). GDPR 메시지는 D2 이후. 메시지 언어에 앱 지원 6개 언어(ko·en·fr·es·ja·pt)와 EEA 지역 언어 추가. EEA 언어의 Google 기본 번역 여부는 콘솔에서 확인 | 사용자 | D2 | AdMob > 개인정보 보호 및 메시지에서 게시 상태 |
-| [ ] | D4 테스트 기기 등록. 실기기 릴리스 테스트 전에 반드시. 광고는 클릭하지 않음. 내부 테스트 빌드도 실제 광고를 받음 | 사용자 | E1 | `--dart-define-from-file=config/ads.release.json`의 `ADMOB_TEST_DEVICES`, 광고에 "테스트 광고" 표시 |
+| [ ] | D3 UMP 메시지. C4 ATT 채널이 있으면 IDFA 메시지는 선택, ATT 블록을 제거했으면 필수(없으면 ATT 창이 뜨지 않아 App Store 5.1.2 반려 위험). GDPR 메시지는 D2 이후. 메시지 언어에 앱 지원 33개 언어(README §지원 언어)와 EEA 지역 언어 추가. 언어 추가는 사용자가 메시지를 **게시**해야 반영됨. EEA 언어의 Google 기본 번역 여부는 콘솔에서 확인 | 사용자 | D2 | AdMob > 개인정보 보호 및 메시지에서 게시 상태 |
+| [ ] | D4 테스트 기기 등록. 실기기 릴리스 테스트 전에 반드시. 광고는 클릭하지 않음. 내부 테스트 빌드도 실제 광고를 받음 | 사용자 | E1 | `--dart-define-from-file=config/ads.release.json`의 `ADMOB_TEST_DEVICES`, 광고에 "테스트 광고" 표시. **Android**: 테스트 기기 해시는 logcat의 `setTestDeviceIds(...)` 줄에서 얻고, 해시를 넣기 전 첫 실행 때는 새 게임을 시작하지 않음 |
 
 ## E. AdMob
 
 | [ ] | 항목 | 담당 | 선행 | 어떻게 확인하나 |
 |---|---|---|---|---|
 | [x] | E1-iOS iOS 앱 `스도쿠`(스토어 미등록)와 전면광고 단위 `sudoku_pregame_interstitial_ios` 등록, 광고 유형은 동영상만 → 등록 완료(2026-10-22), 값은 README | AI/사용자 | - | 콘솔 앱·단위 목록, A1-iOS 테스트, 콘솔 DOM 대조(2026-10-22) |
-| [ ] | E1-Android Android 앱과 전면광고 단위 `sudoku_pregame_interstitial_android` 등록 → **미완료**(이번 요청 범위 밖). 완료 후 A1-Android | AI/사용자 | - | 콘솔 앱·단위 목록, A1-Android 테스트 |
+| [x] | E1-Android Android 앱 `스도쿠`(스토어 미등록)와 전면광고 단위 `sudoku_pregame_interstitial_android` 등록, 광고 유형은 동영상만, 게재빈도 설정 없음 → 등록 완료(2026-10-26), 값은 README | AI | - | 콘솔 앱·단위 목록 텍스트 대조(2026-10-26), A1-Android 테스트 |
 | [ ] | E2 결제 프로필, 주소 PIN (2026-10-22 콘솔 작업 중 "계정 설정 완료" 배너는 보이지 않았음) | 사용자 | E1 | AdMob > 결제 |
 | [ ] | E3 C7 이후 스토어 연결, 앱 검토(수일 소요). 그 전까지는 송출이 제한되어 R2를 체감하기 어려움 | 사용자 | C7 | 앱 상태 "준비됨" |
 | [ ] | E4 도메인 루트에 `app-ads.txt`: `google.com, pub-<16자리>, DIRECT, f08c47fec0942fa0` (완성 줄은 [README 광고 섹션](../README.md#광고-id-위치)) | 사용자 | E1 · D2 | AdMob > 앱 > app-ads.txt 상태 |
@@ -84,16 +94,16 @@
 | [ ] | 항목 | 담당 | 선행 | 어떻게 확인하나 |
 |---|---|---|---|---|
 | [ ] | F0 맥북 준비: Xcode 26 이상(iOS 26 SDK, 업로드 전 Apple 공지로 최소 요건 재확인), CocoaPods, Flutter 3.47.7, Xcode에서 Signing Team 선택 | 사용자 | - | `flutter doctor`, `pod --version` |
-| [ ] | F1 Bundle ID `com.jang.sudoku` 등록, App Store Connect 앱 생성 | 사용자 | - | App Store Connect 앱 목록 |
+| [ ] | F1 Bundle ID `com.jang.sudoku` 등록, App Store Connect 앱 생성. 기본 언어 English(U.S.), 한국어 현지화 추가 | 사용자 | - | App Store Connect 앱 목록·앱 정보 > 기본 언어 |
 | [ ] | F2 유료 앱 계약 | 사용자 | - | 계약 상태 "활성" |
 | [ ] | F3 `remove_ads` 가격 **가격 확정 후**(README §사용자 확인 10) ₩990. 목록에 없으면 ₩990 이하 최고가, **사용자 확인 필요**. 결과는 README 가격표. Apple KRW 가격 목록에 ₩1,900(권장가)이 있는지도 확인해 README §사용자 확인 10에 기록 | 사용자 | F1 · F2 | Sandbox에서 표시 가격 |
 | [ ] | F4 App Privacy 라벨(기기 ID, 광고 데이터, 추적 = 예)과 방침 URL | 사용자 | D2 | App Privacy 페이지, **TestFlight 실기기에서 ATT 창이 뜨는지 확인(필수)** |
 | [ ] | F4b 마케팅 URL·지원 URL = E4 도메인 루트(AdMob이 app-ads.txt를 찾는 위치) | 사용자 | D2 · F1 | App Store Connect 앱 정보·버전 페이지 URL |
-| [ ] | F5 [README "맥북에서 할 순서"](../README.md#맥북에서-할-순서): `pod install`, 시뮬레이터 확인, `flutter build ipa`, `-showBuildSettings`로 `GAD_APPLICATION_ID`가 Release=실제·Profile=샘플인지 확인, Organizer 업로드. 샘플 단위 빌드 게이트: 심사용 빌드는 `DART_DEFINES`에 `ADMOB_INTERSTITIAL_IOS`가 없어야 하고, `+N`이 TestFlight 빌드보다 커야 하며(같은 번호 재업로드 금지), 실제 단위 빌드는 D4 이후. 실제 단위 빌드는 첫 판부터 광고가 나오므로 D4 이후 실행, 테스트 중 광고 클릭 금지. 아카이브 `.lproj/InfoPlist.strings` 6개 확인(README) | 사용자 | F0 · A1-iOS | Organizer 업로드 완료, TestFlight 빌드 표시 |
+| [ ] | F5 [README "맥북에서 할 순서"](../README.md#맥북에서-할-순서): `pod install`, 시뮬레이터 확인, `flutter build ipa`, `-showBuildSettings`로 `GAD_APPLICATION_ID`가 Release=실제·Profile=샘플인지 확인, Organizer 업로드. 샘플 단위 빌드 게이트: 심사용 빌드는 `DART_DEFINES`에 `ADMOB_INTERSTITIAL_IOS`가 없어야 하고, `+N`이 TestFlight 빌드보다 커야 하며(같은 번호 재업로드 금지), 실제 단위 빌드는 D4 이후. 실제 단위 빌드는 첫 판부터 광고가 나오므로 D4 이후 실행, 테스트 중 광고 클릭 금지. 아카이브 `.lproj` 34개(Base 포함)와 `{zh-Hans,zh-Hant,ar,ko}.lproj/InfoPlist.strings` 확인(README) | 사용자 | F0 · A1-iOS | Organizer 업로드 완료, TestFlight 빌드 표시 |
 | [ ] | F6 Sandbox 구매·복원, 구매 없는 계정에서 "복원할 구매가 없어요" 표시 | 사용자 | F3 · F5 | 구매 후 광고 사라짐, 재설치 후 자동 복원 |
-| [ ] | F6b 실기기 QA(아래 표). 결과를 표에 기록 | 사용자 | F5 · F6 · D4 | 21개 상황 모두 기대 결과 |
+| [ ] | F6b 실기기 QA(아래 표). 결과를 표에 기록 | 사용자 | F5 · F6 · D4 | 27개 상황 모두 기대 결과 |
 | [ ] | F7 버전 페이지 "앱 내 구입"에 `remove_ads` 첨부(심사용 스크린샷 포함, 빠지면 반려) | 사용자 | F3 | 버전 페이지 앱 내 구입 목록 |
-| [ ] | F8 심사 메모: "새 게임 시작 시 전면광고(첫 판부터, 이후 15분 간격), 광고 제거는 비소모성 IAP, 설정 > 구매 복원. ATT 창은 첫 실행 시 홈 화면이 뜬 직후 표시됩니다. 설정 > 개인정보 보호 및 보안 > 추적 > '앱이 추적을 요청하도록 허용'이 꺼져 있으면 iOS가 창을 띄우지 않습니다." | 사용자 | - | 앱 심사 정보 메모란 |
+| [ ] | F8 심사 메모(영어 병기): 한국어 "새 게임 시작 시 전면광고(첫 판부터, 이후 15분 간격), 광고 제거는 비소모성 IAP, 설정 > 구매 복원. 개인정보처리방침은 설정 > 개인정보처리방침. ATT 창은 첫 실행 시 홈 화면이 뜬 직후 표시됩니다. 설정 > 개인정보 보호 및 보안 > 추적 > '앱이 추적을 요청하도록 허용'이 꺼져 있으면 iOS가 창을 띄우지 않습니다." / English "An interstitial ad is shown when starting a new game (from the first game, then at most once every 15 minutes). Remove Ads is a non-consumable IAP; Settings > Restore Purchases. Privacy policy: Settings > Privacy Policy. The ATT prompt appears right after the home screen on first launch. iOS does not show it if Settings > Privacy & Security > Tracking > 'Allow Apps to Request to Track' is off." | 사용자 | - | 앱 심사 정보 메모란 |
 | [ ] | F9 심사 제출 | 사용자 | F1~F8 · G1~G5 | 심사 상태 |
 
 ## G. 다국어(사용자)
@@ -101,9 +111,9 @@
 | [ ] | 항목 | 담당 | 선행 | 어떻게 확인하나 |
 |---|---|---|---|---|
 | [ ] | G1 en·ko 번역 검수(`lib/l10n/app_en.arb`, `app_ko.arb`) | 사용자 | A7 | 검수자·날짜 기록 |
-| [ ] | G2 **법적 문구 검수(검수 전 출시 금지)**: ATT 문구(`InfoPlist.xcstrings` 6개 언어), `privacyOptions*`, 개인정보처리방침 | 사용자 | A7 | 검수자·날짜 기록 |
-| [ ] | G3 fr·es·ja·pt 검수. 미완이면 README 플랜 B로 해당 언어 제외 후 출시 | 사용자 | A7 | 검수 완료 또는 제외 커밋 |
-| [ ] | G4 영어 스토어 등록정보(Play·App Store Connect) **출시 필수**. 나머지 4개 언어는 권장. 언어별 스크린샷 | 사용자 | C5 · F1 | 콘솔 등록정보 언어 목록 |
+| [ ] | G2 **법적 문구 검수(검수 전 출시 금지)**: ATT 문구 ko·en, `privacyOptions*`, `privacyPolicy`, 개인정보처리방침 ko·en | 사용자 | A7 | 검수자·날짜 기록 |
+| [ ] | G3 31개 언어는 사용자 지시로 미검수 출시(README 사용자 확인 11). 문제가 보고되면 README 플랜 B로 제외 | 사용자 | A7 | 보고 접수 시 제외 커밋 |
+| [ ] | G4 스토어 등록정보(Play·App Store Connect) 기본 언어 영어(U.S.) **출시 필수**, 한국어 현지화 **필수**, 그 밖의 언어는 권장(사람이 번역). 언어별 스크린샷 | 사용자 | C5 · F1 | 콘솔 등록정보 언어 목록 |
 | [ ] | G5 개인정보처리방침 영어본 호스팅, App Store Connect 언어별 방침 URL | 사용자 | D2 | 로그인 없이 열림 |
 
 ### F6b 실기기 QA
@@ -125,27 +135,36 @@
 | 13 | 새 게임 연타 | 광고 1회 | |
 | 14 | 광고 중 앱 강제 종료 후 재실행 → 새 게임 | 광고(의도된 동작) | |
 | 15 | 이어하기 저장이 있는 상태에서 기기 언어 변경 | 이어하기 카드의 난이도 이름이 새 언어로 표시(스크린샷) | |
-| 16 | 기록 화면 날짜, 6개 언어 | 월·일 표기가 자연스러움(es 약어 점 등, 스크린샷) | |
+| 16 | 기록 화면 날짜 | 월·일 표기가 자연스러움(es 약어 점 등, 스크린샷) | |
 | 17 | 이어하기 진행률 %, fr·es | 숫자와 % 사이 공백이 자연스러움(스크린샷) | |
-| 18 | 기기 언어 `de` / `zh-Hant` / `fr-CA` | en / en / fr | |
+| 18 | 기기 언어 `sw` / `zh-Hant` / `zh-TW` / `fr-CA` / `no` | en / 번체 / 번체 / fr / nb | |
 | 19 | 프랑스어 기기에서 첫 실행 | ATT 창 문구가 프랑스어, UMP 폼 언어는 D3 설정에 따름 | |
-| 20 | 320pt 폭 기기(iPhone SE 1세대급), fr·es·pt | 홈·게임·설정에서 글자 잘림이나 겹침 없음 | |
-| 21 | 지원하지 않는 언어 기기 첫 실행 | ATT 창이 영어 | |
+| 20 | 320pt 폭 기기(iPhone SE 1세대급), de·ru·pt | 홈·게임·결과 시트·설정에서 글자 잘림이나 겹침 없음 | |
+| 21 | 33개 밖의 표시 언어 기기 첫 실행 | 그런 표시 언어가 있으면 그것으로 확인(ATT 창·앱이 영어), 없으면 N/A. ATT 폴백은 `ios_config_test`, Flutter 폴백은 Android `sw`로 확인 | |
+| 22 | `ar` | 숫자패드 1~9 왼쪽→오른쪽, 스탯 칩 오른쪽 정렬, 뒤로 화살표 반전, 보드는 그대로 | |
+| 23 | `th`·`hi` | 글리프 잘림·□ 없음 | |
+| 24 | `de` | 결과 시트(320pt 포함) 라벨 한 줄 | |
+| 25 | `ru` | 실수 1/2/5/21 형태가 자연스러움 | |
+| 26 | `zh-Hant` | 번체로 표시 | |
+| 27 | 설정 > 개인정보처리방침 | 외부 브라우저에서 로그인 없이 열리고, 복귀하면 설정 화면이 그대로 | |
 
-게임 중 언어 변경 시 상태 유지와 폴백 규칙은 `test/l10n/locale_test.dart`가, 360dp·1.3배 글자 overflow는 `test/l10n/layout_test.dart`가 검증합니다.
+- 수동 QA 언어 전환은 iOS 설정 > Sudoku > 언어(앱별 언어)로 대표 6개(`de, ru, ar, th, zh-Hant, sw→en`)를 바꿔 가며 합니다.
+- **iOS 기대값**: 언어를 바꾸면 앱이 다시 시작되고 → 이어하기 카드가 보이고 → 저장한 상태로 복원됩니다. "보드·타이머 유지"는 Android 기대값입니다(Manifest `configChanges`에 `locale|layoutDirection`).
+
+게임 중 언어 변경 시 상태 유지와 폴백·해석 규칙은 `test/l10n/locale_test.dart`가, 360dp·1.3배 글자·320dp(de·ru·pt·fr·ar) overflow는 `test/l10n/layout_test.dart`가 검증합니다. 글자 잘림은 실폰트 수동 캡처로만 판정합니다.
 
 15분 경계(14:59/15:00)와 시계 역행은 `test/services/ad_schedule_test.dart`가 검증합니다.
 
 UMP 갱신 무응답 시나리오는 실기기에서 재현할 수 없으므로 단위 테스트(`test/services/consent_service_test.dart`)로 대신합니다.
 
-## 블록별 남은 개수 (2026-10-22)
+## 블록별 남은 개수 (2026-10-26)
 
 | 블록 | 남음 / 전체 |
 |---|---|
-| A | 3 / 8 |
+| A | 2 / 9 |
 | B | 4 / 4 |
 | C | 8 / 8 |
 | D | 4 / 4 |
-| E | 4 / 5 |
+| E | 3 / 5 |
 | F | 12 / 12 |
 | G | 5 / 5 |

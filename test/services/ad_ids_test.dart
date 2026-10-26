@@ -79,6 +79,32 @@ void main() {
     expect(android, isNot(AdIds.iosProd));
   });
 
+  group('Android App ID 짝 불변식', () {
+    const gradle = 'android/app/build.gradle.kts';
+    final appId = RegExp(
+      r'prodAdmobAppId = "([^"]*)"',
+    ).firstMatch(File(gradle).readAsStringSync())?.group(1);
+
+    test('build.gradle.kts 에 prodAdmobAppId 가 있고 단위 ID 와 함께 비거나 함께 있다', () {
+      expect(appId, isNotNull);
+      expect(AdIds.androidProd.isEmpty, appId!.isEmpty);
+    });
+
+    test('둘 다 있으면 실제 게시자 App ID 이고 단위와 게시자가 같다', () {
+      if (appId!.isEmpty) return;
+      expect(appId, matches(RegExp(r'^ca-app-pub-7432278320907197~\d{10}$')));
+      expect(appId, isNot(contains(sample)));
+      expect(pub(_pubRe, appId), pub(_pubRe, AdIds.androidProd));
+    });
+
+    test('README 에 Android 단위 ID 와 App ID 가 기록돼 있다', () {
+      if (appId!.isEmpty) return;
+      final readme = File('README.md').readAsStringSync();
+      expect(readme, contains(AdIds.androidProd));
+      expect(readme, contains(appId));
+    });
+  });
+
   test('ads.example.json 은 ADMOB_TEST_DEVICES 만 둔다', () {
     final json =
         jsonDecode(File('config/ads.example.json').readAsStringSync())

@@ -302,6 +302,12 @@ class AppLocalizationsFr extends AppLocalizations {
       'Consultez ou modifiez vos paramètres de consentement publicitaire';
 
   @override
+  String get privacyPolicy => 'Politique de confidentialité';
+
+  @override
+  String get openLinkFailed => 'Impossible d\'ouvrir le lien';
+
+  @override
   String get appVersion => 'Version de l\'app';
 
   @override

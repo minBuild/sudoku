@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'app_deps.dart';
 import 'l10n/l10n.dart';
+import 'l10n/locale_resolution.dart';
 import 'screens/home_screen.dart';
 import 'services/ads/ad_service.dart';
 import 'services/game_save_store.dart';
@@ -84,8 +85,9 @@ class _SudokuAppState extends State<SudokuApp> {
         debugShowCheckedModeBanner: false,
         scaffoldMessengerKey: _messenger,
         theme: AppTheme.light(),
-        // 기기 언어를 따르고, 미지원 언어는 첫 항목(en)으로 폴백한다.
+        // 기기 언어 목록을 정규화(no→nb, zh-TW/HK/MO→번체)한 뒤 해석하고, 미지원 언어는 첫 항목(en)으로 폴백한다.
         supportedLocales: AppLocalizations.supportedLocales,
+        localeListResolutionCallback: resolveAppLocale,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         home: const HomeScreen(),
       ),

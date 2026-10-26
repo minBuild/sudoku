@@ -40,7 +40,11 @@ class NumberPad extends StatelessWidget {
         ),
       );
     }
-    return Column(mainAxisSize: MainAxisSize.min, children: rows);
+    // 계산기 관례: RTL 언어에서도 1~9 는 왼쪽→오른쪽.
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Column(mainAxisSize: MainAxisSize.min, children: rows),
+    );
   }
 }
 

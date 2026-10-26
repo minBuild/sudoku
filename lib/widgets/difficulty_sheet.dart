@@ -75,7 +75,7 @@ class _DifficultyTile extends StatelessWidget {
                 ),
                 for (var i = 1; i <= 5; i++)
                   Padding(
-                    padding: const EdgeInsets.only(left: 4),
+                    padding: const EdgeInsetsDirectional.only(start: 4),
                     child: Container(
                       width: 8,
                       height: 8,
