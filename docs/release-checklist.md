@@ -8,13 +8,13 @@
 
 ### iOS(맥북) 트랙 5개 — README "맥북 출시까지 남은 일"과 같은 순서
 
-1. [ ] IAP 가격 결정(유일한 결정 블로커. 사용자가 말한 가격 ₩990, ₩1,900은 AI 메모) → F3
-2. [ ] [개인정보처리방침](privacy-policy.md)의 `TODO_` 채우기(공개 연락처는 사용자가 정함)·호스팅 → `lib/services/legal_links.dart` URL 반영 (D1·D2·A8)
-3. [ ] App Store Connect 앱 생성(기본 언어 English(U.S.) + 한국어 현지화)·유료 앱 계약·`remove_ads` (F1·F2·F3)
-4. [ ] 맥 빌드·TestFlight·테스트 기기 등록 (F5·D4)
+1. [x] IAP 가격 결정 → **USD $0.49**(2026-10-26) → F3
+2. [x] 개인정보처리방침 호스팅 → https://minbuild.github.io/sudoku/privacy.html, `legal_links.dart` 반영 (D1·D2·A8, 2026-10-26)
+3. [ ] App Store Connect 앱 생성(번들 `io.minbuild.sudoku`, 기본 언어 English(U.S.) + 한국어 현지화)·유료 앱 계약·`remove_ads` $0.49 (F1·F2·F3)
+4. [ ] 맥 빌드·TestFlight·테스트 기기 등록 (F5·D4). F0(pod install·Team)은 2026-10-26 완료
 5. [ ] 제출 (F9)
 
-### Android 트랙
+### Android 트랙 (출시 보류, 2026-10-26 사용자 결정)
 
 1. [ ] 업로드 키스토어 생성 (B1)
 2. [ ] `android/key.properties` 작성 (B2)
@@ -36,7 +36,7 @@
 |---|---|---|---|
 | R1 | 디자인 새로, 깔끔하게 | 완료 (2.0 리디자인, Stitch 대응). 회귀 점검만 진행 | A6 |
 | R2 | 게임 시작 시 10초 정도 광고 | iOS·Android 단위 ID 반영, 빌드와 E3 후 송출. 광고 길이는 앱이 정할 수 없음(README 표) | E1 · E3 · D4. 첫 판부터 15분 간격(README) |
-| R3 | 평생 광고 제거 990원(끝자리 내림) | 코드 하드코딩 0건, `ProductDetails.price`만 표시. 콘솔 상품 등록 남음. 권장가 1회 구매 ₩1,900 메모(README), 이전 결정 ₩990과 달라 확정 필요 | C3 · F3 |
+| R3 | 평생 광고 제거 1회 구매 | 코드 하드코딩 0건, `ProductDetails.price`만 표시. 가격 **USD $0.49** 확정(2026-10-26). 콘솔 상품 등록 남음 | F3 (C3는 Android 출시 시) |
 
 ## A. 코드·빌드 (AI)
 
@@ -50,10 +50,11 @@
 | [x] | A5 문서 초안 (이 문서, 개인정보처리방침, 스토어 등록정보) | AI | - | `docs/` 파일 3개 |
 | [ ] | A6 스토어 스크린샷을 에뮬레이터로 캡처 (후속 작업) | AI | - | 휴대폰 스크린샷 2장 이상 |
 | [x] | A7 다국어 33개 언어(README §지원 언어) ARB, 폴백 en, 해석 콜백(`no→nb`, `zh-TW/HK/MO→번체`, 2순위 언어), iOS CFBundleLocalizations·InfoPlist.xcstrings·knownRegions | AI | - | test/l10n/*, ios_config_test 통과 |
-| [x] | A8 앱 내 개인정보처리방침 링크(설정, `url_launcher`). URL 호스팅 후 활성: `privacyPolicyUrl`이 비면 행 숨김 | AI | D2(활성) | `settings_privacy_link_test`, URL 반영 후 `legal_links_test` skip 0 |
+| [x] | A8 앱 내 개인정보처리방침 링크(설정, `url_launcher`). URL https://minbuild.github.io/sudoku/privacy.html 반영(2026-10-26) | AI | D2 | `settings_privacy_link_test`, `legal_links_test` skip 0 |
 | [ ] | A9 수동 게이트: 효과음 4종 사람 청취 승인(tap < wrong < solved, 피로감 없음). 소리를 바꾸면 `dart run tool/gen_sounds.dart` 후 다시 청취 | 사용자 | - | `assets/sounds/*.wav` 청취 기록(검수자·날짜) |
 | [ ] | A10 수동 게이트: `design/icon/contact_sheet.png` 승인(20px에서 앰버 점 구분, 0.35 타일이 사라지지 않음) | 사용자 | - | 승인 기록. 바꾸면 `RENDER_ICON=1` 렌더 후 `dart run flutter_launcher_icons` |
 | [ ] | A11 Android 실기기 게이트(사용자 기기): 시스템 터치음 ON에서 숫자패드·툴바 이중음 없음, 200회 연타 뒤에도 소리와 앱이 정상 | 사용자 | - | 실기기 확인 기록 |
+| [x] | A12 번들·Android 앱 ID `com.jang.sudoku` → `io.minbuild.sudoku`(2026-10-26, 사용자 요청). pbxproj·build.gradle.kts·Kotlin 패키지·`ios_config_test` | AI | - | `ios_config_test` 통과, `grep com.jang` 코드 0건 |
 
 ## B. 서명
 
@@ -70,10 +71,10 @@
 
 | [ ] | 항목 | 담당 | 선행 | 어떻게 확인하나 |
 |---|---|---|---|---|
-| [ ] | C0 조회: `com.jang.sudoku` 존재·게시 여부, 최고 versionCode, 업로드 키 SHA-1 → **미확인**(2026-10-21, 브라우저 연결 실패). 신규 앱 기준으로 작성 | 사용자/AI | - | 결과를 이 행에 기록 |
+| [ ] | C0 조회: `io.minbuild.sudoku` 존재·게시 여부, 최고 versionCode, 업로드 키 SHA-1 → **미확인**(2026-10-21, 브라우저 연결 실패). 신규 앱 기준으로 작성 | 사용자/AI | - | 결과를 이 행에 기록 |
 | [ ] | C1 앱 생성 (무료, 게임 > 퍼즐) | 사용자 | C0 | 앱 대시보드 |
 | [ ] | C2 서명된 AAB를 내부 테스트에 업로드 | 사용자 | B4 | 내부 테스트 트랙에 버전 표시 |
-| [ ] | C3 `remove_ads` 비소모성 상품, **가격 확정 후**(README §사용자 확인 10) **₩990**(끝자리 내림). 구매 옵션 '구매' 1개, 하위 호환 지정, 할인 오퍼 없음. 확정 가격은 README 가격표에 기록 | 사용자 | C2 | 내부 테스트 빌드에서 구매 버튼 활성, logcat `IAP price=₩990 … cur=KRW` |
+| [ ] | C3 `remove_ads` 비소모성 상품, **USD $0.49** 기준(KRW는 콘솔 환산). 구매 옵션 '구매' 1개, 하위 호환 지정, 할인 오퍼 없음. 표시값은 README 가격표에 기록 | 사용자 | C2 | 내부 테스트 빌드에서 구매 버튼 활성, logcat `IAP price=… cur=KRW` |
 | [ ] | C4 라이선스 테스터 등록. 구매·취소·pending·복원 테스트는 내부 테스트 링크로 설치한 빌드에서만 | 사용자 | C2 | 테스트 구매 성공, 재설치 후 자동 복원 |
 | [ ] | C5 스토어 등록 정보([store-listing.md](store-listing.md)): 아이콘 512, 피처 그래픽 1024×500, 휴대폰 스크린샷 2장 이상, 웹사이트는 E4 도메인 루트. 메모: Play 512 아이콘 = `design/icon/icon.png` 다운스케일. 피처 그래픽은 `#3B5BDB` 바탕 + 양화 마크 + 워드마크로 후속 | 사용자 | A6 | 등록정보 저장 |
 | [ ] | C6 앱 콘텐츠: 방침 URL, 광고 포함 = 예, 광고 ID 사용 = 예, 데이터 보안, 콘텐츠 등급, 타깃 연령 13세 이상 | 사용자 | D2 | 앱 콘텐츠 페이지 모두 완료 |
@@ -83,8 +84,8 @@
 
 | [ ] | 항목 | 담당 | 선행 | 어떻게 확인하나 |
 |---|---|---|---|---|
-| [ ] | D1 [개인정보처리방침](privacy-policy.md) 초안을 채움 | 사용자 | - | `TODO_` 검색 결과 0건 |
-| [ ] | D2 GitHub Pages 사용자 사이트(`<user>.github.io`) 또는 자체 도메인에 호스팅 | 사용자 | D1 | 로그인 없이 열림 |
+| [x] | D1 [개인정보처리방침](privacy-policy.md) 초안을 채움(운영자 minBuild, hayaeseong@gmail.com, 시행일 2026-10-26) | AI | - | `TODO_` 검색 결과 0건 |
+| [x] | D2 https://minbuild.github.io/sudoku/privacy.html (영어 `/sudoku/en/privacy.html`, 소개 `/sudoku/`, 지원 `/sudoku/support.html`)에 호스팅, 2026-10-26 | AI | D1 | 로그인 없이 열림 |
 | [ ] | D3 UMP 메시지. C4 ATT 채널이 있으면 IDFA 메시지는 선택, ATT 블록을 제거했으면 필수(없으면 ATT 창이 뜨지 않아 App Store 5.1.2 반려 위험). GDPR 메시지는 D2 이후. 메시지 언어에 앱 지원 33개 언어(README §지원 언어)와 EEA 지역 언어 추가. 언어 추가는 사용자가 메시지를 **게시**해야 반영됨. EEA 언어의 Google 기본 번역 여부는 콘솔에서 확인 | 사용자 | D2 | AdMob > 개인정보 보호 및 메시지에서 게시 상태 |
 | [ ] | D4 테스트 기기 등록. 실기기 릴리스 테스트 전에 반드시. 광고는 클릭하지 않음. 내부 테스트 빌드도 실제 광고를 받음 | 사용자 | E1 | `--dart-define-from-file=config/ads.release.json`의 `ADMOB_TEST_DEVICES`, 광고에 "테스트 광고" 표시. **Android**: 테스트 기기 해시는 logcat의 `setTestDeviceIds(...)` 줄에서 얻고, 해시를 넣기 전 첫 실행 때는 새 게임을 시작하지 않음 |
 
@@ -96,19 +97,19 @@
 | [x] | E1-Android Android 앱 `스도쿠`(스토어 미등록)와 전면광고 단위 `sudoku_pregame_interstitial_android` 등록, 광고 유형은 동영상만, 게재빈도 설정 없음 → 등록 완료(2026-10-26), 값은 README | AI | - | 콘솔 앱·단위 목록 텍스트 대조(2026-10-26), A1-Android 테스트 |
 | [ ] | E2 결제 프로필, 주소 PIN (2026-10-22 콘솔 작업 중 "계정 설정 완료" 배너는 보이지 않았음) | 사용자 | E1 | AdMob > 결제 |
 | [ ] | E3 C7 이후 스토어 연결, 앱 검토(수일 소요). 그 전까지는 송출이 제한되어 R2를 체감하기 어려움 | 사용자 | C7 | 앱 상태 "준비됨" |
-| [ ] | E4 도메인 루트에 `app-ads.txt`: `google.com, pub-<16자리>, DIRECT, f08c47fec0942fa0` (완성 줄은 [README 광고 섹션](../README.md#광고-id-위치)) | 사용자 | E1 · D2 | AdMob > 앱 > app-ads.txt 상태 |
+| [x] | E4 https://minbuild.github.io/app-ads.txt 에 `google.com, pub-7432278320907197, DIRECT, f08c47fec0942fa0` 게시됨(다른 앱과 같은 퍼블리셔, 이미 있음). AdMob 크롤링 확인은 스토어 연결(E3) 뒤 | AI | E1 · D2 | AdMob > 앱 > app-ads.txt 상태 |
 | [ ] | E5 보상형 광고 단위 생성: 먼저 앱 `스도쿠` Android(`~1580424878`)·iOS(`~4407658951`) 단위 목록을 조회해 보상형 단위가 있으면 재사용, 없으면 `sudoku_reward_android` / `sudoku_reward_ios`(보상 1개 `hint`, 서버 측 확인·게재빈도 설정 끔) 생성 → `ad_ids.dart` `androidRewardedProd`/`iosRewardedProd` 반영, README 광고 ID 표 2행 기록. **미완료**(2026-10-29, 브라우저 미연결). 그 전까지 릴리스 빌드에서 보상형은 항상 `unavailable`(무료 힌트·광고 제거 경로는 정상) | AI/사용자 | E1 | 콘솔 단위 목록 텍스트 대조, `ad_ids_test` 통과 |
 
 ## F. App Store (맥북 로컬 → 이후 CI)
 
 | [ ] | 항목 | 담당 | 선행 | 어떻게 확인하나 |
 |---|---|---|---|---|
-| [ ] | F0 맥북 준비: Xcode 26 이상(iOS 26 SDK, 업로드 전 Apple 공지로 최소 요건 재확인), CocoaPods, Flutter 3.47.7, Xcode에서 Signing Team 선택 | 사용자 | - | `flutter doctor`, `pod --version` |
-| [ ] | F1 Bundle ID `com.jang.sudoku` 등록, App Store Connect 앱 생성. 기본 언어 English(U.S.), 한국어 현지화 추가 | 사용자 | - | App Store Connect 앱 목록·앱 정보 > 기본 언어 |
+| [x] | F0 맥북 준비: Xcode, CocoaPods(`pod install`), Signing Team 선택 → 2026-10-26 사용자 완료. 번들 ID가 `io.minbuild.sudoku`로 바뀌었으므로 Xcode 자동 서명이 새 ID를 등록하는지 한 번 확인 | 사용자 | - | `flutter doctor`, `pod --version` |
+| [ ] | F1 Bundle ID `io.minbuild.sudoku` 등록, App Store Connect 앱 생성. 기본 언어 English(U.S.), 한국어 현지화 추가 | 사용자 | - | App Store Connect 앱 목록·앱 정보 > 기본 언어 |
 | [ ] | F2 유료 앱 계약 | 사용자 | - | 계약 상태 "활성" |
-| [ ] | F3 `remove_ads` 가격 **가격 확정 후**(README §사용자 확인 10) ₩990. 목록에 없으면 ₩990 이하 최고가, **사용자 확인 필요**. 결과는 README 가격표. Apple KRW 가격 목록에 ₩1,900(권장가)이 있는지도 확인해 README §사용자 확인 10에 기록 | 사용자 | F1 · F2 | Sandbox에서 표시 가격 |
-| [ ] | F4 App Privacy 라벨(기기 ID, 광고 데이터, 추적 = 예)과 방침 URL | 사용자 | D2 | App Privacy 페이지, **TestFlight 실기기에서 ATT 창이 뜨는지 확인(필수)** |
-| [ ] | F4b 마케팅 URL·지원 URL = E4 도메인 루트(AdMob이 app-ads.txt를 찾는 위치) | 사용자 | D2 · F1 | App Store Connect 앱 정보·버전 페이지 URL |
+| [ ] | F3 `remove_ads` 비소모성, 기준가 **USD $0.49**(다른 통화는 Apple 자동 환산). 확인한 KRW 표시값은 README 가격표에 기록 | 사용자 | F1 · F2 | Sandbox에서 표시 가격 |
+| [ ] | F4 App Privacy 라벨(기기 ID, 광고 데이터, 추적 = 예)과 방침 URL(영어 https://minbuild.github.io/sudoku/en/privacy.html, 한국어 `/sudoku/privacy.html`) | 사용자 | D2 | App Privacy 페이지, **TestFlight 실기기에서 ATT 창이 뜨는지 확인(필수)** |
+| [ ] | F4b 마케팅 URL https://minbuild.github.io/sudoku/ · 지원 URL https://minbuild.github.io/sudoku/support.html (도메인 루트에 app-ads.txt가 있어 AdMob 확인 가능) | 사용자 | D2 · F1 | App Store Connect 앱 정보·버전 페이지 URL |
 | [ ] | F5 [README "맥북에서 할 순서"](../README.md#맥북에서-할-순서): `pod install`, 시뮬레이터 확인, `flutter build ipa`, `-showBuildSettings`로 `GAD_APPLICATION_ID`가 Release=실제·Profile=샘플인지 확인, Organizer 업로드. 샘플 단위 빌드 게이트: 심사용 빌드는 `DART_DEFINES`에 `ADMOB_INTERSTITIAL_IOS`가 없어야 하고, `+N`이 TestFlight 빌드보다 커야 하며(같은 번호 재업로드 금지), 실제 단위 빌드는 D4 이후. 실제 단위 빌드는 첫 판부터 광고가 나오므로 D4 이후 실행, 테스트 중 광고 클릭 금지. 아카이브 `.lproj` 34개(Base 포함)와 `{zh-Hans,zh-Hant,ar,ko}.lproj/InfoPlist.strings` 확인(README). **Mac 게이트(Firebase)**: Firebase pod(`firebase_core`·`firebase_auth`·`cloud_firestore`)를 포함한 첫 `pod install` 소요 시간과 첫 `flutter build ipa` 시간을 이 행에 기록(Firestore pod는 첫 빌드가 오래 걸림). `GoogleService-Info.plist`는 추가하지 않음(Dart 초기화) | 사용자 | F0 · A1-iOS | Organizer 업로드 완료, TestFlight 빌드 표시, pod install·빌드 시간 기록 |
 | [ ] | F6 Sandbox 구매·복원, 구매 없는 계정에서 "복원할 구매가 없어요" 표시 | 사용자 | F3 · F5 | 구매 후 광고 사라짐, 재설치 후 자동 복원 |
 | [ ] | F6b 실기기 QA(아래 표). 결과를 표에 기록 | 사용자 | F5 · F6 · D4 · E5 · H | 40개 상황 모두 기대 결과 |
@@ -124,7 +125,7 @@
 | [ ] | G2 **법적 문구 검수(검수 전 출시 금지)**: ATT 문구 ko·en, `privacyOptions*`, `privacyPolicy`, 개인정보처리방침 ko·en | 사용자 | A7 | 검수자·날짜 기록 |
 | [ ] | G3 31개 언어는 사용자 지시로 미검수 출시(README 사용자 확인 11). 문제가 보고되면 README 플랜 B로 제외 | 사용자 | A7 | 보고 접수 시 제외 커밋 |
 | [ ] | G4 스토어 등록정보(Play·App Store Connect) 기본 언어 영어(U.S.) **출시 필수**, 한국어 현지화 **필수**, 그 밖의 언어는 권장(사람이 번역). 언어별 스크린샷 | 사용자 | C5 · F1 | 콘솔 등록정보 언어 목록 |
-| [ ] | G5 개인정보처리방침 영어본 호스팅, App Store Connect 언어별 방침 URL | 사용자 | D2 | 로그인 없이 열림 |
+| [x] | G5 개인정보처리방침 영어본 호스팅 https://minbuild.github.io/sudoku/en/privacy.html (2026-10-26). App Store Connect 언어별 방침 URL 입력은 F4 | AI | D2 | 로그인 없이 열림 |
 
 ## H. Firebase(주간 대결)
 
@@ -206,11 +207,11 @@ UMP 갱신 무응답 시나리오는 실기기에서 재현할 수 없으므로 
 
 | 블록 | 남음 / 전체 |
 |---|---|
-| A | 5 / 12 |
-| B | 4 / 4 |
-| C | 8 / 8 |
-| D | 4 / 4 |
-| E | 4 / 6 |
-| F | 12 / 12 |
-| G | 5 / 5 |
+| A | 5 / 13 |
+| B | 4 / 4 (Android 보류) |
+| C | 8 / 8 (Android 보류) |
+| D | 2 / 4 |
+| E | 3 / 6 |
+| F | 11 / 12 |
+| G | 4 / 5 |
 | H | 12 / 12 |

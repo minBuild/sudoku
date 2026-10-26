@@ -33,15 +33,20 @@ void main() {
     expect(m?.group(1), '15.0');
   });
 
-  test('번들 ID 는 com.jang.sudoku 와 테스트 타깃뿐이다', () {
+  test('번들 ID 는 io.minbuild.sudoku 와 테스트 타깃뿐이다', () {
     expect(_values(_read(pbxprojPath), 'PRODUCT_BUNDLE_IDENTIFIER'), {
-      'com.jang.sudoku',
-      'com.jang.sudoku.RunnerTests',
+      'io.minbuild.sudoku',
+      'io.minbuild.sudoku.RunnerTests',
     });
   });
 
-  test('iPhone 전용 (TARGETED_DEVICE_FAMILY = "1")', () {
-    expect(_values(_read(pbxprojPath), 'TARGETED_DEVICE_FAMILY'), {'"1"'});
+  test('iPhone 전용 (TARGETED_DEVICE_FAMILY = 1)', () {
+    // Xcode 는 저장할 때 "1" 을 1 로 바꿔 쓴다. 둘 다 iPhone 전용이다.
+    final v = _values(
+      _read(pbxprojPath),
+      'TARGETED_DEVICE_FAMILY',
+    ).map((e) => e.replaceAll('"', '')).toSet();
+    expect(v, {'1'});
   });
 
   test('Info.plist 필수 항목', () {

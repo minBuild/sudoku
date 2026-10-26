@@ -8,9 +8,9 @@
 |---|---|
 | 앱 이름 | Sudoku JANG |
 | 카테고리 | 게임 > 퍼즐 |
-| 이메일 | TODO_EMAIL |
-| 웹사이트 | TODO_ (app-ads.txt를 둘 도메인 루트, 체크리스트 E4) |
-| 개인정보처리방침 URL | 호스팅 후 기입 (체크리스트 D2) |
+| 이메일 | hayaeseong@gmail.com |
+| 웹사이트 | https://minbuild.github.io/sudoku/ (루트 https://minbuild.github.io/ 에 app-ads.txt) |
+| 개인정보처리방침 URL | https://minbuild.github.io/sudoku/privacy.html (영어 https://minbuild.github.io/sudoku/en/privacy.html) |
 
 ## 짧은 설명 (80자 이내)
 

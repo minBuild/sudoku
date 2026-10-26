@@ -2,26 +2,27 @@
 
 ## 맥북 출시까지 남은 일
 
-1. **IAP 가격 결정**(사용자, 유일한 결정 블로커). 사용자가 직접 말한 가격은 ₩990, ₩1,900은 AI 메모입니다.
-2. 개인정보처리방침 `TODO_` 채우기(이름·공개 연락처·시행일은 사용자가 정함)·호스팅 → `lib/services/legal_links.dart` `privacyPolicyUrl`에 URL 반영(그 전까지 설정의 방침 행은 숨김).
-3. App Store Connect 앱 생성(**기본 언어 English(U.S.)** + 한국어 현지화)·유료 앱 계약·`remove_ads` 등록.
-4. 맥 빌드(`pod install`·서명 Team 선택)·TestFlight·D4(테스트 기기 등록).
+1. ~~IAP 가격 결정~~ → **USD $0.49** 로 확정(2026-10-26, 사용자). 콘솔 등록은 3번.
+2. ~~개인정보처리방침 호스팅~~ → 완료(2026-10-26). https://minbuild.github.io/sudoku/privacy.html (영어 `/sudoku/en/privacy.html`). `privacyPolicyUrl` 반영, 설정에 방침 행 표시.
+3. App Store Connect 앱 생성(번들 `io.minbuild.sudoku`, **기본 언어 English(U.S.)** + 한국어 현지화)·유료 앱 계약·`remove_ads` 등록($0.49).
+4. ~~맥 빌드 준비(`pod install`·서명 Team 선택)~~ → 완료(2026-10-26, 사용자). 남은 것: TestFlight·D4(테스트 기기 등록).
 5. 제출.
 
-Android AdMob은 별도 트랙입니다(맥북 iOS 출시와 무관, [출시 체크리스트](docs/release-checklist.md) Android 트랙).
+Android는 **지금 출시하지 않습니다**(2026-10-26, 사용자). AdMob Android 앱·단위는 코드에 반영돼 있고, 출시 시점에 [출시 체크리스트](docs/release-checklist.md) Android 트랙(B·C)을 진행합니다.
 
-**"광고 ID 다 할당됐으니 맥북에서 출시만 하면 되나?"** → 아직 아닙니다.
+**"광고 ID 다 할당됐으니 맥북에서 출시만 하면 되나?"** → 콘솔 작업(3번)과 TestFlight(4번)가 남았습니다.
 
 | 항목 | 실제 상태 |
 |---|---|
 | iOS AdMob App ID·전면 단위 | 완료 (`ios/Flutter/Release.xcconfig`, `lib/services/ads/ad_ids.dart` `iosProd`) |
 | Android AdMob | 2026-10-26 등록·코드 반영(`build.gradle.kts` `prodAdmobAppId`, `ad_ids.dart` `androidProd`). 맥북 iOS 출시와는 별개 트랙 |
-| IAP `remove_ads` | 두 스토어 모두 등록 안 됨, 가격 미정(사용자가 말한 ₩990 vs AI 메모 ₩1,900). App Store는 IAP를 첨부하지 않으면 반려(F7) |
-| 개인정보처리방침 | `docs/privacy-policy.md`에 `TODO_` 3개(이름·이메일·시행일)가 남아 있고 호스팅도 안 됨. 앱 안 링크 자리는 만들어 둠(URL이 비면 숨김) |
-| 맥북 작업 | `pod install`(처음, Firebase pod 포함), 서명 Team 선택, 빌드·TestFlight·D4(테스트 기기 등록) |
+| IAP `remove_ads` | 가격 **$0.49** 확정(2026-10-26). 콘솔 등록은 아직(F3). App Store는 IAP를 첨부하지 않으면 반려(F7) |
+| 개인정보처리방침 | 호스팅 완료(2026-10-26): https://minbuild.github.io/sudoku/privacy.html, 영어 `/sudoku/en/privacy.html`. `privacyPolicyUrl` 반영, `legal_links_test` skip 0 |
+| app-ads.txt | 완료: https://minbuild.github.io/app-ads.txt (다른 앱과 같은 퍼블리셔라 이미 올라가 있음) |
+| 맥북 작업 | `pod install`·서명 Team 선택 완료(2026-10-26). 빌드 2.0.0 (3) 업로드·TestFlight 내부 그룹 배포 완료. Firebase pod가 추가됐으니 다음 빌드 전 `pod install` 다시 실행. 남은 것: D4(테스트 기기 등록) |
 | 보상형 광고 단위(힌트·이어 도전) | **미생성 (콘솔 작업 필요)**. `ad_ids.dart` `androidRewardedProd`/`iosRewardedProd`가 `''`라 릴리스에서 보상형은 항상 사용 불가(무료 힌트·광고 제거 경로는 정상). 체크리스트 E5 |
 | Firebase(주간 대결) | **미설정 (콘솔 작업 필요)**. `lib/firebase_options.dart`가 `TODO`라 주간 대결(홈 카드·설정 닉네임 행)이 숨겨짐. §[Firebase](#firebase), 체크리스트 H |
-| 신고 이메일 | `lib/services/legal_links.dart` `supportEmail`이 `''`라 주간 대결 화면의 "부적절한 닉네임 신고" 행이 숨겨짐(체크리스트 H10) |
+| 신고 이메일 | `lib/services/legal_links.dart` `supportEmail` = hayaeseong@gmail.com (2026-10-31 반영) → 주간 대결 화면의 "부적절한 닉네임 신고" 행 표시 |
 
 **"한국어뿐이면 언어를 전부 추가"** → 33개 언어를 지원합니다(§[지원 언어](#지원-언어)). 33개 밖의 기기 언어는 영어로 표시됩니다.
 
@@ -29,7 +30,7 @@ Android AdMob은 별도 트랙입니다(맥북 iOS 출시와 무관, [출시 체
 
 Flutter 스도쿠 앱. Android 먼저 출시하고, iOS는 코드와 설정을 반영했습니다(빌드 검증은 맥북: [맥북에서 할 순서](#맥북에서-할-순서)).
 
-- 패키지명 `sudoku`, Android `com.jang.sudoku`, 버전 `2.0.0+3`
+- 패키지명 `sudoku`, 번들·Android 앱 ID `io.minbuild.sudoku`(2026-10-26, `com.jang.sudoku`에서 변경), 버전 `2.0.0+3`
 - 확인한 Flutter 버전: 3.47.7 (Dart 3.13.5)
 
 ## 사용자 요구 대비 동작
@@ -44,8 +45,8 @@ Flutter 스도쿠 앱. Android 먼저 출시하고, iOS는 코드와 설정을 �
 
 **사용자가 정해야 할 결정 2개**
 
-- **결정 A — 광고 제거 가격**(이전 4·8·10 통합): 현재 미정(IAP 상품 미등록). 사용자가 직접 말한 가격은 ₩990, 권장가 ₩1,900은 AI 메모입니다. App Store는 KRW 가격 목록에 그 값이 없으면 그 이하 최고가가 되어 달라질 수 있습니다. 콘솔 등록(C3·F3) 전에 확정합니다.
-- **결정 B — 개인정보처리방침 호스팅·공개 연락처**: `docs/privacy-policy.md`의 `TODO_`(이름·이메일·시행일)를 사용자가 정하고 호스팅합니다. URL을 `lib/services/legal_links.dart`에 넣으면 설정에 방침 행이 나타납니다.
+- **결정 A — 광고 제거 가격**(이전 4·8·10 통합): **USD $0.49** 로 확정(2026-10-26, 사용자). App Store Connect에서 기준가 $0.49(가격 등급)를 고르면 KRW 등 다른 통화는 Apple이 자동 환산합니다. 결과는 §가격표에 기록합니다.
+- **결정 B — 개인정보처리방침 호스팅·공개 연락처**: 완료(2026-10-26). 운영자 minBuild, 연락처 hayaeseong@gmail.com, 시행일 2026-10-26. 공개본 https://minbuild.github.io/sudoku/privacy.html (원본 `docs/privacy-policy.md`).
 
 **고지 사항**
 
@@ -61,22 +62,18 @@ Flutter 스도쿠 앱. Android 먼저 출시하고, iOS는 코드와 설정을 �
 9. 광고 노출 정책: 첫 판부터, 15분 간격
 10. (결정 A로 통합)
 11. **31개 언어 AI 번역·미검수 출시**(사용자 지시). ko·en 검수와 ko·en 법적 문구(ATT·`privacyOptions*`·`privacyPolicy`) 검수는 유지합니다. 33개 밖의 기기 언어는 영어로 나옵니다.
-12. 설정에 개인정보처리방침 링크 추가(`url_launcher`, 외부 브라우저). 호스팅 전에는 행을 숨기고 `legal_links_test` 1건이 skip됩니다.
+12. 설정에 개인정보처리방침 링크 추가(`url_launcher`, 외부 브라우저). URL은 `lib/services/legal_links.dart`(minbuild.github.io).
 13. Android AdMob App ID(`ca-app-pub-7432278320907197~1580424878`, 2026-10-26 등록)를 `android/app/build.gradle.kts`에 커밋합니다. App ID는 APK에 평문으로 들어가는 공개값입니다.
 14. 스토어 기본 언어는 **English(U.S.)**, 한국어는 현지화로 추가합니다. 스토어는 맞는 현지화가 없으면 기본 언어를 보여 주므로, 기본이 한국어면 "없으면 영어" 규칙과 어긋납니다.
 
-**현재 결정**: 미정(IAP 상품 미등록). 권장 가격(2026-10-22 메모): 1회 구매 **₩1,900**. App Store는 KRW 가격 목록에 ₩1,900이 있는지 확인이 필요하고, 없으면 사용자 확인 대상입니다. 확정 전까지 콘솔 상품 등록(C3·F3)은 보류합니다.
-
-(이전 결정, 확정 아님) **가격 정책(끝자리 내림)**: 기준가 ₩1,000에서 끝자리를 내려 ₩990. Play는 ₩990을 그대로 입력합니다. App Store는 KRW 가격 목록에 ₩990이 있으면 그 값을, 없으면 ₩990 이하에서 가장 높은 가격을 쓰며, 이 경우 사용자 확인이 필요합니다. 해외 가격은 USD $0.99를 기준으로 콘솔이 자동 환산합니다. 앱 코드에는 가격 숫자를 넣지 않고 `ProductDetails.price`만 표시합니다.
+**현재 결정(2026-10-26, 사용자)**: 1회 구매 **USD $0.49**. 기준 통화는 USD이고 다른 통화는 각 콘솔이 자동 환산합니다. 앱 코드에는 가격 숫자를 넣지 않고 `ProductDetails.price`만 표시합니다. (이전 메모 ₩990·₩1,900은 폐기)
 
 ## 가격표
 
-아래 ₩990 값은 이전 결정입니다. 현재는 미정이며 권장가는 ₩1,900입니다(위 메모).
-
 | 스토어 | 상품 ID | 설정 가격 | 확인일 | 앱 표시값(`ProductDetails.price`) |
 |---|---|---|---|---|
-| Play | `remove_ads` | ₩990 | | |
-| App Store | `remove_ads` | ₩990 또는 그 이하 최고가 | | |
+| App Store | `remove_ads` | USD $0.49 (KRW는 Apple 자동 환산) | | |
+| Play (출시 보류) | `remove_ads` | USD $0.49 기준 | | |
 
 빈칸은 콘솔에 등록하고 QA를 마친 뒤 채웁니다. 가격 검증은 logcat의 `IAP price=… raw=… cur=KRW` 로그로 합니다.
 
@@ -263,12 +260,12 @@ open build/ios/archive/Runner.xcarchive   # Organizer > Distribute App > App Sto
 
 원본은 [출시 체크리스트 F 블록](docs/release-checklist.md#f-app-store-맥북-로컬--이후-ci)입니다.
 
-1. 앱 생성(번들 `com.jang.sudoku`, 기본 언어 English(U.S.), 한국어 현지화 추가, 이름 `Sudoku JANG`)
+1. 앱 생성(번들 `io.minbuild.sudoku`, 기본 언어 English(U.S.), 한국어 현지화 추가, 이름 `Sudoku JANG`)
 2. 유료 앱 계약
-3. `remove_ads` 비소모성 상품: ₩990, 없으면 ₩990 이하 최고가(사용자 확인) → README 가격표에 기록
-4. App Privacy(기기 ID·광고 데이터, 추적=예, Organizer Privacy Report 참고. 주간 대결: 사용자 ID·기타 사용자 콘텐츠·게임 플레이 콘텐츠 = 앱 기능, [스토어 등록정보](docs/store-listing.md)) + 개인정보처리방침 URL(`TODO_` 0건)
+3. `remove_ads` 비소모성 상품: USD $0.49 → 확인한 KRW 표시값을 README 가격표에 기록
+4. App Privacy(기기 ID·광고 데이터, 추적=예, Organizer Privacy Report 참고. 주간 대결: 사용자 ID·기타 사용자 콘텐츠·게임 플레이 콘텐츠 = 앱 기능, [스토어 등록정보](docs/store-listing.md)) + 개인정보처리방침 URL: 영어 https://minbuild.github.io/sudoku/en/privacy.html, 한국어 https://minbuild.github.io/sudoku/privacy.html
 5. 연령 등급
-6. 6.9″ iPhone 스크린샷 + 마케팅 URL·지원 URL을 E4 도메인 루트로 설정(F4b)
+6. 6.9″ iPhone 스크린샷 + 마케팅 URL https://minbuild.github.io/sudoku/ · 지원 URL https://minbuild.github.io/sudoku/support.html (영어는 `/sudoku/en/`)
 7. TestFlight 실기기에서 ATT 창, 샌드박스 구매·복원, "복원할 구매가 없어요" 확인 + F6b QA 표 기록
 8. 버전 페이지 "앱 내 구입"에 `remove_ads` 첨부(심사용 스크린샷 포함, 빠지면 반려)
 9. 심사 메모(**영어 병기**, 문안은 체크리스트 F8):

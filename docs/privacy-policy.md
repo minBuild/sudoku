@@ -1,4 +1,4 @@
-> ⚠ 법률 검토를 받지 않은 초안입니다. TODO_ 항목(이메일·시행일·보호책임자)을 채운 뒤 호스팅하세요.
+> 법률 검토를 받지 않은 초안입니다. 공개본은 https://minbuild.github.io/sudoku/privacy.html (영어 /sudoku/en/privacy.html)에 호스팅했습니다. 바뀌면 두 곳을 같이 고칩니다.
 > 주간 대결(Firebase) 항목은 Firebase 콘솔 설정(README §Firebase) 결과에 맞춰 다시 확인합니다. 특히 TTL을 설정하면 §4 보존 기간을 고치고, 국외 이전 고지(§6 TODO)는 법률 검토가 필요합니다.
 > 영어본은 별도로 작성·검수해 호스팅합니다(체크리스트 G2·G5).
 
@@ -72,10 +72,10 @@ Google이 파트너 앱에서 정보를 사용하는 방식: https://policies.go
 
 ## 8. 개인정보 보호책임자
 
-- 성명: TODO_NAME
-- 이메일: TODO_EMAIL
+- 성명: minBuild
+- 이메일: hayaeseong@gmail.com
 
 ## 9. 시행일과 변경 고지
 
-- 이 방침은 TODO_DATE부터 시행합니다.
+- 이 방침은 2026년 10월 26일부터 시행합니다.
 - 방침이 바뀌면 시행 7일 전부터 이 페이지와 스토어 등록정보를 통해 알립니다.
