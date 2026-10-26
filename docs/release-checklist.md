@@ -10,9 +10,9 @@
 
 1. [x] IAP 가격 결정 → **USD $0.49**(2026-10-26) → F3
 2. [x] 개인정보처리방침 호스팅 → https://minbuild.github.io/sudoku/privacy.html, `legal_links.dart` 반영 (D1·D2·A8, 2026-10-26)
-3. [ ] App Store Connect 앱 생성(번들 `io.minbuild.sudoku`, 기본 언어 English(U.S.) + 한국어 현지화)·유료 앱 계약·`remove_ads` $0.49 (F1·F2·F3)
-4. [ ] 맥 빌드·TestFlight·테스트 기기 등록 (F5·D4). F0(pod install·Team)은 2026-10-26 완료
-5. [ ] 제출 (F9)
+3. [x] App Store Connect 앱 생성(Apple ID 6827115588, 번들 `io.minbuild.sudoku`, en-US + ko)·`remove_ads` $0.49(KRW ₩900) 등록·무료·175개국 (F1·F3, 2026-10-26)
+4. [x] 빌드 2.0.0 (3) 업로드·버전 페이지에 선택, 스크린샷(en·ko 각 4장, 1206×2622), 설명·키워드·URL·심사 메모·연락처, 앱 개인정보 게시, 연령 등급 4+ (F4·F5·F7·F8, 2026-10-26)
+5. [ ] **제출 전 사용자 작업 2개**: ① 앱 정보 > 콘텐츠 권한 > 편집 > "아니요, 타사 콘텐츠 없음" > 완료 > 저장(자동화가 동의성 선택이라 막힘) ② 버전 페이지 > 심사에 추가 > 제출 초안(IAP Remove Ads 포함됨) > 심사를 위해 제출 (F9). D4(테스트 기기)·F6(샌드박스 구매)는 TestFlight 설치 후 별도
 
 ### Android 트랙 (출시 보류, 2026-10-26 사용자 결정)
 

@@ -31,7 +31,8 @@ Android는 **지금 출시하지 않습니다**(2026-10-26, 사용자). AdMob An
 Flutter 스도쿠 앱. Android 먼저 출시하고, iOS는 코드와 설정을 반영했습니다(빌드 검증은 맥북: [맥북에서 할 순서](#맥북에서-할-순서)).
 
 - 패키지명 `sudoku`, 번들·Android 앱 ID `io.minbuild.sudoku`(2026-10-26, `com.jang.sudoku`에서 변경), 버전 `2.0.0+3`
-- 확인한 Flutter 버전: 3.47.7 (Dart 3.13.5)
+- 확인한 Flutter 버전: 3.47.7 (Dart 3.13.5). 맥북에는 3.44.7이 설치돼 있어 `flutter pub get`이 `pubspec.lock`을 내려 쓰므로, lock 변경은 커밋 전에 `git diff pubspec.lock`으로 확인한다.
+- App Store Connect: Apple ID 6827115588, IAP `remove_ads`(6827120483, $0.49), 빌드 2.0.0 (3) 업로드 완료(2026-10-26). 제출 전 남은 사용자 작업은 [체크리스트](docs/release-checklist.md) iOS 트랙 5번.
 
 ## 사용자 요구 대비 동작
 
