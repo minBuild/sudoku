@@ -330,4 +330,142 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Κόλαση';
+
+  @override
+  String get hint => 'Υπόδειξη';
+
+  @override
+  String get hintUse => 'Χρήση υπόδειξης';
+
+  @override
+  String get hintRankingWarn =>
+      'Αν χρησιμοποιήσετε υπόδειξη, το παιχνίδι εξαιρείται από την κατάταξη της εβδομάδας';
+
+  @override
+  String get rewardHintTitle => 'Δείτε διαφήμιση για υπόδειξη';
+
+  @override
+  String get rewardHintBody =>
+      'Δείτε μια σύντομη διαφήμιση μέχρι το τέλος για να πάρετε 1 υπόδειξη. Οι δωρεάν υποδείξεις γίνονται ξανά 3 αύριο.';
+
+  @override
+  String get rewardContinueBody =>
+      'Δείτε μια σύντομη διαφήμιση μέχρι το τέλος για να μηδενιστούν τα λάθη και να συνεχίσετε.';
+
+  @override
+  String get watchAd => 'Προβολή διαφήμισης';
+
+  @override
+  String get adLoading => 'Φόρτωση διαφήμισης…';
+
+  @override
+  String get adUnavailable => 'Δεν είναι δυνατή η φόρτωση διαφήμισης τώρα';
+
+  @override
+  String get adNotCompleted =>
+      'Δείτε τη διαφήμιση μέχρι το τέλος για να πάρετε την ανταμοιβή';
+
+  @override
+  String get continueAfterFail => 'Συνέχεια';
+
+  @override
+  String get continueWithAd => 'Διαφήμιση και συνέχεια';
+
+  @override
+  String get weeklyTitle => 'Εβδομαδιαία πρόκληση';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'Εβδομάδα $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'Έως $date';
+  }
+
+  @override
+  String get weeklyRule =>
+      'Στην κατάταξη μπαίνουν μόνο λύσεις χωρίς υποδείξεις';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Λύθηκαν $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Παίξτε';
+
+  @override
+  String get weeklyRetry => 'Παίξτε ξανά';
+
+  @override
+  String get weeklyNotPlayed => 'Δεν έχετε παίξει ακόμα';
+
+  @override
+  String get weeklyInProgress => 'Σε εξέλιξη';
+
+  @override
+  String get weeklyNoLeader => 'Κανείς πρώτος ακόμα';
+
+  @override
+  String get weeklyLoadFailed => 'Δεν ήταν δυνατή η φόρτωση της κατάταξης';
+
+  @override
+  String get retry => 'Επανάληψη';
+
+  @override
+  String get weeklyYouAreFirst => 'Πρώτη θέση!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Το καλύτερό μου αυτή την εβδομάδα $time';
+  }
+
+  @override
+  String get weeklySending => 'Αποστολή — θα ολοκληρωθεί όταν συνδεθείτε';
+
+  @override
+  String get weeklyRank1 => 'Πρώτη θέση αυτή την εβδομάδα!';
+
+  @override
+  String get weeklyHintExcluded =>
+      'Χρησιμοποιήθηκε υπόδειξη — εκτός κατάταξης αυτή την εβδομάδα';
+
+  @override
+  String get weeklyLastWeek =>
+      'Γρίφος της περασμένης εβδομάδας — δεν καταγράφηκε';
+
+  @override
+  String get rankingExcluded => 'Εκτός κατάταξης';
+
+  @override
+  String get anonymous => 'Ανώνυμος';
+
+  @override
+  String get weeklyReport => 'Αναφορά ψευδωνύμου';
+
+  @override
+  String get nickname => 'Ψευδώνυμο';
+
+  @override
+  String get nicknameSet => 'Ορισμός ψευδωνύμου';
+
+  @override
+  String get nicknameChange => 'Αλλαγή';
+
+  @override
+  String get nicknameHelper => 'Εμφανίζεται στην κατάταξη';
+
+  @override
+  String get nicknameTooShort => 'Τουλάχιστον 2 χαρακτήρες';
+
+  @override
+  String get nicknameInvalid => 'Μόνο γράμματα, αριθμοί, κενά και _';
+
+  @override
+  String get nicknameBanned => 'Αυτό το ψευδώνυμο δεν επιτρέπεται';
+
+  @override
+  String get save => 'Αποθήκευση';
 }

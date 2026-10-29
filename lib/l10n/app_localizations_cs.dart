@@ -337,4 +337,139 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Peklo';
+
+  @override
+  String get hint => 'Nápověda';
+
+  @override
+  String get hintUse => 'Použít nápovědu';
+
+  @override
+  String get hintRankingWarn =>
+      'Použitím nápovědy bude tato hra vyřazena z žebříčku tohoto týdne';
+
+  @override
+  String get rewardHintTitle => 'Nápověda za zhlédnutí reklamy';
+
+  @override
+  String get rewardHintBody =>
+      'Zhlédněte krátkou reklamu až do konce a získáte 1 nápovědu. Bezplatné nápovědy se zítra opět doplní na 3.';
+
+  @override
+  String get rewardContinueBody =>
+      'Zhlédněte krátkou reklamu až do konce, chyby se vynulují a můžete hrát dál.';
+
+  @override
+  String get watchAd => 'Zhlédnout reklamu';
+
+  @override
+  String get adLoading => 'Načítání reklamy…';
+
+  @override
+  String get adUnavailable => 'Reklamu teď nelze načíst';
+
+  @override
+  String get adNotCompleted => 'Odměnu získáte po zhlédnutí celé reklamy';
+
+  @override
+  String get continueAfterFail => 'Hrát dál';
+
+  @override
+  String get continueWithAd => 'Hrát dál po reklamě';
+
+  @override
+  String get weeklyTitle => 'Týdenní výzva';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'Týden $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'Do $date';
+  }
+
+  @override
+  String get weeklyRule => 'Do žebříčku se počítají jen hry bez nápovědy';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Vyřešeno $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Hrát';
+
+  @override
+  String get weeklyRetry => 'Hrát znovu';
+
+  @override
+  String get weeklyNotPlayed => 'Zatím nehráno';
+
+  @override
+  String get weeklyInProgress => 'Probíhá';
+
+  @override
+  String get weeklyNoLeader => 'Zatím nikdo první';
+
+  @override
+  String get weeklyLoadFailed => 'Žebříček se nepodařilo načíst';
+
+  @override
+  String get retry => 'Zkusit znovu';
+
+  @override
+  String get weeklyYouAreFirst => 'Jste první!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Můj nejlepší čas tento týden $time';
+  }
+
+  @override
+  String get weeklySending => 'Odesílání — dokončí se, až budete online';
+
+  @override
+  String get weeklyRank1 => 'První místo tento týden!';
+
+  @override
+  String get weeklyHintExcluded =>
+      'Použita nápověda — tento týden mimo žebříček';
+
+  @override
+  String get weeklyLastWeek => 'Hádanka z minulého týdne — nezaznamenáno';
+
+  @override
+  String get rankingExcluded => 'Mimo žebříček';
+
+  @override
+  String get anonymous => 'Anonym';
+
+  @override
+  String get weeklyReport => 'Nahlásit přezdívku';
+
+  @override
+  String get nickname => 'Přezdívka';
+
+  @override
+  String get nicknameSet => 'Nastavit přezdívku';
+
+  @override
+  String get nicknameChange => 'Změnit';
+
+  @override
+  String get nicknameHelper => 'Zobrazí se v žebříčku';
+
+  @override
+  String get nicknameTooShort => 'Zadejte alespoň 2 znaky';
+
+  @override
+  String get nicknameInvalid => 'Jen písmena, číslice, mezery a _';
+
+  @override
+  String get nicknameBanned => 'Tuto přezdívku nelze použít';
+
+  @override
+  String get save => 'Uložit';
 }

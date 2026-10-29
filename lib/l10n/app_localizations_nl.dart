@@ -328,4 +328,140 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Hel';
+
+  @override
+  String get hint => 'Hint';
+
+  @override
+  String get hintUse => 'Hint gebruiken';
+
+  @override
+  String get hintRankingWarn =>
+      'Met een hint telt dit spel niet mee voor de ranglijst van deze week';
+
+  @override
+  String get rewardHintTitle => 'Bekijk een advertentie voor een hint';
+
+  @override
+  String get rewardHintBody =>
+      'Bekijk een korte advertentie helemaal voor 1 hint. Gratis hints worden morgen weer aangevuld tot 3.';
+
+  @override
+  String get rewardContinueBody =>
+      'Bekijk een korte advertentie helemaal om je fouten te wissen en verder te spelen.';
+
+  @override
+  String get watchAd => 'Advertentie bekijken';
+
+  @override
+  String get adLoading => 'Advertentie laden…';
+
+  @override
+  String get adUnavailable => 'Kan nu geen advertentie laden';
+
+  @override
+  String get adNotCompleted =>
+      'Bekijk de advertentie helemaal om de beloning te krijgen';
+
+  @override
+  String get continueAfterFail => 'Verder spelen';
+
+  @override
+  String get continueWithAd => 'Advertentie bekijken en verder';
+
+  @override
+  String get weeklyTitle => 'Weekuitdaging';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'Week $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'Tot $date';
+  }
+
+  @override
+  String get weeklyRule => 'Alleen oplossingen zonder hints tellen mee';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Opgelost $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Spelen';
+
+  @override
+  String get weeklyRetry => 'Opnieuw spelen';
+
+  @override
+  String get weeklyNotPlayed => 'Nog niet gespeeld';
+
+  @override
+  String get weeklyInProgress => 'Bezig';
+
+  @override
+  String get weeklyNoLeader => 'Nog geen nummer 1';
+
+  @override
+  String get weeklyLoadFailed => 'Ranglijst kon niet worden geladen';
+
+  @override
+  String get retry => 'Opnieuw proberen';
+
+  @override
+  String get weeklyYouAreFirst => 'Jij bent nummer 1!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Mijn beste tijd deze week $time';
+  }
+
+  @override
+  String get weeklySending => 'Verzenden — wordt voltooid zodra je online bent';
+
+  @override
+  String get weeklyRank1 => 'Nummer 1 deze week!';
+
+  @override
+  String get weeklyHintExcluded =>
+      'Hint gebruikt — niet in de ranglijst deze week';
+
+  @override
+  String get weeklyLastWeek => 'Puzzel van vorige week — niet geregistreerd';
+
+  @override
+  String get rankingExcluded => 'Niet gerangschikt';
+
+  @override
+  String get anonymous => 'Anoniem';
+
+  @override
+  String get weeklyReport => 'Bijnaam melden';
+
+  @override
+  String get nickname => 'Bijnaam';
+
+  @override
+  String get nicknameSet => 'Bijnaam instellen';
+
+  @override
+  String get nicknameChange => 'Wijzigen';
+
+  @override
+  String get nicknameHelper => 'Zichtbaar op de ranglijst';
+
+  @override
+  String get nicknameTooShort => 'Gebruik minstens 2 tekens';
+
+  @override
+  String get nicknameInvalid => 'Alleen letters, cijfers, spaties en _';
+
+  @override
+  String get nicknameBanned => 'Deze bijnaam is niet toegestaan';
+
+  @override
+  String get save => 'Opslaan';
 }

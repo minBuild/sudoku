@@ -328,4 +328,139 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Helvete';
+
+  @override
+  String get hint => 'Ledtråd';
+
+  @override
+  String get hintUse => 'Använd ledtråd';
+
+  @override
+  String get hintRankingWarn =>
+      'Om du använder en ledtråd räknas spelet inte med i veckans topplista';
+
+  @override
+  String get rewardHintTitle => 'Se en annons för en ledtråd';
+
+  @override
+  String get rewardHintBody =>
+      'Se en kort annons till slutet för att få 1 ledtråd. Gratis ledtrådar fylls på till 3 igen i morgon.';
+
+  @override
+  String get rewardContinueBody =>
+      'Se en kort annons till slutet för att nollställa misstagen och spela vidare.';
+
+  @override
+  String get watchAd => 'Se annons';
+
+  @override
+  String get adLoading => 'Läser in annons…';
+
+  @override
+  String get adUnavailable => 'Kan inte läsa in någon annons just nu';
+
+  @override
+  String get adNotCompleted => 'Se annonsen till slutet för att få belöningen';
+
+  @override
+  String get continueAfterFail => 'Spela vidare';
+
+  @override
+  String get continueWithAd => 'Se annons och spela vidare';
+
+  @override
+  String get weeklyTitle => 'Veckans utmaning';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'Vecka $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'Till $date';
+  }
+
+  @override
+  String get weeklyRule =>
+      'Bara lösningar utan ledtrådar kommer med på topplistan';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Löst $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Spela';
+
+  @override
+  String get weeklyRetry => 'Spela igen';
+
+  @override
+  String get weeklyNotPlayed => 'Inte spelat än';
+
+  @override
+  String get weeklyInProgress => 'Pågår';
+
+  @override
+  String get weeklyNoLeader => 'Ingen etta än';
+
+  @override
+  String get weeklyLoadFailed => 'Kunde inte läsa in topplistan';
+
+  @override
+  String get retry => 'Försök igen';
+
+  @override
+  String get weeklyYouAreFirst => 'Du är etta!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Min bästa tid i veckan $time';
+  }
+
+  @override
+  String get weeklySending => 'Skickar — slutförs när du är online';
+
+  @override
+  String get weeklyRank1 => 'Etta i veckan!';
+
+  @override
+  String get weeklyHintExcluded => 'Ledtråd använd — ingen placering i veckan';
+
+  @override
+  String get weeklyLastWeek => 'Förra veckans pussel — registrerades inte';
+
+  @override
+  String get rankingExcluded => 'Ej rankad';
+
+  @override
+  String get anonymous => 'Anonym';
+
+  @override
+  String get weeklyReport => 'Anmäl ett smeknamn';
+
+  @override
+  String get nickname => 'Smeknamn';
+
+  @override
+  String get nicknameSet => 'Ange smeknamn';
+
+  @override
+  String get nicknameChange => 'Ändra';
+
+  @override
+  String get nicknameHelper => 'Visas på topplistan';
+
+  @override
+  String get nicknameTooShort => 'Använd minst 2 tecken';
+
+  @override
+  String get nicknameInvalid => 'Bara bokstäver, siffror, mellanslag och _';
+
+  @override
+  String get nicknameBanned => 'Det här smeknamnet är inte tillåtet';
+
+  @override
+  String get save => 'Spara';
 }

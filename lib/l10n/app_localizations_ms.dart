@@ -325,4 +325,141 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Neraka';
+
+  @override
+  String get hint => 'Petunjuk';
+
+  @override
+  String get hintUse => 'Guna petunjuk';
+
+  @override
+  String get hintRankingWarn =>
+      'Menggunakan petunjuk mengecualikan permainan ini daripada kedudukan minggu ini';
+
+  @override
+  String get rewardHintTitle => 'Tonton iklan untuk petunjuk';
+
+  @override
+  String get rewardHintBody =>
+      'Tonton iklan pendek hingga habis untuk mendapat 1 petunjuk. Petunjuk percuma akan diisi semula kepada 3 esok.';
+
+  @override
+  String get rewardContinueBody =>
+      'Tonton iklan pendek hingga habis untuk menetapkan semula kesilapan dan terus bermain.';
+
+  @override
+  String get watchAd => 'Tonton iklan';
+
+  @override
+  String get adLoading => 'Memuatkan iklan…';
+
+  @override
+  String get adUnavailable => 'Iklan tidak dapat dimuatkan sekarang';
+
+  @override
+  String get adNotCompleted =>
+      'Tonton iklan hingga habis untuk mendapat ganjaran';
+
+  @override
+  String get continueAfterFail => 'Teruskan bermain';
+
+  @override
+  String get continueWithAd => 'Tonton iklan untuk teruskan';
+
+  @override
+  String get weeklyTitle => 'Cabaran mingguan';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'Minggu $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'Sehingga $date';
+  }
+
+  @override
+  String get weeklyRule => 'Hanya penyelesaian tanpa petunjuk disenaraikan';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Selesai $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Main';
+
+  @override
+  String get weeklyRetry => 'Main semula';
+
+  @override
+  String get weeklyNotPlayed => 'Belum dimainkan';
+
+  @override
+  String get weeklyInProgress => 'Sedang berjalan';
+
+  @override
+  String get weeklyNoLeader => 'Belum ada juara';
+
+  @override
+  String get weeklyLoadFailed => 'Gagal memuatkan kedudukan';
+
+  @override
+  String get retry => 'Cuba lagi';
+
+  @override
+  String get weeklyYouAreFirst => 'Anda nombor 1!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Masa terbaik saya minggu ini $time';
+  }
+
+  @override
+  String get weeklySending =>
+      'Menghantar — akan selesai apabila anda dalam talian';
+
+  @override
+  String get weeklyRank1 => 'Nombor 1 minggu ini!';
+
+  @override
+  String get weeklyHintExcluded =>
+      'Petunjuk digunakan — tiada kedudukan minggu ini';
+
+  @override
+  String get weeklyLastWeek => 'Teka-teki minggu lepas — tidak direkodkan';
+
+  @override
+  String get rankingExcluded => 'Tiada kedudukan';
+
+  @override
+  String get anonymous => 'Tanpa nama';
+
+  @override
+  String get weeklyReport => 'Laporkan nama samaran';
+
+  @override
+  String get nickname => 'Nama samaran';
+
+  @override
+  String get nicknameSet => 'Tetapkan nama samaran';
+
+  @override
+  String get nicknameChange => 'Tukar';
+
+  @override
+  String get nicknameHelper => 'Dipaparkan pada papan pendahulu';
+
+  @override
+  String get nicknameTooShort => 'Gunakan sekurang-kurangnya 2 aksara';
+
+  @override
+  String get nicknameInvalid => 'Huruf, nombor, ruang dan _ sahaja';
+
+  @override
+  String get nicknameBanned => 'Nama samaran ini tidak dibenarkan';
+
+  @override
+  String get save => 'Simpan';
 }

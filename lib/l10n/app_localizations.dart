@@ -662,6 +662,252 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'지옥'**
   String get difficultyHell;
+
+  /// 힌트 도구 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'힌트'**
+  String get hint;
+
+  /// 힌트 사용 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'힌트 사용'**
+  String get hintUse;
+
+  /// 주간 대결에서 힌트 사용 전 경고
+  ///
+  /// In ko, this message translates to:
+  /// **'힌트를 쓰면 이번 주 랭킹에서 제외돼요'**
+  String get hintRankingWarn;
+
+  /// 보상형 광고 힌트 다이얼로그 제목
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 보고 힌트 받기'**
+  String get rewardHintTitle;
+
+  /// 보상형 광고 힌트 다이얼로그 본문. 무료 힌트는 매일 3개
+  ///
+  /// In ko, this message translates to:
+  /// **'짧은 광고를 끝까지 보면 힌트 1개를 받아요. 무료 힌트는 내일 다시 3개로 채워져요.'**
+  String get rewardHintBody;
+
+  /// 게임 오버 후 보상형 광고로 이어하기 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'짧은 광고를 끝까지 보면 실수 횟수가 0으로 돌아가고 이어서 풀 수 있어요.'**
+  String get rewardContinueBody;
+
+  /// 광고 보기 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 보기'**
+  String get watchAd;
+
+  /// 광고 로딩 중 표시
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 불러오는 중…'**
+  String get adLoading;
+
+  /// 광고를 불러오지 못했을 때 스낵바
+  ///
+  /// In ko, this message translates to:
+  /// **'지금은 광고를 불러올 수 없어요'**
+  String get adUnavailable;
+
+  /// 광고를 끝까지 보지 않아 보상이 없을 때 스낵바
+  ///
+  /// In ko, this message translates to:
+  /// **'광고를 끝까지 봐야 받을 수 있어요'**
+  String get adNotCompleted;
+
+  /// 게임 오버 후 이어하기 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'이어서 도전'**
+  String get continueAfterFail;
+
+  /// 게임 오버 결과 시트의 광고 보고 이어하기 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 보고 이어서 도전'**
+  String get continueWithAd;
+
+  /// 주간 대결 화면·홈 카드 제목. 매주 난이도별 고정 퍼즐로 1등을 겨루는 비동기 모드
+  ///
+  /// In ko, this message translates to:
+  /// **'주간 대결'**
+  String get weeklyTitle;
+
+  /// ISO 주차 표시
+  ///
+  /// In ko, this message translates to:
+  /// **'{week}주차'**
+  String weeklyWeekLabel(int week);
+
+  /// 주간 대결 마감 시각
+  ///
+  /// In ko, this message translates to:
+  /// **'{date}까지'**
+  String weeklyEndsAt(String date);
+
+  /// 주간 대결 규칙 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'힌트 없이 클리어한 기록만 등록돼요'**
+  String get weeklyRule;
+
+  /// 이번 주 클리어한 난이도 수
+  ///
+  /// In ko, this message translates to:
+  /// **'클리어 {done}/{total}'**
+  String weeklyClearedCount(int done, int total);
+
+  /// 주간 대결 난이도 도전 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'도전'**
+  String get weeklyChallenge;
+
+  /// 주간 대결 다시 도전 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 도전'**
+  String get weeklyRetry;
+
+  /// 주간 대결 미도전 상태
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 도전하지 않았어요'**
+  String get weeklyNotPlayed;
+
+  /// 주간 대결 진행 중 배지
+  ///
+  /// In ko, this message translates to:
+  /// **'진행 중'**
+  String get weeklyInProgress;
+
+  /// 주간 대결 1등 없음
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 1등이 없어요'**
+  String get weeklyNoLeader;
+
+  /// 주간 순위 로딩 실패
+  ///
+  /// In ko, this message translates to:
+  /// **'순위를 불러오지 못했어요'**
+  String get weeklyLoadFailed;
+
+  /// 다시 시도 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 시도'**
+  String get retry;
+
+  /// 내가 1등일 때 표시
+  ///
+  /// In ko, this message translates to:
+  /// **'내가 1등!'**
+  String get weeklyYouAreFirst;
+
+  /// 이번 주 내 최고 기록
+  ///
+  /// In ko, this message translates to:
+  /// **'이번 주 내 기록 {time}'**
+  String weeklyMyBest(String time);
+
+  /// 오프라인 등으로 기록 전송 대기 중 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'기록 전송 중 — 연결되면 자동으로 완료돼요'**
+  String get weeklySending;
+
+  /// 결과 시트 이번 주 1등 배지
+  ///
+  /// In ko, this message translates to:
+  /// **'이번 주 1등!'**
+  String get weeklyRank1;
+
+  /// 결과 시트 힌트 사용으로 랭킹 제외 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'힌트를 사용해 이번 주 랭킹에서 제외됐어요'**
+  String get weeklyHintExcluded;
+
+  /// 주가 바뀐 뒤 지난주 퍼즐을 클리어했을 때 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'지난주 퍼즐이라 기록되지 않았어요'**
+  String get weeklyLastWeek;
+
+  /// 랭킹 제외 배지
+  ///
+  /// In ko, this message translates to:
+  /// **'랭킹 제외'**
+  String get rankingExcluded;
+
+  /// 닉네임이 없는 사용자 표시 이름
+  ///
+  /// In ko, this message translates to:
+  /// **'익명'**
+  String get anonymous;
+
+  /// 부적절한 닉네임 신고 메뉴
+  ///
+  /// In ko, this message translates to:
+  /// **'부적절한 닉네임 신고'**
+  String get weeklyReport;
+
+  /// 닉네임 항목 이름
+  ///
+  /// In ko, this message translates to:
+  /// **'닉네임'**
+  String get nickname;
+
+  /// 닉네임 설정 버튼·다이얼로그 제목
+  ///
+  /// In ko, this message translates to:
+  /// **'닉네임 설정'**
+  String get nicknameSet;
+
+  /// 닉네임 변경 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'변경'**
+  String get nicknameChange;
+
+  /// 닉네임 입력 도움말
+  ///
+  /// In ko, this message translates to:
+  /// **'순위표에 공개됩니다'**
+  String get nicknameHelper;
+
+  /// 닉네임이 너무 짧을 때 오류
+  ///
+  /// In ko, this message translates to:
+  /// **'2자 이상 입력해 주세요'**
+  String get nicknameTooShort;
+
+  /// 닉네임에 허용되지 않는 문자가 있을 때 오류
+  ///
+  /// In ko, this message translates to:
+  /// **'글자, 숫자, 공백, _ 만 쓸 수 있어요'**
+  String get nicknameInvalid;
+
+  /// 금지어 닉네임 오류
+  ///
+  /// In ko, this message translates to:
+  /// **'사용할 수 없는 닉네임이에요'**
+  String get nicknameBanned;
+
+  /// 저장 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'저장'**
+  String get save;
 }
 
 class _AppLocalizationsDelegate

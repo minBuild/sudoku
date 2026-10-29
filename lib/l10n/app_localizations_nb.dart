@@ -327,4 +327,138 @@ class AppLocalizationsNb extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Helvete';
+
+  @override
+  String get hint => 'Hint';
+
+  @override
+  String get hintUse => 'Bruk hint';
+
+  @override
+  String get hintRankingWarn =>
+      'Bruker du et hint, kommer ikke spillet med på denne ukens rangering';
+
+  @override
+  String get rewardHintTitle => 'Se en reklame for et hint';
+
+  @override
+  String get rewardHintBody =>
+      'Se en kort reklame til slutt for å få 1 hint. Gratis hint fylles opp til 3 igjen i morgen.';
+
+  @override
+  String get rewardContinueBody =>
+      'Se en kort reklame til slutt for å nullstille feilene og spille videre.';
+
+  @override
+  String get watchAd => 'Se reklame';
+
+  @override
+  String get adLoading => 'Laster inn reklame…';
+
+  @override
+  String get adUnavailable => 'Kan ikke laste inn reklame nå';
+
+  @override
+  String get adNotCompleted => 'Se reklamen til slutt for å få belønningen';
+
+  @override
+  String get continueAfterFail => 'Spill videre';
+
+  @override
+  String get continueWithAd => 'Se reklame og spill videre';
+
+  @override
+  String get weeklyTitle => 'Ukens utfordring';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'Uke $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'Til $date';
+  }
+
+  @override
+  String get weeklyRule => 'Bare løsninger uten hint kommer med på rangeringen';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Løst $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Spill';
+
+  @override
+  String get weeklyRetry => 'Spill igjen';
+
+  @override
+  String get weeklyNotPlayed => 'Ikke spilt ennå';
+
+  @override
+  String get weeklyInProgress => 'Pågår';
+
+  @override
+  String get weeklyNoLeader => 'Ingen på førsteplass ennå';
+
+  @override
+  String get weeklyLoadFailed => 'Kunne ikke laste inn rangeringen';
+
+  @override
+  String get retry => 'Prøv igjen';
+
+  @override
+  String get weeklyYouAreFirst => 'Du er nr. 1!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Min beste tid denne uken $time';
+  }
+
+  @override
+  String get weeklySending => 'Sender — fullføres når du er på nett';
+
+  @override
+  String get weeklyRank1 => 'Nr. 1 denne uken!';
+
+  @override
+  String get weeklyHintExcluded => 'Hint brukt — ikke rangert denne uken';
+
+  @override
+  String get weeklyLastWeek => 'Forrige ukes oppgave — ikke registrert';
+
+  @override
+  String get rankingExcluded => 'Ikke rangert';
+
+  @override
+  String get anonymous => 'Anonym';
+
+  @override
+  String get weeklyReport => 'Rapporter et kallenavn';
+
+  @override
+  String get nickname => 'Kallenavn';
+
+  @override
+  String get nicknameSet => 'Velg kallenavn';
+
+  @override
+  String get nicknameChange => 'Endre';
+
+  @override
+  String get nicknameHelper => 'Vises på resultatlisten';
+
+  @override
+  String get nicknameTooShort => 'Bruk minst 2 tegn';
+
+  @override
+  String get nicknameInvalid => 'Bare bokstaver, tall, mellomrom og _';
+
+  @override
+  String get nicknameBanned => 'Dette kallenavnet er ikke tillatt';
+
+  @override
+  String get save => 'Lagre';
 }

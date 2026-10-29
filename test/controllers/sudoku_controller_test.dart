@@ -393,4 +393,200 @@ void main() {
       c.dispose();
     });
   });
+
+  group('힌트', () {
+    test('hintTarget: 선택 칸이 비었거나 오답이면 그 칸, 아니면 행 우선 첫 칸', () {
+      final c = playing([5, 20, 40]);
+      expect(c.hintTarget, 5); // 선택 없음 → 행 우선
+      c.select(40);
+      expect(c.hintTarget, 40);
+      c.select(0); // given
+      expect(c.hintTarget, 5);
+      c.select(20);
+      c.input(solAt(20)); // 이미 정답
+      expect(c.hintTarget, 5);
+      c.select(40);
+      c.input(wrongAt(40)); // 오답
+      c.select(0);
+      expect(c.hintTarget, 5);
+      c.select(40);
+      expect(c.hintTarget, 40);
+      c.dispose();
+    });
+
+    test('hintTarget: 다 맞으면 null', () {
+      final c = SudokuController.fresh(
+        puzzleWithHoles([]),
+        Difficulty.easy,
+        instantCheck: true,
+      );
+      expect(c.hintTarget, isNull);
+      c.dispose();
+    });
+
+    test('hint 는 값을 채우고 피어 메모를 정리하고 선택을 옮긴다', () async {
+      final c = playing([0, 1, 9, 30]);
+      final effects = _record(c);
+      final n = solAt(0);
+      c.select(1);
+      c.toggleNote();
+      c.input(n); // 같은 행의 메모
+      c.toggleNote();
+      c.select(30);
+      await _flush();
+      effects.clear();
+      c.select(0);
+      await _flush();
+      effects.clear();
+
+      expect(c.hint(), isTrue);
+      await _flush();
+      expect(c.valueAt(0), n);
+      expect(c.notesAt(1) & (1 << (n - 1)), 0);
+      expect(c.selected, 0);
+      expect(c.hintsUsed, 1);
+      expect(effects, [GameEffect.hinted]);
+      c.dispose();
+    });
+
+    test('마지막 칸을 힌트로 채우면 solved 효과만', () async {
+      final c = playing([7]);
+      final effects = _record(c);
+      expect(c.hint(), isTrue);
+      await _flush();
+      expect(c.status, GameStatus.solved);
+      expect(c.selected, isNull);
+      expect(effects, [GameEffect.solved]);
+      c.dispose();
+    });
+
+    test('paused 에서 hint() 는 false 이고 효과 없음', () async {
+      final c = playing([0, 1]);
+      c.pause();
+      final effects = _record(c);
+      expect(c.hint(), isFalse);
+      await _flush();
+      expect(effects, isEmpty);
+      expect(c.hintsUsed, 0);
+      c.dispose();
+    });
+
+    test('paused 에서 hint(allowPaused) 는 적용하고 paused 유지, 시간 그대로', () async {
+      final c = playing([0, 1]);
+      c.pause();
+      final before = c.elapsedMs;
+      expect(c.hint(allowPaused: true), isTrue);
+      expect(c.status, GameStatus.paused);
+      expect(c.hintsUsed, 1);
+      await Future<void>.delayed(const Duration(milliseconds: 30));
+      expect(c.elapsedMs, before);
+      c.dispose();
+    });
+
+    test('solved/failed 에서는 allowPaused 여도 false', () {
+      final solved = playing([0]);
+      solved.select(0);
+      solved.input(solAt(0));
+      expect(solved.status, GameStatus.solved);
+      expect(solved.hint(allowPaused: true), isFalse);
+      solved.dispose();
+
+      final failed = failedGame();
+      expect(failed.hint(allowPaused: true), isFalse);
+      failed.dispose();
+    });
+
+    test('undo 해도 hintsUsed 유지, reset 이면 0', () {
+      final c = playing([0, 1]);
+      c.hint();
+      c.undo();
+      expect(c.valueAt(0), 0);
+      expect(c.hintsUsed, 1);
+      c.reset();
+      expect(c.hintsUsed, 0);
+      c.dispose();
+    });
+  });
+
+  group('continueAfterFail', () {
+    test('failed 가 아니면 false', () {
+      final c = playing([0, 1]);
+      expect(c.continueAfterFail(), isFalse);
+      c.dispose();
+    });
+
+    test('오답 값만 지우고 메모 유지, 실수 0, 히스토리 비움, paused, revision 증가', () async {
+      final c = failedGame(noteAt: 70);
+      final effects = _record(c);
+      final notes = c.notesAt(70);
+      final ms = c.elapsedMs;
+      final rev = c.revision;
+      c.hint(); // failed 라 무시
+      expect(c.continueAfterFail(), isTrue);
+      await _flush();
+      expect(effects, isEmpty);
+      expect(c.status, GameStatus.paused);
+      expect(c.wrongCount, 0);
+      expect(c.canUndo, isFalse);
+      expect(c.revision, greaterThan(rev));
+      expect(c.elapsedMs, ms);
+      for (var i = 0; i < 81; i++) {
+        expect(c.isWrongAt(i), isFalse, reason: '$i');
+      }
+      expect(c.valueAt(0), solAt(0)); // 정답은 남는다
+      expect(c.notesAt(70), notes);
+      c.resume();
+      expect(c.status, GameStatus.playing);
+      c.dispose();
+    });
+
+    test('이어 도전 뒤 다시 5회 실패하면 다시 이어 갈 수 있다', () {
+      final c = failedGame();
+      c.continueAfterFail();
+      c.resume();
+      for (var k = 0; k < SudokuController.maxWrong; k++) {
+        c.select(72 + k);
+        c.input(wrongAt(72 + k));
+      }
+      expect(c.status, GameStatus.failed);
+      expect(c.continueAfterFail(), isTrue);
+      c.dispose();
+    });
+  });
+
+  test('snapshot ↔ fromSave 가 weeklyBoard·hintsUsed 를 보존한다', () {
+    final c = SudokuController.fresh(
+      puzzleWithHoles([0, 1, 2]),
+      Difficulty.hard,
+      instantCheck: true,
+      weeklyBoard: '2026-W44_hard_g1',
+    )..resume();
+    c.hint();
+    final r = SudokuController.fromSave(c.snapshot());
+    expect(r.weeklyBoard, '2026-W44_hard_g1');
+    expect(r.hintsUsed, 1);
+    expect(r.valueAt(0), solAt(0));
+    c.dispose();
+    r.dispose();
+  });
+}
+
+/// 0 은 정답, 63~67 에 오답 5개로 failed. [noteAt] 칸엔 메모 하나.
+/// 오답 숫자는 오른쪽 칸의 정답이라 7·8행을 비워 둔다 (fakes.wrongAt).
+SudokuController failedGame({int? noteAt}) {
+  final c = playing([0, for (var i = 63; i < 81; i++) i]);
+  c.select(0);
+  c.input(solAt(0));
+  if (noteAt != null) {
+    c.select(noteAt);
+    c.toggleNote();
+    c.input(3);
+    c.toggleNote();
+  }
+  for (var k = 0; k < SudokuController.maxWrong; k++) {
+    c.select(63 + k);
+    c.input(wrongAt(63 + k));
+  }
+  expect(c.status, GameStatus.failed);
+  return c;
 }

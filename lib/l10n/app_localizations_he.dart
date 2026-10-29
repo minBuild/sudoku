@@ -330,4 +330,138 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get difficultyHell => 'גיהינום';
+
+  @override
+  String get hint => 'רמז';
+
+  @override
+  String get hintUse => 'שימוש ברמז';
+
+  @override
+  String get hintRankingWarn =>
+      'שימוש ברמז יוציא את המשחק הזה מהדירוג של השבוע';
+
+  @override
+  String get rewardHintTitle => 'צפו בפרסומת וקבלו רמז';
+
+  @override
+  String get rewardHintBody =>
+      'צפו בפרסומת קצרה עד הסוף וקבלו רמז אחד. מחר יהיו לכם שוב 3 רמזים בחינם.';
+
+  @override
+  String get rewardContinueBody =>
+      'צפו בפרסומת קצרה עד הסוף כדי לאפס את הטעויות ולהמשיך לשחק.';
+
+  @override
+  String get watchAd => 'צפייה בפרסומת';
+
+  @override
+  String get adLoading => 'הפרסומת נטענת…';
+
+  @override
+  String get adUnavailable => 'לא ניתן לטעון פרסומת כרגע';
+
+  @override
+  String get adNotCompleted => 'צפו בפרסומת עד הסוף כדי לקבל את הפרס';
+
+  @override
+  String get continueAfterFail => 'המשך משחק';
+
+  @override
+  String get continueWithAd => 'צפייה בפרסומת והמשך';
+
+  @override
+  String get weeklyTitle => 'אתגר שבועי';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'שבוע $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'עד $date';
+  }
+
+  @override
+  String get weeklyRule => 'רק פתרונות ללא רמזים נכנסים לדירוג';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'נפתרו $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'שחקו';
+
+  @override
+  String get weeklyRetry => 'שחקו שוב';
+
+  @override
+  String get weeklyNotPlayed => 'עדיין לא שיחקתם';
+
+  @override
+  String get weeklyInProgress => 'בתהליך';
+
+  @override
+  String get weeklyNoLeader => 'עדיין אין מקום ראשון';
+
+  @override
+  String get weeklyLoadFailed => 'לא ניתן לטעון את הדירוג';
+
+  @override
+  String get retry => 'ניסיון חוזר';
+
+  @override
+  String get weeklyYouAreFirst => 'אתם במקום הראשון!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'השיא שלי השבוע $time';
+  }
+
+  @override
+  String get weeklySending => 'שולח — יושלם כשתתחברו לרשת';
+
+  @override
+  String get weeklyRank1 => 'מקום ראשון השבוע!';
+
+  @override
+  String get weeklyHintExcluded => 'נעשה שימוש ברמז — מחוץ לדירוג השבוע';
+
+  @override
+  String get weeklyLastWeek => 'חידה של השבוע שעבר — לא נרשמה';
+
+  @override
+  String get rankingExcluded => 'מחוץ לדירוג';
+
+  @override
+  String get anonymous => 'אנונימי';
+
+  @override
+  String get weeklyReport => 'דיווח על כינוי';
+
+  @override
+  String get nickname => 'כינוי';
+
+  @override
+  String get nicknameSet => 'הגדרת כינוי';
+
+  @override
+  String get nicknameChange => 'שינוי';
+
+  @override
+  String get nicknameHelper => 'מוצג בטבלת הדירוג';
+
+  @override
+  String get nicknameTooShort => 'יש להזין לפחות 2 תווים';
+
+  @override
+  String get nicknameInvalid => 'רק אותיות, ספרות, רווחים ו־_';
+
+  @override
+  String get nicknameBanned => 'לא ניתן להשתמש בכינוי הזה';
+
+  @override
+  String get save => 'שמירה';
 }

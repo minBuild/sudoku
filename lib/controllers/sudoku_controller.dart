@@ -37,6 +37,7 @@ class SudokuController extends ChangeNotifier {
     SudokuPuzzle p,
     this.difficulty, {
     required bool instantCheck,
+    this.weeklyBoard,
   }) : _sol = _flatten(p.solution),
        _init = _flatten(p.initial),
        _values = _flatten(p.initial),
@@ -59,11 +60,16 @@ class SudokuController extends ChangeNotifier {
       _icEverOff = s.icEverOff,
       _wrongCount = s.wrongCount,
       _offsetMs = s.elapsedMs,
+      weeklyBoard = s.weeklyBoard,
+      _hintsUsed = s.hintsUsed,
       elapsedSeconds = ValueNotifier(s.elapsedMs ~/ 1000) {
     _recomputeConflicts();
   }
 
   final Difficulty difficulty;
+
+  /// 주간 판이면 보드 ID (`WeeklyBoard.id`).
+  final String? weeklyBoard;
   final Uint8List _sol;
   final Uint8List _init;
   final Uint8List _values;
@@ -85,6 +91,7 @@ class SudokuController extends ChangeNotifier {
   bool _instantCheck;
   bool _icEverOff;
   bool _noteMode = false;
+  int _hintsUsed = 0;
 
   GameStatus get status => _status;
   Stream<GameEffect> get effects => _effects.stream;
@@ -96,6 +103,7 @@ class SudokuController extends ChangeNotifier {
   bool get noteMode => _noteMode;
   bool get canUndo => _history.isNotEmpty;
   int get elapsedMs => _offsetMs + _stopwatch.elapsedMilliseconds;
+  int get hintsUsed => _hintsUsed;
 
   int valueAt(int i) => _values[i];
   int notesAt(int i) => _notes[i];
@@ -237,6 +245,63 @@ class SudokuController extends ChangeNotifier {
     _changed();
   }
 
+  /// 힌트가 채울 칸. 선택 칸이 비었거나 틀렸으면 그 칸, 아니면 행 우선 첫 대상 칸.
+  int? get hintTarget {
+    final sel = _selected;
+    if (sel != null && !isGiven(sel) && _values[sel] != _sol[sel]) return sel;
+    for (var i = 0; i < 81; i++) {
+      if (_values[i] != _sol[i]) return i;
+    }
+    return null;
+  }
+
+  /// [hintTarget] 에 정답을 채운다. [allowPaused] 면 광고 직후 paused 에서도 적용한다.
+  /// 타이머는 시작하지 않는다. undo 해도 [hintsUsed] 는 줄지 않는다.
+  bool hint({bool allowPaused = false}) {
+    final okStatus =
+        _status == GameStatus.playing ||
+        (allowPaused && _status == GameStatus.paused);
+    if (!okStatus) return false;
+    final i = hintTarget;
+    if (i == null) return false;
+    _pushHistory();
+    final n = _sol[i];
+    _values[i] = n;
+    _notes[i] = 0;
+    final mask = ~(1 << (n - 1)) & 0x1FF;
+    for (final p in peersOf[i]) {
+      _notes[p] &= mask;
+    }
+    _recomputeConflicts();
+    _hintsUsed++;
+    _selected = i;
+    var fx = GameEffect.hinted;
+    if (_isSolved()) {
+      _stopTime();
+      _status = GameStatus.solved;
+      _selected = null;
+      fx = GameEffect.solved;
+    }
+    _effects.add(fx);
+    _changed();
+    return true;
+  }
+
+  /// 5회 실패 뒤 이어 풀기. 오답 칸 값만 지우고(메모 유지) 실수 0, paused 로 돌아간다.
+  /// 시간과 [hintsUsed] 는 유지한다. undo 로 오답을 되살리지 못하게 히스토리를 비운다.
+  bool continueAfterFail() {
+    if (_status != GameStatus.failed) return false;
+    for (var i = 0; i < 81; i++) {
+      if (isWrongAt(i)) _values[i] = 0;
+    }
+    _wrongCount = 0;
+    _history.clear();
+    _status = GameStatus.paused;
+    _recomputeConflicts();
+    _changed(); // notifyListeners 만으로는 revision 이 안 올라 세이브되지 않는다
+    return true;
+  }
+
   void setInstantCheck(bool v) {
     if (_instantCheck == v) return;
     _instantCheck = v;
@@ -257,6 +322,7 @@ class SudokuController extends ChangeNotifier {
     _notes.fillRange(0, 81, 0);
     _history.clear();
     _wrongCount = 0;
+    _hintsUsed = 0;
     _selected = null;
     _noteMode = false;
     _icEverOff = !_instantCheck;
@@ -276,6 +342,8 @@ class SudokuController extends ChangeNotifier {
     instantCheck: _instantCheck,
     icEverOff: _icEverOff,
     savedAt: DateTime.now(),
+    weeklyBoard: weeklyBoard,
+    hintsUsed: _hintsUsed,
   );
 
   // -------------------- 내부 --------------------

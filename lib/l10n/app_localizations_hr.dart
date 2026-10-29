@@ -338,4 +338,140 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Pakao';
+
+  @override
+  String get hint => 'Savjet';
+
+  @override
+  String get hintUse => 'Iskoristi savjet';
+
+  @override
+  String get hintRankingWarn =>
+      'Ako iskoristite savjet, ova igra neće ući u ljestvicu ovog tjedna';
+
+  @override
+  String get rewardHintTitle => 'Pogledajte oglas za savjet';
+
+  @override
+  String get rewardHintBody =>
+      'Pogledajte kratki oglas do kraja i dobit ćete 1 savjet. Sutra ćete opet imati 3 besplatna savjeta.';
+
+  @override
+  String get rewardContinueBody =>
+      'Pogledajte kratki oglas do kraja kako biste poništili pogreške i nastavili igrati.';
+
+  @override
+  String get watchAd => 'Pogledaj oglas';
+
+  @override
+  String get adLoading => 'Učitavanje oglasa…';
+
+  @override
+  String get adUnavailable => 'Oglas se trenutačno ne može učitati';
+
+  @override
+  String get adNotCompleted =>
+      'Pogledajte oglas do kraja da biste dobili nagradu';
+
+  @override
+  String get continueAfterFail => 'Nastavi igrati';
+
+  @override
+  String get continueWithAd => 'Pogledaj oglas i nastavi';
+
+  @override
+  String get weeklyTitle => 'Tjedni izazov';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return '$week. tjedan';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'Do $date';
+  }
+
+  @override
+  String get weeklyRule => 'Na ljestvicu ulaze samo rješenja bez savjeta';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Riješeno $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Igraj';
+
+  @override
+  String get weeklyRetry => 'Igraj ponovno';
+
+  @override
+  String get weeklyNotPlayed => 'Još niste igrali';
+
+  @override
+  String get weeklyInProgress => 'U tijeku';
+
+  @override
+  String get weeklyNoLeader => 'Još nema prvog mjesta';
+
+  @override
+  String get weeklyLoadFailed => 'Ljestvica se nije mogla učitati';
+
+  @override
+  String get retry => 'Pokušaj ponovno';
+
+  @override
+  String get weeklyYouAreFirst => 'Prvo mjesto!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Moje najbolje vrijeme ovaj tjedan $time';
+  }
+
+  @override
+  String get weeklySending => 'Slanje — dovršit će se kad budete na mreži';
+
+  @override
+  String get weeklyRank1 => 'Prvo mjesto ovaj tjedan!';
+
+  @override
+  String get weeklyHintExcluded =>
+      'Iskorišten savjet — izvan ljestvice ovaj tjedan';
+
+  @override
+  String get weeklyLastWeek => 'Zagonetka prošlog tjedna — nije zabilježeno';
+
+  @override
+  String get rankingExcluded => 'Izvan ljestvice';
+
+  @override
+  String get anonymous => 'Anoniman';
+
+  @override
+  String get weeklyReport => 'Prijavi nadimak';
+
+  @override
+  String get nickname => 'Nadimak';
+
+  @override
+  String get nicknameSet => 'Postavi nadimak';
+
+  @override
+  String get nicknameChange => 'Promijeni';
+
+  @override
+  String get nicknameHelper => 'Prikazuje se na ljestvici';
+
+  @override
+  String get nicknameTooShort => 'Unesite najmanje 2 znaka';
+
+  @override
+  String get nicknameInvalid => 'Samo slova, brojevi, razmaci i _';
+
+  @override
+  String get nicknameBanned => 'Ovaj nadimak nije dopušten';
+
+  @override
+  String get save => 'Spremi';
 }

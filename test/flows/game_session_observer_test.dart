@@ -131,6 +131,43 @@ void main() {
     });
   });
 
+  test('힌트 판은 isNewBest 가 false 이고 기록에 hintsUsed 를 남긴다', () {
+    late List<int> hints;
+    fakeAsync((fa) {
+      start([0, 1]);
+      obs.startWhenVisible();
+      c.hint();
+      c.hint(); // solved
+      expect(c.status, GameStatus.solved);
+      fa.elapse(const Duration(seconds: 1));
+      expect(finished, [(GameStatus.solved, false)]);
+      records.loadAll().then((r) => hints = [for (final x in r) x.hintsUsed]);
+      fa.flushMicrotasks();
+    });
+    expect(hints, [2]);
+  });
+
+  test('failed → continueAfterFail → 디바운스 뒤 세이브가 복원된다', () {
+    fakeAsync((fa) {
+      start([0, 1, 2, 3, 4, 5]);
+      obs.startWhenVisible();
+      for (var i = 0; i < 5; i++) {
+        c.select(i);
+        c.input(wrongAt(i));
+      }
+      fa.elapse(const Duration(seconds: 1));
+      expect(saves.meta.value, isNull);
+
+      c.continueAfterFail();
+      fa.elapse(GameSessionObserver.saveDebounce);
+      fa.flushMicrotasks();
+      expect(saves.meta.value, isNotNull);
+      final r = saves.load();
+      expect(r, isA<LoadOk>());
+      expect((r as LoadOk).game.wrongCount, 0);
+    });
+  });
+
   test('_resumeOnShow 가 false 이면 onShow 가 와도 resume 하지 않는다', () {
     start([0]);
     expect(c.status, GameStatus.paused);

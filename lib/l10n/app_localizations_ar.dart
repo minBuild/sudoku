@@ -346,4 +346,138 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get difficultyHell => 'جحيم';
+
+  @override
+  String get hint => 'تلميح';
+
+  @override
+  String get hintUse => 'استخدام تلميح';
+
+  @override
+  String get hintRankingWarn =>
+      'استخدام التلميح يستبعد هذه اللعبة من ترتيب هذا الأسبوع';
+
+  @override
+  String get rewardHintTitle => 'شاهد إعلانًا واحصل على تلميح';
+
+  @override
+  String get rewardHintBody =>
+      'شاهد إعلانًا قصيرًا حتى النهاية لتحصل على تلميح واحد. تعود التلميحات المجانية إلى 3 غدًا.';
+
+  @override
+  String get rewardContinueBody =>
+      'شاهد إعلانًا قصيرًا حتى النهاية لتصفير الأخطاء ومواصلة اللعب.';
+
+  @override
+  String get watchAd => 'شاهد إعلانًا';
+
+  @override
+  String get adLoading => 'جارٍ تحميل الإعلان…';
+
+  @override
+  String get adUnavailable => 'يتعذّر تحميل إعلان الآن';
+
+  @override
+  String get adNotCompleted => 'شاهد الإعلان حتى النهاية لتحصل على المكافأة';
+
+  @override
+  String get continueAfterFail => 'تابع اللعب';
+
+  @override
+  String get continueWithAd => 'شاهد إعلانًا لمواصلة اللعب';
+
+  @override
+  String get weeklyTitle => 'تحدي الأسبوع';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'الأسبوع $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'حتى $date';
+  }
+
+  @override
+  String get weeklyRule => 'لا تُحتسب في الترتيب إلا الحلول دون تلميحات';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'مكتمل $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'العب';
+
+  @override
+  String get weeklyRetry => 'العب مجددًا';
+
+  @override
+  String get weeklyNotPlayed => 'لم تلعب بعد';
+
+  @override
+  String get weeklyInProgress => 'جارية';
+
+  @override
+  String get weeklyNoLeader => 'لا يوجد متصدّر بعد';
+
+  @override
+  String get weeklyLoadFailed => 'تعذّر تحميل الترتيب';
+
+  @override
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String get weeklyYouAreFirst => 'أنت الأول!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'أفضل وقت لي هذا الأسبوع $time';
+  }
+
+  @override
+  String get weeklySending => 'جارٍ الإرسال — سيكتمل عند الاتصال بالإنترنت';
+
+  @override
+  String get weeklyRank1 => 'الأول هذا الأسبوع!';
+
+  @override
+  String get weeklyHintExcluded => 'استُخدم تلميح — خارج ترتيب هذا الأسبوع';
+
+  @override
+  String get weeklyLastWeek => 'لغز الأسبوع الماضي — لم يُسجَّل';
+
+  @override
+  String get rankingExcluded => 'خارج الترتيب';
+
+  @override
+  String get anonymous => 'مجهول';
+
+  @override
+  String get weeklyReport => 'الإبلاغ عن اسم مستعار';
+
+  @override
+  String get nickname => 'الاسم المستعار';
+
+  @override
+  String get nicknameSet => 'تعيين اسم مستعار';
+
+  @override
+  String get nicknameChange => 'تغيير';
+
+  @override
+  String get nicknameHelper => 'يظهر في لوحة المتصدّرين';
+
+  @override
+  String get nicknameTooShort => 'استخدم حرفين على الأقل';
+
+  @override
+  String get nicknameInvalid => 'الأحرف والأرقام والمسافات و_ فقط';
+
+  @override
+  String get nicknameBanned => 'هذا الاسم المستعار غير مسموح به';
+
+  @override
+  String get save => 'حفظ';
 }

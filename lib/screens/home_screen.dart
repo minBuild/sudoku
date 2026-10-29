@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../app_deps.dart';
 import '../flows/game_launcher.dart';
 import '../l10n/l10n.dart';
 import '../services/game_save_store.dart';
@@ -9,10 +10,13 @@ import '../theme/app_theme.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/continue_card.dart';
 import '../widgets/difficulty_sheet.dart';
+import '../widgets/overwrite_dialog.dart';
 import '../widgets/remove_ads_card.dart';
+import '../widgets/weekly_card.dart';
 import 'prepare_screen.dart';
 import 'records_screen.dart';
 import 'settings_screen.dart';
+import 'weekly_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -46,24 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _newGame() async {
     final saves = context.read<GameSaveStore?>();
     if (saves?.meta.value != null) {
-      final ok = await showDialog<bool>(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text(context.l10n.overwriteTitle),
-          content: Text(context.l10n.overwriteBody),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: Text(context.l10n.cancel),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(context.l10n.newGame),
-            ),
-          ],
-        ),
-      );
-      if (ok != true || !mounted) return;
+      if (!await confirmOverwrite(context) || !mounted) return;
     }
     final d = await DifficultySheet.show(context);
     if (d == null || !mounted) return;
@@ -87,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final saves = context.read<GameSaveStore?>();
+    final weekly = context.read<AppDeps>().weekly;
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -152,6 +140,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onTap: _continue,
                                     ),
                                   ),
+                          ),
+                        if (weekly != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12),
+                            child: WeeklyCard(
+                              service: weekly,
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (_) => WeeklyScreen(service: weekly),
+                                ),
+                              ),
+                            ),
                           ),
                         const Spacer(),
                         const SizedBox(height: 24),

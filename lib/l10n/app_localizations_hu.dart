@@ -329,4 +329,140 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Pokoli';
+
+  @override
+  String get hint => 'Tipp';
+
+  @override
+  String get hintUse => 'Tipp használata';
+
+  @override
+  String get hintRankingWarn =>
+      'Ha tippet használsz, ez a játék kimarad a heti rangsorból';
+
+  @override
+  String get rewardHintTitle => 'Nézz meg egy hirdetést egy tippért';
+
+  @override
+  String get rewardHintBody =>
+      'Nézz végig egy rövid hirdetést, és kapsz 1 tippet. Holnap ismét 3 ingyenes tipped lesz.';
+
+  @override
+  String get rewardContinueBody =>
+      'Nézz végig egy rövid hirdetést, és a hibáid nullázódnak, így folytathatod a játékot.';
+
+  @override
+  String get watchAd => 'Hirdetés megnézése';
+
+  @override
+  String get adLoading => 'Hirdetés betöltése…';
+
+  @override
+  String get adUnavailable => 'Most nem tölthető be hirdetés';
+
+  @override
+  String get adNotCompleted => 'A jutalomhoz nézd végig a hirdetést';
+
+  @override
+  String get continueAfterFail => 'Folytatás';
+
+  @override
+  String get continueWithAd => 'Folytatás hirdetéssel';
+
+  @override
+  String get weeklyTitle => 'Heti kihívás';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return '$week. hét';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'Határidő: $date';
+  }
+
+  @override
+  String get weeklyRule =>
+      'Csak a tipp nélküli megoldások kerülnek a rangsorba';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Megoldva $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Játék';
+
+  @override
+  String get weeklyRetry => 'Újrajátszás';
+
+  @override
+  String get weeklyNotPlayed => 'Még nem játszottál';
+
+  @override
+  String get weeklyInProgress => 'Folyamatban';
+
+  @override
+  String get weeklyNoLeader => 'Még nincs első helyezett';
+
+  @override
+  String get weeklyLoadFailed => 'Nem sikerült betölteni a rangsort';
+
+  @override
+  String get retry => 'Újrapróbálás';
+
+  @override
+  String get weeklyYouAreFirst => 'Te vagy az első!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Heti legjobb időm $time';
+  }
+
+  @override
+  String get weeklySending => 'Küldés — befejeződik, amint online leszel';
+
+  @override
+  String get weeklyRank1 => 'Heti első hely!';
+
+  @override
+  String get weeklyHintExcluded =>
+      'Tipp használva — ezen a héten nincs rangsorolva';
+
+  @override
+  String get weeklyLastWeek => 'Múlt heti feladvány — nincs rögzítve';
+
+  @override
+  String get rankingExcluded => 'Nincs rangsorolva';
+
+  @override
+  String get anonymous => 'Névtelen';
+
+  @override
+  String get weeklyReport => 'Becenév jelentése';
+
+  @override
+  String get nickname => 'Becenév';
+
+  @override
+  String get nicknameSet => 'Becenév megadása';
+
+  @override
+  String get nicknameChange => 'Módosítás';
+
+  @override
+  String get nicknameHelper => 'Megjelenik a rangsorban';
+
+  @override
+  String get nicknameTooShort => 'Legalább 2 karakter szükséges';
+
+  @override
+  String get nicknameInvalid => 'Csak betűk, számok, szóközök és _';
+
+  @override
+  String get nicknameBanned => 'Ez a becenév nem engedélyezett';
+
+  @override
+  String get save => 'Mentés';
 }

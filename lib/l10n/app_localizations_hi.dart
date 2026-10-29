@@ -327,4 +327,139 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get difficultyHell => 'नरक';
+
+  @override
+  String get hint => 'संकेत';
+
+  @override
+  String get hintUse => 'संकेत लें';
+
+  @override
+  String get hintRankingWarn =>
+      'संकेत लेने पर यह गेम इस सप्ताह की रैंकिंग से हट जाएगा';
+
+  @override
+  String get rewardHintTitle => 'विज्ञापन देखकर संकेत पाएं';
+
+  @override
+  String get rewardHintBody =>
+      'छोटा विज्ञापन पूरा देखें और 1 संकेत पाएं। मुफ़्त संकेत कल फिर से 3 हो जाएंगे।';
+
+  @override
+  String get rewardContinueBody =>
+      'छोटा विज्ञापन पूरा देखें, गलतियां शून्य हो जाएंगी और आप खेलना जारी रख सकेंगे।';
+
+  @override
+  String get watchAd => 'विज्ञापन देखें';
+
+  @override
+  String get adLoading => 'विज्ञापन लोड हो रहा है…';
+
+  @override
+  String get adUnavailable => 'अभी विज्ञापन लोड नहीं हो सकता';
+
+  @override
+  String get adNotCompleted => 'इनाम पाने के लिए विज्ञापन पूरा देखें';
+
+  @override
+  String get continueAfterFail => 'खेलना जारी रखें';
+
+  @override
+  String get continueWithAd => 'विज्ञापन देखकर जारी रखें';
+
+  @override
+  String get weeklyTitle => 'साप्ताहिक चुनौती';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'सप्ताह $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return '$date तक';
+  }
+
+  @override
+  String get weeklyRule =>
+      'रैंकिंग में सिर्फ़ बिना संकेत वाले हल गिने जाते हैं';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'हल किए $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'खेलें';
+
+  @override
+  String get weeklyRetry => 'फिर खेलें';
+
+  @override
+  String get weeklyNotPlayed => 'अभी तक नहीं खेला';
+
+  @override
+  String get weeklyInProgress => 'जारी है';
+
+  @override
+  String get weeklyNoLeader => 'अभी कोई नंबर 1 नहीं';
+
+  @override
+  String get weeklyLoadFailed => 'रैंकिंग लोड नहीं हो सकी';
+
+  @override
+  String get retry => 'फिर कोशिश करें';
+
+  @override
+  String get weeklyYouAreFirst => 'आप नंबर 1 हैं!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'इस सप्ताह मेरा सबसे अच्छा समय $time';
+  }
+
+  @override
+  String get weeklySending => 'भेजा जा रहा है — ऑनलाइन होते ही पूरा हो जाएगा';
+
+  @override
+  String get weeklyRank1 => 'इस सप्ताह नंबर 1!';
+
+  @override
+  String get weeklyHintExcluded => 'संकेत लिया — इस सप्ताह रैंकिंग में नहीं';
+
+  @override
+  String get weeklyLastWeek => 'पिछले सप्ताह की पहेली — दर्ज नहीं हुई';
+
+  @override
+  String get rankingExcluded => 'रैंकिंग से बाहर';
+
+  @override
+  String get anonymous => 'गुमनाम';
+
+  @override
+  String get weeklyReport => 'उपनाम की शिकायत करें';
+
+  @override
+  String get nickname => 'उपनाम';
+
+  @override
+  String get nicknameSet => 'उपनाम सेट करें';
+
+  @override
+  String get nicknameChange => 'बदलें';
+
+  @override
+  String get nicknameHelper => 'लीडरबोर्ड पर दिखेगा';
+
+  @override
+  String get nicknameTooShort => 'कम से कम 2 अक्षर डालें';
+
+  @override
+  String get nicknameInvalid => 'सिर्फ़ अक्षर, अंक, स्पेस और _';
+
+  @override
+  String get nicknameBanned => 'इस उपनाम की अनुमति नहीं है';
+
+  @override
+  String get save => 'सहेजें';
 }

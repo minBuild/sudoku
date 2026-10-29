@@ -13,4 +13,5 @@ enum GameEffect {
   firstMistake,
   solved,
   failed,
+  hinted,
 }

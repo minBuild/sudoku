@@ -328,4 +328,138 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Cehennem';
+
+  @override
+  String get hint => 'İpucu';
+
+  @override
+  String get hintUse => 'İpucu kullan';
+
+  @override
+  String get hintRankingWarn =>
+      'İpucu kullanırsanız bu oyun bu haftaki sıralamaya girmez';
+
+  @override
+  String get rewardHintTitle => 'İpucu için reklam izleyin';
+
+  @override
+  String get rewardHintBody =>
+      'Kısa bir reklamı sonuna kadar izleyin ve 1 ipucu kazanın. Ücretsiz ipuçları yarın yeniden 3 olur.';
+
+  @override
+  String get rewardContinueBody =>
+      'Kısa bir reklamı sonuna kadar izleyerek hataları sıfırlayın ve oynamaya devam edin.';
+
+  @override
+  String get watchAd => 'Reklam izle';
+
+  @override
+  String get adLoading => 'Reklam yükleniyor…';
+
+  @override
+  String get adUnavailable => 'Şu anda reklam yüklenemiyor';
+
+  @override
+  String get adNotCompleted => 'Ödülü almak için reklamı sonuna kadar izleyin';
+
+  @override
+  String get continueAfterFail => 'Devam et';
+
+  @override
+  String get continueWithAd => 'Reklam izle ve devam et';
+
+  @override
+  String get weeklyTitle => 'Haftalık meydan okuma';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return '$week. hafta';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'Bitiş: $date';
+  }
+
+  @override
+  String get weeklyRule => 'Yalnızca ipucusuz çözümler sıralamaya girer';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Çözülen $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Oyna';
+
+  @override
+  String get weeklyRetry => 'Tekrar oyna';
+
+  @override
+  String get weeklyNotPlayed => 'Henüz oynanmadı';
+
+  @override
+  String get weeklyInProgress => 'Devam ediyor';
+
+  @override
+  String get weeklyNoLeader => 'Henüz lider yok';
+
+  @override
+  String get weeklyLoadFailed => 'Sıralama yüklenemedi';
+
+  @override
+  String get retry => 'Tekrar dene';
+
+  @override
+  String get weeklyYouAreFirst => 'Birincisiniz!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Bu haftaki en iyi sürem $time';
+  }
+
+  @override
+  String get weeklySending => 'Gönderiliyor — çevrimiçi olunca tamamlanır';
+
+  @override
+  String get weeklyRank1 => 'Bu hafta birinci!';
+
+  @override
+  String get weeklyHintExcluded => 'İpucu kullanıldı — bu hafta sıralama dışı';
+
+  @override
+  String get weeklyLastWeek => 'Geçen haftanın bulmacası — kaydedilmedi';
+
+  @override
+  String get rankingExcluded => 'Sıralama dışı';
+
+  @override
+  String get anonymous => 'Anonim';
+
+  @override
+  String get weeklyReport => 'Takma adı bildir';
+
+  @override
+  String get nickname => 'Takma ad';
+
+  @override
+  String get nicknameSet => 'Takma ad belirle';
+
+  @override
+  String get nicknameChange => 'Değiştir';
+
+  @override
+  String get nicknameHelper => 'Sıralamada gösterilir';
+
+  @override
+  String get nicknameTooShort => 'En az 2 karakter kullanın';
+
+  @override
+  String get nicknameInvalid => 'Yalnızca harf, rakam, boşluk ve _';
+
+  @override
+  String get nicknameBanned => 'Bu takma ada izin verilmiyor';
+
+  @override
+  String get save => 'Kaydet';
 }

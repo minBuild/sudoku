@@ -6,6 +6,7 @@ import '../app_deps.dart';
 import '../l10n/l10n.dart';
 import '../services/purchase/purchase_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/nickname_dialog.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -108,6 +109,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               _deps.settings.setSoundEnabled(v);
                             },
                           ),
+                          if (_deps.weekly case final w?) ...[
+                            const Divider(indent: 20, endIndent: 20),
+                            ValueListenableBuilder<int>(
+                              valueListenable: w.store.changes,
+                              builder: (context, _, _) => ListTile(
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                ),
+                                title: Text(
+                                  context.l10n.nickname,
+                                  style: text.titleMedium,
+                                ),
+                                subtitle: Text(
+                                  w.store.nick ?? context.l10n.anonymous,
+                                  style: text.bodySmall,
+                                ),
+                                trailing: Text(
+                                  w.store.nick == null
+                                      ? context.l10n.nicknameSet
+                                      : context.l10n.nicknameChange,
+                                  style: text.labelLarge?.copyWith(
+                                    color: AppTheme.primary,
+                                  ),
+                                ),
+                                onTap: () =>
+                                    NicknameDialog.showAndSave(context, w),
+                              ),
+                            ),
+                          ],
                           if (showPrivacy) ...[
                             const Divider(indent: 20, endIndent: 20),
                             ListTile(

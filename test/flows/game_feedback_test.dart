@@ -63,6 +63,13 @@ void main() {
     expect(haptics, 0);
   });
 
+  test('hinted → tap 1.0, 햅틱 없음', () async {
+    await setUpWith([0, 1]);
+    await only(() => c.hint());
+    expect(sound.played, [(SoundCue.tap, 1.0)]);
+    expect(haptics, 0);
+  });
+
   test('wrong → wrong + 햅틱. 뒤따르는 firstMistake 는 무음', () async {
     await setUpWith([0, 1, 2]);
     c.select(0);

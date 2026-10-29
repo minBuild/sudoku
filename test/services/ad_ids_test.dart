@@ -105,6 +105,60 @@ void main() {
     });
   });
 
+  group('보상형', () {
+    test('디버그는 샘플, 형식이 맞다', () {
+      expect(
+        AdIds.resolveRewarded(release: false, ios: true),
+        AdIds.iosRewardedSample,
+      );
+      expect(
+        AdIds.resolveRewarded(release: false, ios: false),
+        AdIds.androidRewardedSample,
+      );
+      for (final id in [AdIds.iosRewardedSample, AdIds.androidRewardedSample]) {
+        expect(AdIds.unitRe.hasMatch(id), isTrue, reason: id);
+      }
+    });
+
+    test('릴리스는 prod 기본값, 유효한 dart-define 은 덮어쓴다', () {
+      expect(
+        AdIds.resolveRewarded(release: true, ios: true),
+        AdIds.iosRewardedProd,
+      );
+      expect(
+        AdIds.resolveRewarded(release: true, ios: false),
+        AdIds.androidRewardedProd,
+      );
+      const override = 'ca-app-pub-1234567890123456/1234567890';
+      expect(
+        AdIds.resolveRewarded(release: true, ios: false, env: override),
+        override,
+      );
+      expect(
+        AdIds.resolveRewarded(release: true, ios: true, env: 'bad'),
+        AdIds.iosRewardedProd,
+      );
+    });
+
+    for (final (name, id, sibling) in [
+      ('iOS', AdIds.iosRewardedProd, AdIds.iosProd),
+      ('Android', AdIds.androidRewardedProd, AdIds.androidProd),
+    ]) {
+      test(
+        '$name prod 단위는 형식이 맞고 전면광고와 같은 게시자이며 README 에 있다',
+        () {
+          expect(AdIds.unitRe.hasMatch(id), isTrue);
+          expect(pub(_pubRe, id), pub(_pubRe, sibling));
+          expect(id, isNot(sibling));
+          expect(File('README.md').readAsStringSync(), contains(id));
+        },
+        skip: id.isEmpty
+            ? '$name 보상형 단위가 아직 없음 (콘솔에서 만든 뒤 AdIds 에 넣는다)'
+            : false,
+      );
+    }
+  });
+
   test('ads.example.json 은 ADMOB_TEST_DEVICES 만 둔다', () {
     final json =
         jsonDecode(File('config/ads.example.json').readAsStringSync())

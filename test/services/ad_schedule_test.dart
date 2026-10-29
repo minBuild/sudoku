@@ -54,6 +54,13 @@ void main() {
     expect(s.isDue, isTrue);
   });
 
+  test('markShown 직후 tryClaim 은 false (보상형 광고 뒤 전면광고 연속 방지)', () {
+    s.markShown();
+    expect(s.tryClaim(), isFalse);
+    t = t.add(AdSchedule.defaultInterval);
+    expect(s.tryClaim(), isTrue);
+  });
+
   test('기본 간격은 15분', () {
     expect(AdSchedule.defaultInterval, const Duration(minutes: 15));
     expect(s.interval, AdSchedule.defaultInterval);

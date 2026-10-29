@@ -7,6 +7,10 @@ abstract final class AdIds {
     'ADMOB_INTERSTITIAL_ANDROID',
   );
   static const _iosEnv = String.fromEnvironment('ADMOB_INTERSTITIAL_IOS');
+  static const _rewardedAndroidEnv = String.fromEnvironment(
+    'ADMOB_REWARDED_ANDROID',
+  );
+  static const _rewardedIosEnv = String.fromEnvironment('ADMOB_REWARDED_IOS');
   static const _testDevices = String.fromEnvironment('ADMOB_TEST_DEVICES');
 
   static const androidSample = 'ca-app-pub-3940256099942544/8691691433';
@@ -19,6 +23,15 @@ abstract final class AdIds {
   /// iOS 전면광고 단위 sudoku_pregame_interstitial_ios. README §광고 ID 위치
   static const iosProd = 'ca-app-pub-7432278320907197/4247876859';
 
+  static const androidRewardedSample = 'ca-app-pub-3940256099942544/5224354917';
+  static const iosRewardedSample = 'ca-app-pub-3940256099942544/1712485313';
+
+  /// Android 보상형 단위 sudoku_reward_android (힌트·이어 도전 공용). '' 면 아직 없음.
+  static const androidRewardedProd = '';
+
+  /// iOS 보상형 단위 sudoku_reward_ios. '' 면 아직 없음.
+  static const iosRewardedProd = '';
+
   @visibleForTesting
   static final unitRe = RegExp(r'^ca-app-pub-\d{16}/\d{10}$');
 
@@ -28,13 +41,37 @@ abstract final class AdIds {
     required bool release,
     required bool ios,
     String env = '',
+  }) => _pick(
+    release: release,
+    env: env,
+    sample: ios ? iosSample : androidSample,
+    prod: ios ? iosProd : androidProd,
+  );
+
+  @visibleForTesting
+  static String resolveRewarded({
+    required bool release,
+    required bool ios,
+    String env = '',
+  }) => _pick(
+    release: release,
+    env: env,
+    sample: ios ? iosRewardedSample : androidRewardedSample,
+    prod: ios ? iosRewardedProd : androidRewardedProd,
+  );
+
+  static String _pick({
+    required bool release,
+    required String env,
+    required String sample,
+    required String prod,
   }) {
-    if (!release) return ios ? iosSample : androidSample;
+    if (!release) return sample;
     if (env.isNotEmpty) {
       if (unitRe.hasMatch(env)) return env;
       debugPrint('AdIds: dart-define 단위 ID 형식 오류 → 기본값 사용');
     }
-    return ios ? iosProd : androidProd;
+    return prod;
   }
 
   /// 비어 있으면 null (광고는 skipped).
@@ -47,6 +84,21 @@ abstract final class AdIds {
     );
     if (id.isEmpty) {
       debugPrint('AdIds: 전면광고 단위 ID 없음 → 광고를 건너뜁니다');
+      return null;
+    }
+    return id;
+  }
+
+  /// 비어 있으면 null (보상형은 unavailable).
+  static String? get rewarded {
+    final ios = defaultTargetPlatform == TargetPlatform.iOS;
+    final id = resolveRewarded(
+      release: kReleaseMode,
+      ios: ios,
+      env: ios ? _rewardedIosEnv : _rewardedAndroidEnv,
+    );
+    if (id.isEmpty) {
+      debugPrint('AdIds: 보상형 단위 ID 없음 → 보상형 광고를 쓸 수 없습니다');
       return null;
     }
     return id;

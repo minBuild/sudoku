@@ -13,17 +13,22 @@ class SavedGameMeta {
     required this.difficulty,
     required this.filledRatio,
     required this.elapsedMs,
+    this.weeklyBoard,
   });
 
   factory SavedGameMeta.of(SavedGame s) => SavedGameMeta(
     difficulty: s.difficulty,
     filledRatio: s.filledRatio,
     elapsedMs: s.elapsedMs,
+    weeklyBoard: s.weeklyBoard,
   );
 
   final Difficulty difficulty;
   final double filledRatio;
   final int elapsedMs;
+
+  /// 주간 판이면 보드 ID.
+  final String? weeklyBoard;
 }
 
 sealed class LoadResult {

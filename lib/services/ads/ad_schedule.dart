@@ -31,4 +31,7 @@ class AdSchedule {
     _inFlight = false;
     if (shown) _lastShownAt = _now();
   }
+
+  /// 보상형 광고처럼 슬롯 밖에서 전면 광고가 떴을 때. 바로 이어 전면광고가 뜨지 않게 한다.
+  void markShown() => _lastShownAt = _now();
 }

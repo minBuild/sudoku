@@ -327,4 +327,138 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Hell';
+
+  @override
+  String get hint => 'Hint';
+
+  @override
+  String get hintUse => 'Use hint';
+
+  @override
+  String get hintRankingWarn =>
+      'Using a hint removes this game from this week\'s ranking';
+
+  @override
+  String get rewardHintTitle => 'Watch an ad for a hint';
+
+  @override
+  String get rewardHintBody =>
+      'Watch a short ad to the end to get 1 hint. Free hints refill to 3 tomorrow.';
+
+  @override
+  String get rewardContinueBody =>
+      'Watch a short ad to the end to reset mistakes and keep playing.';
+
+  @override
+  String get watchAd => 'Watch ad';
+
+  @override
+  String get adLoading => 'Loading ad…';
+
+  @override
+  String get adUnavailable => 'Can\'t load an ad right now';
+
+  @override
+  String get adNotCompleted => 'Watch the ad to the end to get the reward';
+
+  @override
+  String get continueAfterFail => 'Keep playing';
+
+  @override
+  String get continueWithAd => 'Watch ad to keep playing';
+
+  @override
+  String get weeklyTitle => 'Weekly challenge';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'Week $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'Until $date';
+  }
+
+  @override
+  String get weeklyRule => 'Only clears without hints are ranked';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Cleared $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Play';
+
+  @override
+  String get weeklyRetry => 'Try again';
+
+  @override
+  String get weeklyNotPlayed => 'Not played yet';
+
+  @override
+  String get weeklyInProgress => 'In progress';
+
+  @override
+  String get weeklyNoLeader => 'No leader yet';
+
+  @override
+  String get weeklyLoadFailed => 'Couldn\'t load rankings';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get weeklyYouAreFirst => 'You\'re #1!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'My best this week $time';
+  }
+
+  @override
+  String get weeklySending => 'Sending — will finish when you\'re online';
+
+  @override
+  String get weeklyRank1 => '#1 this week!';
+
+  @override
+  String get weeklyHintExcluded => 'Hint used — not ranked this week';
+
+  @override
+  String get weeklyLastWeek => 'Last week\'s puzzle — not recorded';
+
+  @override
+  String get rankingExcluded => 'Not ranked';
+
+  @override
+  String get anonymous => 'Anonymous';
+
+  @override
+  String get weeklyReport => 'Report a nickname';
+
+  @override
+  String get nickname => 'Nickname';
+
+  @override
+  String get nicknameSet => 'Set nickname';
+
+  @override
+  String get nicknameChange => 'Change';
+
+  @override
+  String get nicknameHelper => 'Shown on the leaderboard';
+
+  @override
+  String get nicknameTooShort => 'Use at least 2 characters';
+
+  @override
+  String get nicknameInvalid => 'Letters, numbers, spaces and _ only';
+
+  @override
+  String get nicknameBanned => 'This nickname isn\'t allowed';
+
+  @override
+  String get save => 'Save';
 }

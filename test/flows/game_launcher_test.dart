@@ -8,6 +8,8 @@ import 'package:sudoku/models/difficulty.dart';
 import 'package:sudoku/models/sudoku_puzzle.dart';
 import 'package:sudoku/services/ads/ad_schedule.dart';
 import 'package:sudoku/services/ads/ad_service.dart';
+import 'package:sudoku/services/sudoku_generator.dart';
+import 'package:sudoku/services/weekly/weekly_board.dart';
 
 import '../fakes.dart';
 
@@ -212,6 +214,31 @@ void main() {
         expect(run(fa, s)?.outcome, AdOutcome.shown);
         expect(ads.showCalls, 1);
       });
+    });
+  });
+
+  test('prepare(weekly:) 는 보드의 시드·weekKey 를 그대로 넘기고, 일반은 seed 가 null', () {
+    fakeAsync((fa) {
+      final reqs = <PuzzleRequest>[];
+      final l = GameLauncher(
+        generate: (r) async {
+          reqs.add(r);
+          return puzzleWithHoles([0]);
+        },
+        ads: ads,
+        adsRemoved: ValueNotifier(true),
+        schedule: AdSchedule(),
+      );
+      const board = WeeklyBoard('2026-W44', Difficulty.hard);
+      l.prepare(Difficulty.hard, weekly: board);
+      l.prepare(Difficulty.easy);
+      fa.elapse(const Duration(seconds: 1));
+      expect(reqs[0].seed, board.seed);
+      expect(reqs[0].weekKey, '2026-W44');
+      expect(reqs[0].difficulty, Difficulty.hard);
+      expect(reqs[1].seed, isNull);
+      expect(reqs[1].weekKey, isNull);
+      expect(reqs[1].difficulty, Difficulty.easy);
     });
   });
 }

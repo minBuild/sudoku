@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /weekly/{board}/entries/{uid} {
+      function boardOk() {
+        return board.matches('^[0-9]{4}-W[0-9]{2}_(easy|normal|hard|expert|hell)_g[0-9]+$');
+      }
+      function valid(d) {
+        return d.keys().hasOnly(['ms', 'nick', 'hintUsed', 'v', 'updatedAt', 'expireAt'])
+          && d.keys().hasAll(['ms', 'nick', 'hintUsed', 'v', 'updatedAt'])
+          && d.ms is int && d.ms >= 10000 && d.ms <= 86400000
+          && d.nick is string && d.nick.size() <= 48
+          && d.hintUsed == false
+          && d.v == 1
+          && d.updatedAt == request.time
+          && (!('expireAt' in d) || d.expireAt is timestamp);
+      }
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && request.auth.uid == uid
+        && boardOk() && valid(request.resource.data);
+      allow update: if request.auth != null && request.auth.uid == uid
+        && valid(request.resource.data)
+        && (request.resource.data.ms < resource.data.ms
+            || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['nick', 'updatedAt']));
+      allow delete: if false;
+    }
+  }
+}

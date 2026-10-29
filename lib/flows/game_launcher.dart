@@ -10,6 +10,8 @@ import '../models/sudoku_puzzle.dart';
 import '../screens/game_screen.dart';
 import '../services/ads/ad_schedule.dart';
 import '../services/ads/ad_service.dart';
+import '../services/sudoku_generator.dart';
+import '../services/weekly/weekly_board.dart';
 
 class PrepareResult {
   const PrepareResult(this.puzzle, this.outcome);
@@ -39,10 +41,14 @@ class GameLauncher {
 
   /// 생성 ∥ 광고. 둘 다 끝나야 반환한다 (D5).
   /// 생성이 실패하면 광고가 끝난 뒤 [ParallelWaitError] (D6).
-  Future<PrepareResult> prepare(Difficulty d) async {
+  /// [weekly] 면 그 보드의 시드 퍼즐을 만든다.
+  Future<PrepareResult> prepare(Difficulty d, {WeeklyBoard? weekly}) async {
     final sw = Stopwatch()..start();
     final ad = _gatedAd();
-    final (puzzle, outcome) = await (_generate(d), ad).wait;
+    final (puzzle, outcome) = await (
+      _generate(weekly?.request ?? PuzzleRequest(d)),
+      ad,
+    ).wait;
     if (outcome != AdOutcome.shown) {
       final rest = minVisible - sw.elapsed;
       if (rest > Duration.zero) await Future<void>.delayed(rest);
@@ -77,8 +83,9 @@ sealed class GameSeed {
   const factory GameSeed.fresh(
     SudokuPuzzle puzzle,
     Difficulty difficulty,
-    bool instantCheck,
-  ) = FreshSeed;
+    bool instantCheck, {
+    String? weeklyBoard,
+  }) = FreshSeed;
 
   const factory GameSeed.saved(SavedGame game) = SavedSeed;
 
@@ -86,14 +93,24 @@ sealed class GameSeed {
 }
 
 final class FreshSeed extends GameSeed {
-  const FreshSeed(this.puzzle, this.difficulty, this.instantCheck);
+  const FreshSeed(
+    this.puzzle,
+    this.difficulty,
+    this.instantCheck, {
+    this.weeklyBoard,
+  });
   final SudokuPuzzle puzzle;
   final Difficulty difficulty;
   final bool instantCheck;
+  final String? weeklyBoard;
 
   @override
-  SudokuController build() =>
-      SudokuController.fresh(puzzle, difficulty, instantCheck: instantCheck);
+  SudokuController build() => SudokuController.fresh(
+    puzzle,
+    difficulty,
+    instantCheck: instantCheck,
+    weeklyBoard: weeklyBoard,
+  );
 }
 
 final class SavedSeed extends GameSeed {

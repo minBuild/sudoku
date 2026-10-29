@@ -20,7 +20,8 @@ pluginManagement {
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
     id("com.android.application") version "8.11.1" apply false
-    id("org.jetbrains.kotlin.android") version "2.2.20" apply false
+    // firebase-auth 25.x 네이티브 SDK 가 Kotlin 메타데이터 2.4 → KGP 2.3 이상 필요 (README §Firebase)
+    id("org.jetbrains.kotlin.android") version "2.3.20" apply false
 }
 
 include(":app")

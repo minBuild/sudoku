@@ -341,4 +341,140 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Ад';
+
+  @override
+  String get hint => 'Подсказка';
+
+  @override
+  String get hintUse => 'Взять подсказку';
+
+  @override
+  String get hintRankingWarn =>
+      'С подсказкой эта игра не попадёт в рейтинг этой недели';
+
+  @override
+  String get rewardHintTitle => 'Подсказка за рекламу';
+
+  @override
+  String get rewardHintBody =>
+      'Досмотрите короткую рекламу до конца и получите 1 подсказку. Завтра бесплатных подсказок снова будет 3.';
+
+  @override
+  String get rewardContinueBody =>
+      'Досмотрите короткую рекламу до конца, чтобы обнулить ошибки и продолжить игру.';
+
+  @override
+  String get watchAd => 'Смотреть рекламу';
+
+  @override
+  String get adLoading => 'Загрузка рекламы…';
+
+  @override
+  String get adUnavailable => 'Сейчас не удаётся загрузить рекламу';
+
+  @override
+  String get adNotCompleted =>
+      'Досмотрите рекламу до конца, чтобы получить награду';
+
+  @override
+  String get continueAfterFail => 'Продолжить';
+
+  @override
+  String get continueWithAd => 'Продолжить за рекламу';
+
+  @override
+  String get weeklyTitle => 'Испытание недели';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'Неделя $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'До $date';
+  }
+
+  @override
+  String get weeklyRule => 'В рейтинг попадают только решения без подсказок';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Решено $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Играть';
+
+  @override
+  String get weeklyRetry => 'Ещё раз';
+
+  @override
+  String get weeklyNotPlayed => 'Ещё не сыграно';
+
+  @override
+  String get weeklyInProgress => 'В процессе';
+
+  @override
+  String get weeklyNoLeader => 'Пока нет лидера';
+
+  @override
+  String get weeklyLoadFailed => 'Не удалось загрузить рейтинг';
+
+  @override
+  String get retry => 'Повторить';
+
+  @override
+  String get weeklyYouAreFirst => 'Вы на 1-м месте!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Мой лучший результат за неделю $time';
+  }
+
+  @override
+  String get weeklySending => 'Отправка — завершится, когда появится сеть';
+
+  @override
+  String get weeklyRank1 => '1-е место на этой неделе!';
+
+  @override
+  String get weeklyHintExcluded =>
+      'Использована подсказка — вне рейтинга на этой неделе';
+
+  @override
+  String get weeklyLastWeek => 'Головоломка прошлой недели — не засчитана';
+
+  @override
+  String get rankingExcluded => 'Вне рейтинга';
+
+  @override
+  String get anonymous => 'Аноним';
+
+  @override
+  String get weeklyReport => 'Пожаловаться на никнейм';
+
+  @override
+  String get nickname => 'Никнейм';
+
+  @override
+  String get nicknameSet => 'Задать никнейм';
+
+  @override
+  String get nicknameChange => 'Изменить';
+
+  @override
+  String get nicknameHelper => 'Отображается в рейтинге';
+
+  @override
+  String get nicknameTooShort => 'Минимум 2 символа';
+
+  @override
+  String get nicknameInvalid => 'Только буквы, цифры, пробелы и _';
+
+  @override
+  String get nicknameBanned => 'Этот никнейм запрещён';
+
+  @override
+  String get save => 'Сохранить';
 }

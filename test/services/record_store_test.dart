@@ -65,6 +65,30 @@ void main() {
     expect(await s.bestTime(Difficulty.hell), isNull);
   });
 
+  test('힌트를 쓴 기록은 bestTime 에서 빠진다', () async {
+    final s = await storeWith(
+      jsonEncode([
+        rec('easy', 300),
+        {...rec('easy', 60), 'hintsUsed': 2},
+      ]),
+    );
+    expect(await s.bestTime(Difficulty.easy), const Duration(seconds: 300));
+    expect((await s.loadAll()).length, 2); // 목록에는 남는다
+  });
+
+  test('hintsUsed 가 없는 기존 JSON 은 0, 왕복은 보존', () async {
+    final s = await storeWith(jsonEncode([rec('easy', 100)]));
+    expect((await s.loadAll()).single.hintsUsed, 0);
+    final r = GameRecord(
+      difficulty: Difficulty.easy,
+      elapsedSeconds: 1,
+      wrongCount: 0,
+      finishedAt: DateTime(2026),
+      hintsUsed: 3,
+    );
+    expect(GameRecord.fromJson(r.toJson()).hintsUsed, 3);
+  });
+
   test('add 후 loadAll, clearAll', () async {
     final s = await storeWith(null);
     await s.add(

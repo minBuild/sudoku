@@ -421,5 +421,194 @@
   "difficultyHell": "지옥",
   "@difficultyHell": {
     "description": "난이도: 지옥"
+  },
+  "hint": "힌트",
+  "@hint": {
+    "description": "힌트 도구 버튼"
+  },
+  "hintUse": "힌트 사용",
+  "@hintUse": {
+    "description": "힌트 사용 버튼"
+  },
+  "hintRankingWarn": "힌트를 쓰면 이번 주 랭킹에서 제외돼요",
+  "@hintRankingWarn": {
+    "description": "주간 대결에서 힌트 사용 전 경고"
+  },
+  "rewardHintTitle": "광고 보고 힌트 받기",
+  "@rewardHintTitle": {
+    "description": "보상형 광고 힌트 다이얼로그 제목"
+  },
+  "rewardHintBody": "짧은 광고를 끝까지 보면 힌트 1개를 받아요. 무료 힌트는 내일 다시 3개로 채워져요.",
+  "@rewardHintBody": {
+    "description": "보상형 광고 힌트 다이얼로그 본문. 무료 힌트는 매일 3개"
+  },
+  "rewardContinueBody": "짧은 광고를 끝까지 보면 실수 횟수가 0으로 돌아가고 이어서 풀 수 있어요.",
+  "@rewardContinueBody": {
+    "description": "게임 오버 후 보상형 광고로 이어하기 안내"
+  },
+  "watchAd": "광고 보기",
+  "@watchAd": {
+    "description": "광고 보기 버튼"
+  },
+  "adLoading": "광고 불러오는 중…",
+  "@adLoading": {
+    "description": "광고 로딩 중 표시"
+  },
+  "adUnavailable": "지금은 광고를 불러올 수 없어요",
+  "@adUnavailable": {
+    "description": "광고를 불러오지 못했을 때 스낵바"
+  },
+  "adNotCompleted": "광고를 끝까지 봐야 받을 수 있어요",
+  "@adNotCompleted": {
+    "description": "광고를 끝까지 보지 않아 보상이 없을 때 스낵바"
+  },
+  "continueAfterFail": "이어서 도전",
+  "@continueAfterFail": {
+    "description": "게임 오버 후 이어하기 버튼"
+  },
+  "continueWithAd": "광고 보고 이어서 도전",
+  "@continueWithAd": {
+    "description": "게임 오버 결과 시트의 광고 보고 이어하기 버튼"
+  },
+  "weeklyTitle": "주간 대결",
+  "@weeklyTitle": {
+    "description": "주간 대결 화면·홈 카드 제목. 매주 난이도별 고정 퍼즐로 1등을 겨루는 비동기 모드"
+  },
+  "weeklyWeekLabel": "{week}주차",
+  "@weeklyWeekLabel": {
+    "description": "ISO 주차 표시",
+    "placeholders": {
+      "week": {
+        "type": "int"
+      }
+    }
+  },
+  "weeklyEndsAt": "{date}까지",
+  "@weeklyEndsAt": {
+    "description": "주간 대결 마감 시각",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "11/2 (Mon) 9:00 AM"
+      }
+    }
+  },
+  "weeklyRule": "힌트 없이 클리어한 기록만 등록돼요",
+  "@weeklyRule": {
+    "description": "주간 대결 규칙 안내"
+  },
+  "weeklyClearedCount": "클리어 {done}/{total}",
+  "@weeklyClearedCount": {
+    "description": "이번 주 클리어한 난이도 수",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "weeklyChallenge": "도전",
+  "@weeklyChallenge": {
+    "description": "주간 대결 난이도 도전 버튼"
+  },
+  "weeklyRetry": "다시 도전",
+  "@weeklyRetry": {
+    "description": "주간 대결 다시 도전 버튼"
+  },
+  "weeklyNotPlayed": "아직 도전하지 않았어요",
+  "@weeklyNotPlayed": {
+    "description": "주간 대결 미도전 상태"
+  },
+  "weeklyInProgress": "진행 중",
+  "@weeklyInProgress": {
+    "description": "주간 대결 진행 중 배지"
+  },
+  "weeklyNoLeader": "아직 1등이 없어요",
+  "@weeklyNoLeader": {
+    "description": "주간 대결 1등 없음"
+  },
+  "weeklyLoadFailed": "순위를 불러오지 못했어요",
+  "@weeklyLoadFailed": {
+    "description": "주간 순위 로딩 실패"
+  },
+  "retry": "다시 시도",
+  "@retry": {
+    "description": "다시 시도 버튼"
+  },
+  "weeklyYouAreFirst": "내가 1등!",
+  "@weeklyYouAreFirst": {
+    "description": "내가 1등일 때 표시"
+  },
+  "weeklyMyBest": "이번 주 내 기록 {time}",
+  "@weeklyMyBest": {
+    "description": "이번 주 내 최고 기록",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "03:25.4"
+      }
+    }
+  },
+  "weeklySending": "기록 전송 중 — 연결되면 자동으로 완료돼요",
+  "@weeklySending": {
+    "description": "오프라인 등으로 기록 전송 대기 중 안내"
+  },
+  "weeklyRank1": "이번 주 1등!",
+  "@weeklyRank1": {
+    "description": "결과 시트 이번 주 1등 배지"
+  },
+  "weeklyHintExcluded": "힌트를 사용해 이번 주 랭킹에서 제외됐어요",
+  "@weeklyHintExcluded": {
+    "description": "결과 시트 힌트 사용으로 랭킹 제외 안내"
+  },
+  "weeklyLastWeek": "지난주 퍼즐이라 기록되지 않았어요",
+  "@weeklyLastWeek": {
+    "description": "주가 바뀐 뒤 지난주 퍼즐을 클리어했을 때 안내"
+  },
+  "rankingExcluded": "랭킹 제외",
+  "@rankingExcluded": {
+    "description": "랭킹 제외 배지"
+  },
+  "anonymous": "익명",
+  "@anonymous": {
+    "description": "닉네임이 없는 사용자 표시 이름"
+  },
+  "weeklyReport": "부적절한 닉네임 신고",
+  "@weeklyReport": {
+    "description": "부적절한 닉네임 신고 메뉴"
+  },
+  "nickname": "닉네임",
+  "@nickname": {
+    "description": "닉네임 항목 이름"
+  },
+  "nicknameSet": "닉네임 설정",
+  "@nicknameSet": {
+    "description": "닉네임 설정 버튼·다이얼로그 제목"
+  },
+  "nicknameChange": "변경",
+  "@nicknameChange": {
+    "description": "닉네임 변경 버튼"
+  },
+  "nicknameHelper": "순위표에 공개됩니다",
+  "@nicknameHelper": {
+    "description": "닉네임 입력 도움말"
+  },
+  "nicknameTooShort": "2자 이상 입력해 주세요",
+  "@nicknameTooShort": {
+    "description": "닉네임이 너무 짧을 때 오류"
+  },
+  "nicknameInvalid": "글자, 숫자, 공백, _ 만 쓸 수 있어요",
+  "@nicknameInvalid": {
+    "description": "닉네임에 허용되지 않는 문자가 있을 때 오류"
+  },
+  "nicknameBanned": "사용할 수 없는 닉네임이에요",
+  "@nicknameBanned": {
+    "description": "금지어 닉네임 오류"
+  },
+  "save": "저장",
+  "@save": {
+    "description": "저장 버튼"
   }
 }

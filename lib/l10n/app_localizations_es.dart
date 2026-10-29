@@ -330,4 +330,140 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Infierno';
+
+  @override
+  String get hint => 'Pista';
+
+  @override
+  String get hintUse => 'Usar pista';
+
+  @override
+  String get hintRankingWarn =>
+      'Si usas una pista, esta partida no contará en la clasificación de esta semana';
+
+  @override
+  String get rewardHintTitle => 'Mira un anuncio para obtener una pista';
+
+  @override
+  String get rewardHintBody =>
+      'Mira un anuncio corto hasta el final para obtener 1 pista. Mañana vuelves a tener 3 pistas gratis.';
+
+  @override
+  String get rewardContinueBody =>
+      'Mira un anuncio corto hasta el final para poner los errores a cero y seguir jugando.';
+
+  @override
+  String get watchAd => 'Ver anuncio';
+
+  @override
+  String get adLoading => 'Cargando anuncio…';
+
+  @override
+  String get adUnavailable => 'No se puede cargar un anuncio ahora';
+
+  @override
+  String get adNotCompleted =>
+      'Mira el anuncio hasta el final para obtener la recompensa';
+
+  @override
+  String get continueAfterFail => 'Seguir jugando';
+
+  @override
+  String get continueWithAd => 'Ver anuncio y seguir';
+
+  @override
+  String get weeklyTitle => 'Reto semanal';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'Semana $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'Hasta $date';
+  }
+
+  @override
+  String get weeklyRule => 'Solo cuentan las partidas resueltas sin pistas';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Resueltos $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Jugar';
+
+  @override
+  String get weeklyRetry => 'Jugar de nuevo';
+
+  @override
+  String get weeklyNotPlayed => 'Aún no has jugado';
+
+  @override
+  String get weeklyInProgress => 'En curso';
+
+  @override
+  String get weeklyNoLeader => 'Aún no hay líder';
+
+  @override
+  String get weeklyLoadFailed => 'No se pudo cargar la clasificación';
+
+  @override
+  String get retry => 'Reintentar';
+
+  @override
+  String get weeklyYouAreFirst => '¡Eres el n.º 1!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Mi mejor tiempo esta semana $time';
+  }
+
+  @override
+  String get weeklySending => 'Enviando — se completará cuando tengas conexión';
+
+  @override
+  String get weeklyRank1 => '¡N.º 1 esta semana!';
+
+  @override
+  String get weeklyHintExcluded =>
+      'Pista usada — sin clasificación esta semana';
+
+  @override
+  String get weeklyLastWeek => 'Puzle de la semana pasada — no se registró';
+
+  @override
+  String get rankingExcluded => 'Sin clasificación';
+
+  @override
+  String get anonymous => 'Anónimo';
+
+  @override
+  String get weeklyReport => 'Denunciar un apodo';
+
+  @override
+  String get nickname => 'Apodo';
+
+  @override
+  String get nicknameSet => 'Elegir apodo';
+
+  @override
+  String get nicknameChange => 'Cambiar';
+
+  @override
+  String get nicknameHelper => 'Se muestra en la clasificación';
+
+  @override
+  String get nicknameTooShort => 'Usa al menos 2 caracteres';
+
+  @override
+  String get nicknameInvalid => 'Solo letras, números, espacios y _';
+
+  @override
+  String get nicknameBanned => 'Este apodo no está permitido';
+
+  @override
+  String get save => 'Guardar';
 }

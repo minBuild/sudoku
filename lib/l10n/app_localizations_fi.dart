@@ -329,4 +329,139 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Helvetti';
+
+  @override
+  String get hint => 'Vihje';
+
+  @override
+  String get hintUse => 'Käytä vihjettä';
+
+  @override
+  String get hintRankingWarn =>
+      'Jos käytät vihjettä, peli ei ole mukana tämän viikon sijoituksissa';
+
+  @override
+  String get rewardHintTitle => 'Katso mainos ja saat vihjeen';
+
+  @override
+  String get rewardHintBody =>
+      'Katso lyhyt mainos loppuun, niin saat 1 vihjeen. Huomenna sinulla on taas 3 ilmaista vihjettä.';
+
+  @override
+  String get rewardContinueBody =>
+      'Katso lyhyt mainos loppuun, niin virheet nollataan ja voit jatkaa peliä.';
+
+  @override
+  String get watchAd => 'Katso mainos';
+
+  @override
+  String get adLoading => 'Ladataan mainosta…';
+
+  @override
+  String get adUnavailable => 'Mainosta ei voi ladata juuri nyt';
+
+  @override
+  String get adNotCompleted => 'Katso mainos loppuun saadaksesi palkinnon';
+
+  @override
+  String get continueAfterFail => 'Jatka peliä';
+
+  @override
+  String get continueWithAd => 'Katso mainos ja jatka';
+
+  @override
+  String get weeklyTitle => 'Viikkohaaste';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'Viikko $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return '$date asti';
+  }
+
+  @override
+  String get weeklyRule => 'Sijoituksiin pääsee vain ilman vihjeitä';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Ratkaistu $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Pelaa';
+
+  @override
+  String get weeklyRetry => 'Pelaa uudelleen';
+
+  @override
+  String get weeklyNotPlayed => 'Ei vielä pelattu';
+
+  @override
+  String get weeklyInProgress => 'Kesken';
+
+  @override
+  String get weeklyNoLeader => 'Ei vielä ykköstä';
+
+  @override
+  String get weeklyLoadFailed => 'Sijoituksia ei voitu ladata';
+
+  @override
+  String get retry => 'Yritä uudelleen';
+
+  @override
+  String get weeklyYouAreFirst => 'Olet ykkönen!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Paras aikani tällä viikolla $time';
+  }
+
+  @override
+  String get weeklySending => 'Lähetetään — valmistuu, kun olet verkossa';
+
+  @override
+  String get weeklyRank1 => 'Viikon ykkönen!';
+
+  @override
+  String get weeklyHintExcluded =>
+      'Vihje käytetty — ei sijoitusta tällä viikolla';
+
+  @override
+  String get weeklyLastWeek => 'Viime viikon pulma — ei tallennettu';
+
+  @override
+  String get rankingExcluded => 'Ei sijoitusta';
+
+  @override
+  String get anonymous => 'Nimetön';
+
+  @override
+  String get weeklyReport => 'Ilmoita nimimerkistä';
+
+  @override
+  String get nickname => 'Nimimerkki';
+
+  @override
+  String get nicknameSet => 'Aseta nimimerkki';
+
+  @override
+  String get nicknameChange => 'Vaihda';
+
+  @override
+  String get nicknameHelper => 'Näkyy tulostaulukossa';
+
+  @override
+  String get nicknameTooShort => 'Vähintään 2 merkkiä';
+
+  @override
+  String get nicknameInvalid => 'Vain kirjaimia, numeroita, välilyöntejä ja _';
+
+  @override
+  String get nicknameBanned => 'Tätä nimimerkkiä ei voi käyttää';
+
+  @override
+  String get save => 'Tallenna';
 }

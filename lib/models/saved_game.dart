@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import '../services/weekly/weekly_board.dart';
 import 'difficulty.dart';
 
 /// 진행 중인 판 1개의 직렬화 형식 (v1).
@@ -19,6 +20,12 @@ class SavedGame {
   final bool icEverOff;
   final DateTime savedAt;
 
+  /// 주간 판이면 보드 ID (`WeeklyBoard.id`). 일반 판은 null.
+  final String? weeklyBoard;
+
+  /// 이 판에서 쓴 힌트 수.
+  final int hintsUsed;
+
   SavedGame({
     required this.difficulty,
     required this.solution,
@@ -30,6 +37,8 @@ class SavedGame {
     required this.instantCheck,
     required this.icEverOff,
     required this.savedAt,
+    this.weeklyBoard,
+    this.hintsUsed = 0,
   });
 
   /// 빈칸 중 채워진 비율 (0.0 ~ 1.0).
@@ -56,6 +65,8 @@ class SavedGame {
     'instantCheck': instantCheck,
     'icEverOff': icEverOff,
     'savedAt': savedAt.toIso8601String(),
+    'wk': ?weeklyBoard,
+    'hints': hintsUsed,
   };
 
   /// 형식이 맞지 않으면 null.
@@ -89,6 +100,13 @@ class SavedGame {
       if (elapsedMs is! int || elapsedMs < 0) return null;
       if (wrongCount is! int || wrongCount < 0) return null;
 
+      final wk = json['wk'];
+      if (wk != null && (wk is! String || !WeeklyBoard.idRe.hasMatch(wk))) {
+        return null;
+      }
+      final hints = json['hints'] as int? ?? 0;
+      if (hints < 0) return null;
+
       return SavedGame(
         difficulty: d,
         solution: sol,
@@ -102,6 +120,8 @@ class SavedGame {
         savedAt:
             DateTime.tryParse(json['savedAt'] as String? ?? '') ??
             DateTime.now(),
+        weeklyBoard: wk as String?,
+        hintsUsed: hints,
       );
     } catch (_) {
       return null;

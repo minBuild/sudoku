@@ -323,4 +323,138 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Địa ngục';
+
+  @override
+  String get hint => 'Gợi ý';
+
+  @override
+  String get hintUse => 'Dùng gợi ý';
+
+  @override
+  String get hintRankingWarn =>
+      'Dùng gợi ý sẽ khiến ván này không được tính vào bảng xếp hạng tuần này';
+
+  @override
+  String get rewardHintTitle => 'Xem quảng cáo để nhận gợi ý';
+
+  @override
+  String get rewardHintBody =>
+      'Xem hết một quảng cáo ngắn để nhận 1 gợi ý. Gợi ý miễn phí sẽ được nạp lại thành 3 vào ngày mai.';
+
+  @override
+  String get rewardContinueBody =>
+      'Xem hết một quảng cáo ngắn để đặt lại số lỗi và chơi tiếp.';
+
+  @override
+  String get watchAd => 'Xem quảng cáo';
+
+  @override
+  String get adLoading => 'Đang tải quảng cáo…';
+
+  @override
+  String get adUnavailable => 'Hiện không thể tải quảng cáo';
+
+  @override
+  String get adNotCompleted => 'Xem hết quảng cáo để nhận phần thưởng';
+
+  @override
+  String get continueAfterFail => 'Chơi tiếp';
+
+  @override
+  String get continueWithAd => 'Xem quảng cáo để chơi tiếp';
+
+  @override
+  String get weeklyTitle => 'Thử thách tuần';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'Tuần $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'Đến $date';
+  }
+
+  @override
+  String get weeklyRule => 'Chỉ xếp hạng các lần giải không dùng gợi ý';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Đã giải $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Chơi';
+
+  @override
+  String get weeklyRetry => 'Chơi lại';
+
+  @override
+  String get weeklyNotPlayed => 'Chưa chơi';
+
+  @override
+  String get weeklyInProgress => 'Đang chơi';
+
+  @override
+  String get weeklyNoLeader => 'Chưa có hạng 1';
+
+  @override
+  String get weeklyLoadFailed => 'Không tải được bảng xếp hạng';
+
+  @override
+  String get retry => 'Thử lại';
+
+  @override
+  String get weeklyYouAreFirst => 'Bạn hạng 1!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Thành tích tốt nhất tuần này $time';
+  }
+
+  @override
+  String get weeklySending => 'Đang gửi — sẽ hoàn tất khi có mạng';
+
+  @override
+  String get weeklyRank1 => 'Hạng 1 tuần này!';
+
+  @override
+  String get weeklyHintExcluded => 'Đã dùng gợi ý — không xếp hạng tuần này';
+
+  @override
+  String get weeklyLastWeek => 'Câu đố tuần trước — không được ghi nhận';
+
+  @override
+  String get rankingExcluded => 'Không xếp hạng';
+
+  @override
+  String get anonymous => 'Ẩn danh';
+
+  @override
+  String get weeklyReport => 'Báo cáo biệt danh';
+
+  @override
+  String get nickname => 'Biệt danh';
+
+  @override
+  String get nicknameSet => 'Đặt biệt danh';
+
+  @override
+  String get nicknameChange => 'Đổi';
+
+  @override
+  String get nicknameHelper => 'Hiển thị trên bảng xếp hạng';
+
+  @override
+  String get nicknameTooShort => 'Nhập ít nhất 2 ký tự';
+
+  @override
+  String get nicknameInvalid => 'Chỉ dùng chữ, số, dấu cách và _';
+
+  @override
+  String get nicknameBanned => 'Biệt danh này không được phép';
+
+  @override
+  String get save => 'Lưu';
 }

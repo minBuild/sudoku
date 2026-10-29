@@ -11,6 +11,9 @@ enum AdOutcome { shown, skipped, failed }
 
 enum AdPhase { idle, loading, showing }
 
+/// 보상형 광고 결과. [earned] 는 onUserEarnedReward 가 왔을 때만이다 (W12).
+enum RewardOutcome { earned, dismissed, unavailable }
+
 abstract interface class AdGateway {
   /// consent → initialize → preload. throw 하지 않는다.
   Future<void> warmUp();
@@ -20,6 +23,12 @@ abstract interface class AdGateway {
 
   /// phase 가 loading 일 때만 skipped 로 완료. showing 이면 no-op (D4).
   void cancelPending();
+
+  /// 힌트·이어 도전용 보상형 광고. throw 하지 않는다.
+  Future<RewardOutcome> showRewardedAd();
+
+  /// 보상형 광고를 미리 불러 둔다. throw 하지 않는다.
+  void preloadRewarded();
 
   /// 캐시를 dispose 하고 이후 모든 호출을 skipped 로 처리.
   void disable();
@@ -35,6 +44,12 @@ abstract interface class AdGateway {
 class AdPolicy {
   static const loadWait = Duration(seconds: 3);
   static const showWait = Duration(seconds: 5);
+
+  /// 보상형은 사용자가 직접 고른 것이라 조금 더 기다린다 (init 포함).
+  static const rewardLoadWait = Duration(seconds: 8);
+
+  /// dismiss 뒤 보상 콜백이 늦게 오는 플랫폼을 위한 유예.
+  static const rewardSettle = Duration(milliseconds: 300);
 }
 
 class _Session {
@@ -65,6 +80,9 @@ class AdMobService implements AdGateway {
   InterstitialAd? _cached;
   DateTime? _cachedAt;
   Future<InterstitialAd?>? _loading;
+  RewardedAd? _rewarded;
+  DateTime? _rewardedAt;
+  Future<RewardedAd?>? _rewardedLoading;
 
   @visibleForTesting
   static bool isExpired(DateTime loadedAt, DateTime now) =>
@@ -79,6 +97,16 @@ class AdMobService implements AdGateway {
       _cachedAt = null;
     }
     return _cached;
+  }
+
+  RewardedAd? _freshRewarded() {
+    final ad = _rewarded;
+    if (ad != null && isExpired(_rewardedAt!, _now())) {
+      ad.dispose();
+      _rewarded = null;
+      _rewardedAt = null;
+    }
+    return _rewarded;
   }
 
   @override
@@ -253,6 +281,163 @@ class AdMobService implements AdGateway {
     return c.future;
   }
 
+  // -------------------- 보상형 --------------------
+
+  @override
+  void preloadRewarded() {
+    try {
+      if (_disabled || AdIds.rewarded == null) return;
+      _init ??= _initialize();
+      unawaited(_preloadRewarded());
+    } catch (e) {
+      debugPrint('AdMobService.preloadRewarded 오류: $e');
+    }
+  }
+
+  @override
+  Future<RewardOutcome> showRewardedAd() async {
+    final unitId = AdIds.rewarded;
+    if (_disabled || _phase != AdPhase.idle || unitId == null) {
+      return RewardOutcome.unavailable;
+    }
+
+    final session = _Session();
+    _session = session;
+    _phase = AdPhase.loading;
+    try {
+      return await Future.any([
+        _loadAndShowRewarded(session),
+        session.cancel.future.then((_) => RewardOutcome.unavailable),
+      ]);
+    } catch (e) {
+      debugPrint('AdMobService.showRewardedAd 오류: $e');
+      return RewardOutcome.unavailable;
+    } finally {
+      if (identical(_session, session)) {
+        _session = null;
+        _phase = AdPhase.idle;
+      }
+      // RewardedAd 는 1회용이라 다음 것을 미리 불러 둔다.
+      if (!_disabled) unawaited(_preloadRewarded());
+    }
+  }
+
+  Future<RewardOutcome> _loadAndShowRewarded(_Session session) async {
+    final sw = Stopwatch()..start();
+    Duration remaining() {
+      final r = AdPolicy.rewardLoadWait - sw.elapsed;
+      return r > Duration.zero ? r : Duration.zero;
+    }
+
+    final ready = await (_init ??= _initialize()).timeout(
+      remaining(),
+      onTimeout: () => false,
+    );
+    if (!ready || session.cancelled || _disabled) {
+      return RewardOutcome.unavailable;
+    }
+
+    final ad =
+        _freshRewarded() ??
+        await _preloadRewarded().timeout(remaining(), onTimeout: () => null);
+    if (ad == null) return RewardOutcome.unavailable;
+
+    final appResumed =
+        WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed;
+    if (session.cancelled || _disabled || !appResumed) {
+      return RewardOutcome.unavailable; // 광고 객체는 캐시에 남긴다.
+    }
+
+    _rewarded = null;
+    _rewardedAt = null;
+    var earned = false;
+    final showed = Completer<bool>();
+    final closed = Completer<bool>(); // true: dismiss, false: 표시 실패
+    void finish(bool dismissed) {
+      if (!showed.isCompleted) showed.complete(false);
+      if (!closed.isCompleted) closed.complete(dismissed);
+    }
+
+    ad.fullScreenContentCallback = FullScreenContentCallback(
+      onAdShowedFullScreenContent: (_) {
+        if (!showed.isCompleted) showed.complete(true);
+      },
+      onAdDismissedFullScreenContent: (a) {
+        a.dispose();
+        finish(true);
+      },
+      onAdFailedToShowFullScreenContent: (a, e) {
+        debugPrint('보상형 광고 표시 실패: ${e.code} ${e.message}');
+        a.dispose();
+        finish(false);
+      },
+    );
+    _phase = AdPhase.showing;
+    try {
+      await ad.show(onUserEarnedReward: (_, _) => earned = true);
+    } catch (e) {
+      debugPrint('보상형 광고 show 오류: $e');
+      ad.dispose();
+      return RewardOutcome.unavailable;
+    }
+
+    final didShow = await showed.future.timeout(
+      AdPolicy.showWait,
+      onTimeout: () => false,
+    );
+    if (!didShow && !closed.isCompleted) {
+      ad.dispose();
+      finish(false);
+    }
+    if (!await closed.future) {
+      return earned ? RewardOutcome.earned : RewardOutcome.unavailable;
+    }
+    // 보상 콜백이 dismiss 뒤에 오는 경우가 있다.
+    await Future<void>.delayed(AdPolicy.rewardSettle);
+    return earned ? RewardOutcome.earned : RewardOutcome.dismissed;
+  }
+
+  Future<RewardedAd?> _preloadRewarded() {
+    final cached = _freshRewarded();
+    if (cached != null) return Future.value(cached);
+    final unitId = AdIds.rewarded;
+    if (_disabled || unitId == null || _init == null) return Future.value();
+    return _rewardedLoading ??= _loadRewarded(
+      unitId,
+    ).whenComplete(() => _rewardedLoading = null);
+  }
+
+  Future<RewardedAd?> _loadRewarded(String unitId) async {
+    if (!await _init!) return null;
+    final c = Completer<RewardedAd?>();
+    try {
+      await RewardedAd.load(
+        adUnitId: unitId,
+        request: const AdRequest(),
+        rewardedAdLoadCallback: RewardedAdLoadCallback(
+          onAdLoaded: (ad) {
+            if (_disabled) {
+              ad.dispose();
+              c.complete(null);
+            } else {
+              _rewarded = ad;
+              _rewardedAt = _now();
+              c.complete(ad);
+            }
+          },
+          onAdFailedToLoad: (e) {
+            debugPrint('보상형 광고 로드 실패: ${e.code} ${e.message}');
+            c.complete(null);
+          },
+        ),
+      );
+    } catch (e) {
+      debugPrint('보상형 광고 load 오류: $e');
+      if (!c.isCompleted) c.complete(null);
+    }
+    return c.future;
+  }
+
   @override
   void cancelPending() {
     final s = _session;
@@ -269,5 +454,8 @@ class AdMobService implements AdGateway {
     _cached?.dispose();
     _cached = null;
     _cachedAt = null;
+    _rewarded?.dispose();
+    _rewarded = null;
+    _rewardedAt = null;
   }
 }

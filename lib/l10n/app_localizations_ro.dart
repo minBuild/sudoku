@@ -336,4 +336,140 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get difficultyHell => 'Infern';
+
+  @override
+  String get hint => 'Indiciu';
+
+  @override
+  String get hintUse => 'Folosește indiciu';
+
+  @override
+  String get hintRankingWarn =>
+      'Dacă folosești un indiciu, jocul nu intră în clasamentul acestei săptămâni';
+
+  @override
+  String get rewardHintTitle => 'Vezi o reclamă pentru un indiciu';
+
+  @override
+  String get rewardHintBody =>
+      'Urmărește o reclamă scurtă până la final ca să primești 1 indiciu. Mâine vei avea din nou 3 indicii gratuite.';
+
+  @override
+  String get rewardContinueBody =>
+      'Urmărește o reclamă scurtă până la final ca să resetezi greșelile și să joci în continuare.';
+
+  @override
+  String get watchAd => 'Vezi reclama';
+
+  @override
+  String get adLoading => 'Se încarcă reclama…';
+
+  @override
+  String get adUnavailable => 'Nu se poate încărca o reclamă acum';
+
+  @override
+  String get adNotCompleted =>
+      'Urmărește reclama până la final ca să primești recompensa';
+
+  @override
+  String get continueAfterFail => 'Continuă jocul';
+
+  @override
+  String get continueWithAd => 'Vezi o reclamă și continuă';
+
+  @override
+  String get weeklyTitle => 'Provocarea săptămânii';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'Săptămâna $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'Până la $date';
+  }
+
+  @override
+  String get weeklyRule => 'Doar rezolvările fără indicii intră în clasament';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'Rezolvate $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'Joacă';
+
+  @override
+  String get weeklyRetry => 'Joacă din nou';
+
+  @override
+  String get weeklyNotPlayed => 'Nejucat încă';
+
+  @override
+  String get weeklyInProgress => 'În desfășurare';
+
+  @override
+  String get weeklyNoLeader => 'Încă nu există un lider';
+
+  @override
+  String get weeklyLoadFailed => 'Clasamentul nu a putut fi încărcat';
+
+  @override
+  String get retry => 'Reîncearcă';
+
+  @override
+  String get weeklyYouAreFirst => 'Ești pe locul 1!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'Cel mai bun timp al meu săptămâna asta $time';
+  }
+
+  @override
+  String get weeklySending => 'Se trimite — se va finaliza când ești online';
+
+  @override
+  String get weeklyRank1 => 'Locul 1 săptămâna asta!';
+
+  @override
+  String get weeklyHintExcluded =>
+      'Indiciu folosit — fără clasament săptămâna asta';
+
+  @override
+  String get weeklyLastWeek => 'Joc din săptămâna trecută — nu s-a înregistrat';
+
+  @override
+  String get rankingExcluded => 'Fără clasament';
+
+  @override
+  String get anonymous => 'Anonim';
+
+  @override
+  String get weeklyReport => 'Raportează o poreclă';
+
+  @override
+  String get nickname => 'Poreclă';
+
+  @override
+  String get nicknameSet => 'Setează porecla';
+
+  @override
+  String get nicknameChange => 'Schimbă';
+
+  @override
+  String get nicknameHelper => 'Afișat în clasament';
+
+  @override
+  String get nicknameTooShort => 'Folosește cel puțin 2 caractere';
+
+  @override
+  String get nicknameInvalid => 'Doar litere, cifre, spații și _';
+
+  @override
+  String get nicknameBanned => 'Această poreclă nu este permisă';
+
+  @override
+  String get save => 'Salvează';
 }

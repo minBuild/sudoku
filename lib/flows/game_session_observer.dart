@@ -78,7 +78,9 @@ class GameSessionObserver {
     var isNewBest = true;
     try {
       final best = await _records.bestTime(_c.difficulty);
-      isNewBest = best == null || elapsed < best;
+      // 힌트를 쓴 판은 최고 기록이 될 수 없다 (W11).
+      final hinted = _c.hintsUsed > 0;
+      isNewBest = !hinted && (best == null || elapsed < best);
       await _saves?.clear();
       await _records.add(
         GameRecord(
@@ -87,6 +89,7 @@ class GameSessionObserver {
           wrongCount: _c.wrongCount,
           finishedAt: DateTime.now(),
           instantCheck: !_c.icEverOff,
+          hintsUsed: _c.hintsUsed,
         ),
       );
     } catch (e) {

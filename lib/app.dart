@@ -44,6 +44,10 @@ class _SudokuAppState extends State<SudokuApp> {
         if (!widget.deps.entitlement.adsRemoved.value) {
           unawaited(widget.deps.ads.warmUp());
         }
+        // 오프라인에서 클리어한 주간 기록을 다시 보낸다.
+        if (widget.deps.weekly case final w? when w.store.pending.isNotEmpty) {
+          unawaited(w.flushPending());
+        }
       },
     );
   }

@@ -27,6 +27,7 @@ class GameFeedback {
     final (cue, volume, haptic) = switch (e) {
       GameEffect.selected => (SoundCue.tap, 0.3, false),
       GameEffect.accepted => (SoundCue.tap, 1.0, false),
+      GameEffect.hinted => (SoundCue.tap, 1.0, false),
       GameEffect.wrong || GameEffect.conflict => (SoundCue.wrong, 1.0, true),
       GameEffect.failed => (SoundCue.failed, 1.0, true),
       GameEffect.solved => (SoundCue.solved, 1.0, false),

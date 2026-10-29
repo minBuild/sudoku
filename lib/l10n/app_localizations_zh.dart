@@ -317,6 +317,137 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get difficultyHell => '地狱';
+
+  @override
+  String get hint => '提示';
+
+  @override
+  String get hintUse => '使用提示';
+
+  @override
+  String get hintRankingWarn => '使用提示后，本局将不计入本周排行榜';
+
+  @override
+  String get rewardHintTitle => '看广告获得提示';
+
+  @override
+  String get rewardHintBody => '完整观看一段简短广告即可获得 1 次提示。免费提示明天会恢复为 3 次。';
+
+  @override
+  String get rewardContinueBody => '完整观看一段简短广告即可将失误次数清零并继续游戏。';
+
+  @override
+  String get watchAd => '看广告';
+
+  @override
+  String get adLoading => '正在加载广告…';
+
+  @override
+  String get adUnavailable => '暂时无法加载广告';
+
+  @override
+  String get adNotCompleted => '需完整观看广告才能获得奖励';
+
+  @override
+  String get continueAfterFail => '继续挑战';
+
+  @override
+  String get continueWithAd => '看广告继续挑战';
+
+  @override
+  String get weeklyTitle => '每周挑战';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return '第$week周';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return '截至 $date';
+  }
+
+  @override
+  String get weeklyRule => '仅记录未使用提示的通关成绩';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return '已通关 $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => '挑战';
+
+  @override
+  String get weeklyRetry => '再次挑战';
+
+  @override
+  String get weeklyNotPlayed => '尚未挑战';
+
+  @override
+  String get weeklyInProgress => '进行中';
+
+  @override
+  String get weeklyNoLeader => '暂无第一名';
+
+  @override
+  String get weeklyLoadFailed => '无法加载排名';
+
+  @override
+  String get retry => '重试';
+
+  @override
+  String get weeklyYouAreFirst => '你是第一名！';
+
+  @override
+  String weeklyMyBest(String time) {
+    return '本周我的最佳 $time';
+  }
+
+  @override
+  String get weeklySending => '正在发送记录 — 联网后将自动完成';
+
+  @override
+  String get weeklyRank1 => '本周第一名！';
+
+  @override
+  String get weeklyHintExcluded => '已使用提示，不计入本周排名';
+
+  @override
+  String get weeklyLastWeek => '上周的谜题，不计入记录';
+
+  @override
+  String get rankingExcluded => '不计排名';
+
+  @override
+  String get anonymous => '匿名';
+
+  @override
+  String get weeklyReport => '举报不当昵称';
+
+  @override
+  String get nickname => '昵称';
+
+  @override
+  String get nicknameSet => '设置昵称';
+
+  @override
+  String get nicknameChange => '更改';
+
+  @override
+  String get nicknameHelper => '将在排行榜上公开';
+
+  @override
+  String get nicknameTooShort => '请输入至少 2 个字符';
+
+  @override
+  String get nicknameInvalid => '仅可使用字母、数字、空格和 _';
+
+  @override
+  String get nicknameBanned => '此昵称无法使用';
+
+  @override
+  String get save => '保存';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -632,4 +763,135 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get difficultyHell => '地獄';
+
+  @override
+  String get hint => '提示';
+
+  @override
+  String get hintUse => '使用提示';
+
+  @override
+  String get hintRankingWarn => '使用提示後，本局將不列入本週排行榜';
+
+  @override
+  String get rewardHintTitle => '看廣告領取提示';
+
+  @override
+  String get rewardHintBody => '完整觀看一段簡短廣告即可獲得 1 次提示。免費提示明天會恢復為 3 次。';
+
+  @override
+  String get rewardContinueBody => '完整觀看一段簡短廣告即可將失誤次數歸零並繼續遊戲。';
+
+  @override
+  String get watchAd => '看廣告';
+
+  @override
+  String get adLoading => '正在載入廣告…';
+
+  @override
+  String get adUnavailable => '目前無法載入廣告';
+
+  @override
+  String get adNotCompleted => '需完整觀看廣告才能獲得獎勵';
+
+  @override
+  String get continueAfterFail => '繼續挑戰';
+
+  @override
+  String get continueWithAd => '看廣告繼續挑戰';
+
+  @override
+  String get weeklyTitle => '每週挑戰';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return '第$week週';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return '截至 $date';
+  }
+
+  @override
+  String get weeklyRule => '僅記錄未使用提示的過關成績';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return '已過關 $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => '挑戰';
+
+  @override
+  String get weeklyRetry => '再次挑戰';
+
+  @override
+  String get weeklyNotPlayed => '尚未挑戰';
+
+  @override
+  String get weeklyInProgress => '進行中';
+
+  @override
+  String get weeklyNoLeader => '尚無第一名';
+
+  @override
+  String get weeklyLoadFailed => '無法載入排名';
+
+  @override
+  String get retry => '重試';
+
+  @override
+  String get weeklyYouAreFirst => '你是第一名！';
+
+  @override
+  String weeklyMyBest(String time) {
+    return '本週我的最佳 $time';
+  }
+
+  @override
+  String get weeklySending => '正在傳送紀錄 — 連線後將自動完成';
+
+  @override
+  String get weeklyRank1 => '本週第一名！';
+
+  @override
+  String get weeklyHintExcluded => '已使用提示，不列入本週排名';
+
+  @override
+  String get weeklyLastWeek => '上週的謎題，不列入紀錄';
+
+  @override
+  String get rankingExcluded => '不列入排名';
+
+  @override
+  String get anonymous => '匿名';
+
+  @override
+  String get weeklyReport => '檢舉不當暱稱';
+
+  @override
+  String get nickname => '暱稱';
+
+  @override
+  String get nicknameSet => '設定暱稱';
+
+  @override
+  String get nicknameChange => '變更';
+
+  @override
+  String get nicknameHelper => '將公開於排行榜';
+
+  @override
+  String get nicknameTooShort => '請輸入至少 2 個字元';
+
+  @override
+  String get nicknameInvalid => '僅可使用字母、數字、空格和 _';
+
+  @override
+  String get nicknameBanned => '此暱稱無法使用';
+
+  @override
+  String get save => '儲存';
 }

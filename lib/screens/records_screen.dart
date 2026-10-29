@@ -173,6 +173,7 @@ class _BestCard extends StatelessWidget {
     final text = Theme.of(context).textTheme;
     final best = <Difficulty, int>{};
     for (final r in records) {
+      if (r.hintsUsed > 0) continue;
       final b = best[r.difficulty];
       if (b == null || r.elapsedSeconds < b) {
         best[r.difficulty] = r.elapsedSeconds;

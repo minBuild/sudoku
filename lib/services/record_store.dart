@@ -51,11 +51,11 @@ class RecordStore {
     await _prefs.remove(_key);
   }
 
-  /// 해당 난이도의 최고(최단) 기록. 없으면 null.
+  /// 해당 난이도의 최고(최단) 기록. 힌트를 쓴 판은 빼고, 없으면 null.
   Future<Duration?> bestTime(Difficulty d) async {
     int? best;
     for (final r in await loadAll()) {
-      if (r.difficulty != d) continue;
+      if (r.difficulty != d || r.hintsUsed > 0) continue;
       if (best == null || r.elapsedSeconds < best) best = r.elapsedSeconds;
     }
     return best == null ? null : Duration(seconds: best);

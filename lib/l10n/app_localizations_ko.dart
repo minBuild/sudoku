@@ -317,4 +317,136 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get difficultyHell => '지옥';
+
+  @override
+  String get hint => '힌트';
+
+  @override
+  String get hintUse => '힌트 사용';
+
+  @override
+  String get hintRankingWarn => '힌트를 쓰면 이번 주 랭킹에서 제외돼요';
+
+  @override
+  String get rewardHintTitle => '광고 보고 힌트 받기';
+
+  @override
+  String get rewardHintBody =>
+      '짧은 광고를 끝까지 보면 힌트 1개를 받아요. 무료 힌트는 내일 다시 3개로 채워져요.';
+
+  @override
+  String get rewardContinueBody => '짧은 광고를 끝까지 보면 실수 횟수가 0으로 돌아가고 이어서 풀 수 있어요.';
+
+  @override
+  String get watchAd => '광고 보기';
+
+  @override
+  String get adLoading => '광고 불러오는 중…';
+
+  @override
+  String get adUnavailable => '지금은 광고를 불러올 수 없어요';
+
+  @override
+  String get adNotCompleted => '광고를 끝까지 봐야 받을 수 있어요';
+
+  @override
+  String get continueAfterFail => '이어서 도전';
+
+  @override
+  String get continueWithAd => '광고 보고 이어서 도전';
+
+  @override
+  String get weeklyTitle => '주간 대결';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return '$week주차';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return '$date까지';
+  }
+
+  @override
+  String get weeklyRule => '힌트 없이 클리어한 기록만 등록돼요';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return '클리어 $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => '도전';
+
+  @override
+  String get weeklyRetry => '다시 도전';
+
+  @override
+  String get weeklyNotPlayed => '아직 도전하지 않았어요';
+
+  @override
+  String get weeklyInProgress => '진행 중';
+
+  @override
+  String get weeklyNoLeader => '아직 1등이 없어요';
+
+  @override
+  String get weeklyLoadFailed => '순위를 불러오지 못했어요';
+
+  @override
+  String get retry => '다시 시도';
+
+  @override
+  String get weeklyYouAreFirst => '내가 1등!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return '이번 주 내 기록 $time';
+  }
+
+  @override
+  String get weeklySending => '기록 전송 중 — 연결되면 자동으로 완료돼요';
+
+  @override
+  String get weeklyRank1 => '이번 주 1등!';
+
+  @override
+  String get weeklyHintExcluded => '힌트를 사용해 이번 주 랭킹에서 제외됐어요';
+
+  @override
+  String get weeklyLastWeek => '지난주 퍼즐이라 기록되지 않았어요';
+
+  @override
+  String get rankingExcluded => '랭킹 제외';
+
+  @override
+  String get anonymous => '익명';
+
+  @override
+  String get weeklyReport => '부적절한 닉네임 신고';
+
+  @override
+  String get nickname => '닉네임';
+
+  @override
+  String get nicknameSet => '닉네임 설정';
+
+  @override
+  String get nicknameChange => '변경';
+
+  @override
+  String get nicknameHelper => '순위표에 공개됩니다';
+
+  @override
+  String get nicknameTooShort => '2자 이상 입력해 주세요';
+
+  @override
+  String get nicknameInvalid => '글자, 숫자, 공백, _ 만 쓸 수 있어요';
+
+  @override
+  String get nicknameBanned => '사용할 수 없는 닉네임이에요';
+
+  @override
+  String get save => '저장';
 }

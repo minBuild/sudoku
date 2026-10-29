@@ -321,4 +321,138 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get difficultyHell => 'นรก';
+
+  @override
+  String get hint => 'คำใบ้';
+
+  @override
+  String get hintUse => 'ใช้คำใบ้';
+
+  @override
+  String get hintRankingWarn =>
+      'หากใช้คำใบ้ เกมนี้จะไม่ถูกนับในอันดับของสัปดาห์นี้';
+
+  @override
+  String get rewardHintTitle => 'ดูโฆษณาเพื่อรับคำใบ้';
+
+  @override
+  String get rewardHintBody =>
+      'ดูโฆษณาสั้นๆ จนจบเพื่อรับคำใบ้ 1 ครั้ง คำใบ้ฟรีจะกลับมาเป็น 3 ครั้งในวันพรุ่งนี้';
+
+  @override
+  String get rewardContinueBody =>
+      'ดูโฆษณาสั้นๆ จนจบเพื่อรีเซ็ตจำนวนครั้งที่ผิดและเล่นต่อ';
+
+  @override
+  String get watchAd => 'ดูโฆษณา';
+
+  @override
+  String get adLoading => 'กำลังโหลดโฆษณา…';
+
+  @override
+  String get adUnavailable => 'ไม่สามารถโหลดโฆษณาได้ในขณะนี้';
+
+  @override
+  String get adNotCompleted => 'ดูโฆษณาจนจบเพื่อรับรางวัล';
+
+  @override
+  String get continueAfterFail => 'เล่นต่อ';
+
+  @override
+  String get continueWithAd => 'ดูโฆษณาเพื่อเล่นต่อ';
+
+  @override
+  String get weeklyTitle => 'ความท้าทายประจำสัปดาห์';
+
+  @override
+  String weeklyWeekLabel(int week) {
+    return 'สัปดาห์ที่ $week';
+  }
+
+  @override
+  String weeklyEndsAt(String date) {
+    return 'ถึง $date';
+  }
+
+  @override
+  String get weeklyRule => 'นับอันดับเฉพาะการเล่นผ่านโดยไม่ใช้คำใบ้';
+
+  @override
+  String weeklyClearedCount(int done, int total) {
+    return 'ผ่านแล้ว $done/$total';
+  }
+
+  @override
+  String get weeklyChallenge => 'เล่น';
+
+  @override
+  String get weeklyRetry => 'เล่นอีกครั้ง';
+
+  @override
+  String get weeklyNotPlayed => 'ยังไม่ได้เล่น';
+
+  @override
+  String get weeklyInProgress => 'กำลังเล่น';
+
+  @override
+  String get weeklyNoLeader => 'ยังไม่มีอันดับ 1';
+
+  @override
+  String get weeklyLoadFailed => 'โหลดอันดับไม่สำเร็จ';
+
+  @override
+  String get retry => 'ลองอีกครั้ง';
+
+  @override
+  String get weeklyYouAreFirst => 'คุณคืออันดับ 1!';
+
+  @override
+  String weeklyMyBest(String time) {
+    return 'สถิติดีที่สุดของฉันสัปดาห์นี้ $time';
+  }
+
+  @override
+  String get weeklySending => 'กำลังส่ง — จะเสร็จสิ้นเมื่อออนไลน์';
+
+  @override
+  String get weeklyRank1 => 'อันดับ 1 สัปดาห์นี้!';
+
+  @override
+  String get weeklyHintExcluded => 'ใช้คำใบ้แล้ว — ไม่นับอันดับสัปดาห์นี้';
+
+  @override
+  String get weeklyLastWeek => 'ปริศนาของสัปดาห์ที่แล้ว — ไม่ได้บันทึก';
+
+  @override
+  String get rankingExcluded => 'ไม่นับอันดับ';
+
+  @override
+  String get anonymous => 'ไม่ระบุชื่อ';
+
+  @override
+  String get weeklyReport => 'รายงานชื่อเล่น';
+
+  @override
+  String get nickname => 'ชื่อเล่น';
+
+  @override
+  String get nicknameSet => 'ตั้งชื่อเล่น';
+
+  @override
+  String get nicknameChange => 'เปลี่ยน';
+
+  @override
+  String get nicknameHelper => 'แสดงในตารางอันดับ';
+
+  @override
+  String get nicknameTooShort => 'ใช้อย่างน้อย 2 ตัวอักษร';
+
+  @override
+  String get nicknameInvalid => 'ใช้ได้เฉพาะตัวอักษร ตัวเลข ช่องว่าง และ _';
+
+  @override
+  String get nicknameBanned => 'ไม่สามารถใช้ชื่อเล่นนี้ได้';
+
+  @override
+  String get save => 'บันทึก';
 }

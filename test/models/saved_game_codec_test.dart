@@ -82,4 +82,34 @@ void main() {
     j['cur'] = replaceAt(j['cur'] as String, 40, '${wrongAt(40)}');
     expect(SavedGame.tryFromJson(j), isNull);
   });
+
+  test('wk·hints 왕복', () {
+    final j = validJson()
+      ..['wk'] = '2026-W44_hard_g1'
+      ..['hints'] = 2;
+    final s = SavedGame.tryFromJson(j)!;
+    expect(s.weeklyBoard, '2026-W44_hard_g1');
+    expect(s.hintsUsed, 2);
+    final back = s.toJson();
+    expect(back['wk'], '2026-W44_hard_g1');
+    expect(back['hints'], 2);
+    expect(back['v'], 1);
+  });
+
+  test('wk·hints 가 없는 기존 JSON 은 일반 판, 힌트 0', () {
+    final j = validJson()
+      ..remove('wk')
+      ..remove('hints');
+    final s = SavedGame.tryFromJson(j)!;
+    expect(s.weeklyBoard, isNull);
+    expect(s.hintsUsed, 0);
+    expect(s.toJson().containsKey('wk'), isFalse);
+    expect(s.toJson()['hints'], 0);
+  });
+
+  test('잘못된 wk 나 음수 hints 면 null', () {
+    expect(SavedGame.tryFromJson(validJson()..['wk'] = '2026-44_hard'), isNull);
+    expect(SavedGame.tryFromJson(validJson()..['wk'] = 3), isNull);
+    expect(SavedGame.tryFromJson(validJson()..['hints'] = -1), isNull);
+  });
 }
