@@ -585,6 +585,18 @@ abstract class AppLocalizations {
   /// **'오답을 입력하는 즉시 표시합니다'**
   String get instantCheckDesc;
 
+  /// 효과음 켜기/끄기 (설정 스위치·게임 메뉴)
+  ///
+  /// In ko, this message translates to:
+  /// **'효과음'**
+  String get soundEffects;
+
+  /// 설정 효과음 설명. 무음 스위치 문구는 넣지 않음
+  ///
+  /// In ko, this message translates to:
+  /// **'입력·오답·완료 소리'**
+  String get soundEffectsDesc;
+
   /// 개인정보 옵션(UMP). 법적 문구, 사람 검수 필요
   ///
   /// In ko, this message translates to:

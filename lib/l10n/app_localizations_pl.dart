@@ -301,6 +301,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get instantCheckDesc => 'Pokazuj błędne wpisy od razu';
 
   @override
+  String get soundEffects => 'Efekty dźwiękowe';
+
+  @override
+  String get soundEffectsDesc => 'Dźwięki wpisywania, błędu i ukończenia';
+
+  @override
   String get privacyOptions => 'Opcje prywatności';
 
   @override

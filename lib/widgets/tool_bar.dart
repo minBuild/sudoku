@@ -81,6 +81,7 @@ class _ToolButton extends StatelessWidget {
         ),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
+          enableFeedback: false, // 효과음은 GameFeedback 이 낸다
           onTap: onPressed,
           child: ConstrainedBox(
             constraints: const BoxConstraints(minHeight: 52),

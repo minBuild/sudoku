@@ -293,6 +293,12 @@ class AppLocalizationsHe extends AppLocalizations {
   String get instantCheckDesc => 'הצגת הזנות שגויות מיד';
 
   @override
+  String get soundEffects => 'אפקטים קוליים';
+
+  @override
+  String get soundEffectsDesc => 'צלילי הזנה, טעות וסיום';
+
+  @override
   String get privacyOptions => 'אפשרויות פרטיות';
 
   @override

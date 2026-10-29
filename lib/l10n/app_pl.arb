@@ -71,6 +71,8 @@
   "delete": "Usuń",
   "instantCheckDefault": "Domyślnie natychmiastowe sprawdzanie",
   "instantCheckDesc": "Pokazuj błędne wpisy od razu",
+  "soundEffects": "Efekty dźwiękowe",
+  "soundEffectsDesc": "Dźwięki wpisywania, błędu i ukończenia",
   "privacyOptions": "Opcje prywatności",
   "privacyOptionsDesc": "Sprawdź lub zmień ustawienia zgody na reklamy",
   "privacyPolicy": "Polityka prywatności",

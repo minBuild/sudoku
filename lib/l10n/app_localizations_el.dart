@@ -292,6 +292,12 @@ class AppLocalizationsEl extends AppLocalizations {
   String get instantCheckDesc => 'Εμφάνιση λανθασμένων αριθμών αμέσως';
 
   @override
+  String get soundEffects => 'Ηχητικά εφέ';
+
+  @override
+  String get soundEffectsDesc => 'Ήχοι εισαγωγής, λάθους και ολοκλήρωσης';
+
+  @override
   String get privacyOptions => 'Επιλογές απορρήτου';
 
   @override

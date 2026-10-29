@@ -290,6 +290,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String get instantCheckDesc => 'Toon foute invoer meteen';
 
   @override
+  String get soundEffects => 'Geluidseffecten';
+
+  @override
+  String get soundEffectsDesc => 'Geluiden bij invoer, fouten en voltooien';
+
+  @override
   String get privacyOptions => 'Privacyopties';
 
   @override

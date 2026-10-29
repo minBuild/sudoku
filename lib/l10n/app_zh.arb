@@ -71,6 +71,8 @@
   "delete": "删除",
   "instantCheckDefault": "默认开启即时检查",
   "instantCheckDesc": "输入错误时立即提示",
+  "soundEffects": "音效",
+  "soundEffectsDesc": "输入、出错和完成的提示音",
   "privacyOptions": "隐私选项",
   "privacyOptionsDesc": "查看或更改广告同意设置",
   "privacyPolicy": "隐私政策",

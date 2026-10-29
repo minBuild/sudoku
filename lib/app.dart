@@ -39,6 +39,8 @@ class _SudokuAppState extends State<SudokuApp> {
     // 복귀 시 만료됐거나 비어 있는 캐시를 미리 채운다.
     _life = AppLifecycleListener(
       onResume: () {
+        // 광고·통화·백그라운드 뒤 오디오 세션 복구. 광고 제거 사용자도 포함 (D8).
+        unawaited(widget.deps.sound.resync());
         if (!widget.deps.entitlement.adsRemoved.value) {
           unawaited(widget.deps.ads.warmUp());
         }

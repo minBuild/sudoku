@@ -290,6 +290,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get instantCheckDesc => 'गलत अंक भरते ही दिखाएं';
 
   @override
+  String get soundEffects => 'ध्वनि प्रभाव';
+
+  @override
+  String get soundEffectsDesc => 'इनपुट, गलती और पूरा होने की ध्वनियाँ';
+
+  @override
   String get privacyOptions => 'निजता विकल्प';
 
   @override

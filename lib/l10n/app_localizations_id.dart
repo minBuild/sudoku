@@ -286,6 +286,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get instantCheckDesc => 'Tampilkan isian yang salah saat dimasukkan';
 
   @override
+  String get soundEffects => 'Efek suara';
+
+  @override
+  String get soundEffectsDesc => 'Suara input, kesalahan, dan selesai';
+
+  @override
   String get privacyOptions => 'Opsi Privasi';
 
   @override

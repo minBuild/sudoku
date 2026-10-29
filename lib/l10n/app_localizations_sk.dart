@@ -298,6 +298,12 @@ class AppLocalizationsSk extends AppLocalizations {
   String get instantCheckDesc => 'Nesprávne zadanie zobraziť hneď';
 
   @override
+  String get soundEffects => 'Zvukové efekty';
+
+  @override
+  String get soundEffectsDesc => 'Zvuky zadania, chyby a dokončenia';
+
+  @override
   String get privacyOptions => 'Možnosti ochrany súkromia';
 
   @override

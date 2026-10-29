@@ -71,6 +71,8 @@
   "delete": "हटाएं",
   "instantCheckDefault": "डिफ़ॉल्ट रूप से तुरंत जांच",
   "instantCheckDesc": "गलत अंक भरते ही दिखाएं",
+  "soundEffects": "ध्वनि प्रभाव",
+  "soundEffectsDesc": "इनपुट, गलती और पूरा होने की ध्वनियाँ",
   "privacyOptions": "निजता विकल्प",
   "privacyOptionsDesc": "विज्ञापन सहमति सेटिंग देखें या बदलें",
   "privacyPolicy": "निजता नीति",

@@ -290,6 +290,12 @@ class AppLocalizationsSv extends AppLocalizations {
       'Visa felaktiga siffror direkt när de matas in';
 
   @override
+  String get soundEffects => 'Ljudeffekter';
+
+  @override
+  String get soundEffectsDesc => 'Ljud för inmatning, fel och slutförande';
+
+  @override
   String get privacyOptions => 'Integritetsalternativ';
 
   @override

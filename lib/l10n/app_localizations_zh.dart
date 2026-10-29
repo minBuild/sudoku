@@ -280,6 +280,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get instantCheckDesc => '输入错误时立即提示';
 
   @override
+  String get soundEffects => '音效';
+
+  @override
+  String get soundEffectsDesc => '输入、出错和完成的提示音';
+
+  @override
   String get privacyOptions => '隐私选项';
 
   @override
@@ -587,6 +593,12 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get instantCheckDesc => '輸入錯誤時立即顯示';
+
+  @override
+  String get soundEffects => '音效';
+
+  @override
+  String get soundEffectsDesc => '輸入、出錯和完成的提示音';
 
   @override
   String get privacyOptions => '隱私權選項';

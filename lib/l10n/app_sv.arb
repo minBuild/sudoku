@@ -71,6 +71,8 @@
   "delete": "Radera",
   "instantCheckDefault": "Direktkontroll som standard",
   "instantCheckDesc": "Visa felaktiga siffror direkt när de matas in",
+  "soundEffects": "Ljudeffekter",
+  "soundEffectsDesc": "Ljud för inmatning, fel och slutförande",
   "privacyOptions": "Integritetsalternativ",
   "privacyOptionsDesc": "Granska eller ändra dina inställningar för annonssamtycke",
   "privacyPolicy": "Integritetspolicy",

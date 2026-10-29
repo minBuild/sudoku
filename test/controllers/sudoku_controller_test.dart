@@ -5,6 +5,15 @@ import 'package:sudoku/models/game_status.dart';
 
 import '../fakes.dart';
 
+/// [c] 의 효과를 모은다. broadcast 스트림이라 확인 전에 [_flush] 가 필요하다.
+List<GameEffect> _record(SudokuController c) {
+  final effects = <GameEffect>[];
+  c.effects.listen(effects.add);
+  return effects;
+}
+
+Future<void> _flush() => Future<void>.delayed(Duration.zero);
+
 SudokuController playing(List<int> holes, {bool instantCheck = true}) {
   final c = SudokuController.fresh(
     puzzleWithHoles(holes),
@@ -59,37 +68,54 @@ void main() {
     c.dispose();
   });
 
-  test('5회 틀리면 failed, 이후 입력과 undo 무시', () {
+  test('5회 틀리면 failed, 이후 입력과 undo 무시', () async {
     final c = playing([0, 1, 2, 3, 4, 5]);
-    final effects = <GameEffect>[];
-    c.effects.listen(effects.add);
+    final effects = _record(c);
     for (var i = 0; i < 5; i++) {
       c.select(i);
       c.input(wrongAt(i));
     }
     expect(c.wrongCount, 5);
     expect(c.status, GameStatus.failed);
+    await _flush();
+    const expected = [
+      GameEffect.selected,
+      GameEffect.wrong,
+      GameEffect.firstMistake,
+      GameEffect.selected,
+      GameEffect.wrong,
+      GameEffect.selected,
+      GameEffect.wrong,
+      GameEffect.selected,
+      GameEffect.wrong,
+      GameEffect.selected,
+      GameEffect.failed,
+    ];
+    expect(effects, expected);
 
     c.select(5);
     c.input(solAt(5));
     expect(c.valueAt(5), 0);
     c.undo();
     expect(c.valueAt(4), wrongAt(4));
+    await _flush();
+    expect(effects, expected);
     c.dispose();
   });
 
   test('첫 실수에 wrong 과 firstMistake 효과', () async {
     final c = playing([0, 1, 2]);
-    final effects = <GameEffect>[];
-    c.effects.listen(effects.add);
+    final effects = _record(c);
     c.select(0);
     c.input(wrongAt(0));
     c.select(1);
     c.input(wrongAt(1));
-    await Future<void>.delayed(Duration.zero);
+    await _flush();
     expect(effects, [
+      GameEffect.selected,
       GameEffect.wrong,
       GameEffect.firstMistake,
+      GameEffect.selected,
       GameEffect.wrong,
     ]);
     c.dispose();
@@ -180,15 +206,14 @@ void main() {
 
   test('즉시 체크 OFF 에서는 wrongCount 가 변하지 않고 충돌 효과를 낸다', () async {
     final c = playing([0, 1], instantCheck: false);
-    final effects = <GameEffect>[];
-    c.effects.listen(effects.add);
+    final effects = _record(c);
     c.select(0);
     c.input(solAt(1)); // 같은 행에 이미 있는 값 → 충돌
-    await Future<void>.delayed(Duration.zero);
+    await _flush();
     expect(c.wrongCount, 0);
     expect(c.isWrongAt(0), isFalse);
     expect(c.isConflictedAt(0), isTrue);
-    expect(effects, [GameEffect.conflict]);
+    expect(effects, [GameEffect.selected, GameEffect.conflict]);
     c.dispose();
   });
 
@@ -227,5 +252,145 @@ void main() {
     expect(c.canUndo, isFalse);
     expect(c.elapsedSeconds.value, 0);
     c.dispose();
+  });
+
+  group('효과 시퀀스', () {
+    test('같은 칸을 다시 선택하면 무음', () async {
+      final c = playing([0, 1]);
+      final effects = _record(c);
+      c
+        ..select(0)
+        ..select(0);
+      await _flush();
+      expect(effects, [GameEffect.selected]);
+      c.dispose();
+    });
+
+    test('given 칸 선택은 selected, 입력은 무음', () async {
+      final c = playing([0, 1]);
+      final effects = _record(c);
+      c.select(5);
+      expect(c.isGiven(5), isTrue);
+      c.input(3);
+      await _flush();
+      expect(effects, [GameEffect.selected]);
+      c.dispose();
+    });
+
+    test('remaining 이 0 인 숫자는 무음', () async {
+      final c = playing([0, 1]);
+      final effects = _record(c);
+      c.select(0);
+      expect(c.remaining(5), 0);
+      c.input(5);
+      await _flush();
+      expect(effects, [GameEffect.selected]);
+      c.dispose();
+    });
+
+    test('같은 숫자를 다시 넣으면 무음', () async {
+      final c = playing([0, 1, 2]);
+      final effects = _record(c);
+      c
+        ..select(0)
+        ..input(solAt(0))
+        ..input(solAt(0));
+      await _flush();
+      expect(effects, [GameEffect.selected, GameEffect.accepted]);
+      c.dispose();
+    });
+
+    test('비어 있는 칸 erase 는 무음', () async {
+      final c = playing([0, 1]);
+      final effects = _record(c);
+      c
+        ..select(0)
+        ..erase();
+      await _flush();
+      expect(effects, [GameEffect.selected]);
+      c.dispose();
+    });
+
+    test('erase · undo 는 accepted', () async {
+      final c = playing([0, 1, 2]);
+      final effects = _record(c);
+      c
+        ..select(0)
+        ..input(solAt(0))
+        ..erase()
+        ..undo();
+      await _flush();
+      expect(effects, [
+        GameEffect.selected,
+        GameEffect.accepted,
+        GameEffect.accepted,
+        GameEffect.accepted,
+      ]);
+      c.dispose();
+    });
+
+    test('히스토리가 없을 때 undo 는 무음', () async {
+      final c = playing([0, 1]);
+      final effects = _record(c);
+      c.undo();
+      await _flush();
+      expect(effects, isEmpty);
+      c.dispose();
+    });
+
+    test('마지막 칸을 넣으면 solved 만', () async {
+      final c = playing([0]);
+      final effects = _record(c);
+      c
+        ..select(0)
+        ..input(solAt(0));
+      await _flush();
+      expect(effects, [GameEffect.selected, GameEffect.solved]);
+      c.dispose();
+    });
+
+    test('즉시 체크 OFF 에서 충돌 없는 오답은 accepted', () async {
+      // 0번 칸에 2: 0행의 2(1번 칸)와 0열의 2(27번 칸)를 비워 충돌이 없다.
+      final c = playing([0, 1, 27], instantCheck: false);
+      final effects = _record(c);
+      c
+        ..select(0)
+        ..input(2);
+      expect(solAt(0), isNot(2));
+      expect(c.isConflictedAt(0), isFalse);
+      await _flush();
+      expect(effects, [GameEffect.selected, GameEffect.accepted]);
+      c.dispose();
+    });
+
+    test('toggleNote 와 메모 입력은 accepted', () async {
+      final c = playing([0, 1]);
+      final effects = _record(c);
+      c
+        ..select(0)
+        ..toggleNote()
+        ..input(3);
+      await _flush();
+      expect(effects, [
+        GameEffect.selected,
+        GameEffect.accepted,
+        GameEffect.accepted,
+      ]);
+      c.dispose();
+    });
+
+    test('reset 은 무음', () async {
+      final c = playing([0, 1]);
+      final effects = _record(c);
+      c
+        ..select(0)
+        ..input(wrongAt(0));
+      await _flush();
+      effects.clear();
+      c.reset();
+      await _flush();
+      expect(effects, isEmpty);
+      c.dispose();
+    });
   });
 }

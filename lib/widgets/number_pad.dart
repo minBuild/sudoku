@@ -79,6 +79,7 @@ class _NumberKey extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           child: InkWell(
             borderRadius: BorderRadius.circular(12),
+            enableFeedback: false, // 효과음은 GameFeedback 이 낸다
             onTap: active ? onPressed : null,
             child: Container(
               constraints: const BoxConstraints(minHeight: 56, minWidth: 48),

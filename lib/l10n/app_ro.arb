@@ -71,6 +71,8 @@
   "delete": "Șterge",
   "instantCheckDefault": "Verificare imediată implicit",
   "instantCheckDesc": "Arată imediat cifrele greșite",
+  "soundEffects": "Efecte sonore",
+  "soundEffectsDesc": "Sunete pentru introducere, greșeală și finalizare",
   "privacyOptions": "Opțiuni de confidențialitate",
   "privacyOptionsDesc": "Verifică sau modifică setările de consimțământ pentru reclame",
   "privacyPolicy": "Politica de confidențialitate",

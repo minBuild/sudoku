@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../app_deps.dart';
 import '../controllers/sudoku_controller.dart';
+import '../flows/game_feedback.dart';
 import '../flows/game_session_observer.dart';
 import '../l10n/l10n.dart';
 import '../l10n/difficulty_label.dart';
@@ -29,12 +29,13 @@ class GameScreen extends StatefulWidget {
   State<GameScreen> createState() => _GameScreenState();
 }
 
-enum _MenuAction { restart, instantCheck }
+enum _MenuAction { restart, instantCheck, sound }
 
 class _GameScreenState extends State<GameScreen> {
   late final SudokuController _c;
   late final SettingsStore _settings;
   late final GameSessionObserver _obs;
+  late final GameFeedback _feedback;
   late final StreamSubscription<GameEffect> _fx;
   final _boardKey = GlobalKey<SudokuBoardState>();
 
@@ -51,6 +52,7 @@ class _GameScreenState extends State<GameScreen> {
       deps.saves,
       onFinished: _onFinished,
     );
+    _feedback = GameFeedback(_c, deps.sound, deps.settings);
     _fx = _c.effects.listen(_onEffect);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) _obs.startWhenVisible();
@@ -60,15 +62,14 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void dispose() {
     _fx.cancel();
+    _feedback.dispose();
     _obs.flushAndDispose();
     super.dispose();
   }
 
   void _onEffect(GameEffect e) {
     switch (e) {
-      case GameEffect.wrong:
-      case GameEffect.conflict:
-        HapticFeedback.mediumImpact();
+      case GameEffect.wrong || GameEffect.conflict || GameEffect.failed:
         _boardKey.currentState?.shake();
       case GameEffect.firstMistake:
         if (_settings.mistakeHintShown || !mounted) return;
@@ -76,6 +77,8 @@ class _GameScreenState extends State<GameScreen> {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(context.l10n.mistakeKept)));
+      case GameEffect.selected || GameEffect.accepted || GameEffect.solved:
+        break;
     }
   }
 
@@ -136,6 +139,8 @@ class _GameScreenState extends State<GameScreen> {
         if (ok == true && mounted && !_c.status.isOver) _restart();
       case _MenuAction.instantCheck:
         _c.setInstantCheck(!_c.instantCheck);
+      case _MenuAction.sound:
+        await _settings.setSoundEnabled(!_settings.soundEnabled);
     }
   }
 
@@ -299,6 +304,12 @@ class _TopBar extends StatelessWidget {
                 checked: c.instantCheck,
                 enabled: !c.status.isOver,
                 child: Text(context.l10n.instantCheck),
+              ),
+              // 게임이 끝난 뒤에도 끌 수 있다.
+              CheckedPopupMenuItem(
+                value: _MenuAction.sound,
+                checked: context.read<AppDeps>().settings.soundEnabled,
+                child: Text(context.l10n.soundEffects),
               ),
             ],
           ),

@@ -291,6 +291,12 @@ class AppLocalizationsHu extends AppLocalizations {
   String get instantCheckDesc => 'A hibás számokat beíráskor azonnal jelzi';
 
   @override
+  String get soundEffects => 'Hangeffektek';
+
+  @override
+  String get soundEffectsDesc => 'Bevitel, hiba és megoldás hangjai';
+
+  @override
   String get privacyOptions => 'Adatvédelmi beállítások';
 
   @override

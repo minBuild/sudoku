@@ -293,6 +293,12 @@ class AppLocalizationsCa extends AppLocalizations {
       'Mostra les respostes incorrectes en introduir-les';
 
   @override
+  String get soundEffects => 'Efectes de so';
+
+  @override
+  String get soundEffectsDesc => 'Sons d\'entrada, d\'error i de finalització';
+
+  @override
   String get privacyOptions => 'Opcions de privadesa';
 
   @override

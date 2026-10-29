@@ -71,6 +71,8 @@
   "delete": "Izbriši",
   "instantCheckDefault": "Trenutna provjera prema zadanim postavkama",
   "instantCheckDesc": "Odmah prikaži pogrešne unose",
+  "soundEffects": "Zvučni efekti",
+  "soundEffectsDesc": "Zvukovi unosa, pogreške i rješenja",
   "privacyOptions": "Mogućnosti privatnosti",
   "privacyOptionsDesc": "Pregledajte ili promijenite postavke pristanka za oglase",
   "privacyPolicy": "Pravila o privatnosti",

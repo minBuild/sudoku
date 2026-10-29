@@ -71,6 +71,8 @@
   "delete": "Löschen",
   "instantCheckDefault": "Sofortprüfung standardmäßig",
   "instantCheckDesc": "Falsche Eingaben sofort anzeigen",
+  "soundEffects": "Soundeffekte",
+  "soundEffectsDesc": "Töne für Eingabe, Fehler und Abschluss",
   "privacyOptions": "Datenschutzoptionen",
   "privacyOptionsDesc": "Einwilligungseinstellungen für Werbung prüfen oder ändern",
   "privacyPolicy": "Datenschutzerklärung",

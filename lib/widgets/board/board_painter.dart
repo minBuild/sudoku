@@ -6,7 +6,7 @@ import '../../l10n/l10n.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/sudoku_colors.dart';
 
-enum _Kind { given, user, wrong, conflict, note }
+enum _Kind { given, user, wrong, conflict, note, noteMatch }
 
 /// 칸 크기가 같으면 숫자 TextPainter 를 재사용한다.
 class BoardTextCache {
@@ -19,7 +19,7 @@ class BoardTextCache {
       _cell = cell;
     }
     return _cache.putIfAbsent((kind, n), () {
-      final note = kind == _Kind.note;
+      final note = kind == _Kind.note || kind == _Kind.noteMatch;
       final style = TextStyle(
         fontSize: note ? cell * 0.26 : cell * 0.55,
         height: 1.0,
@@ -27,6 +27,7 @@ class BoardTextCache {
         fontWeight: switch (kind) {
           _Kind.given => FontWeight.w600,
           _Kind.note => FontWeight.w500,
+          _Kind.noteMatch => FontWeight.w600,
           _ => FontWeight.w500,
         },
         color: switch (kind) {
@@ -34,6 +35,7 @@ class BoardTextCache {
           _Kind.user => colors.user,
           _Kind.wrong || _Kind.conflict => colors.error,
           _Kind.note => colors.note,
+          _Kind.noteMatch => colors.noteMatchText,
         },
         decoration: kind == _Kind.wrong ? TextDecoration.underline : null,
         decorationColor: colors.error,
@@ -149,8 +151,23 @@ class BoardPainter extends CustomPainter {
       final sub = cell / 3;
       for (var n = 1; n <= 9; n++) {
         if (notes & (1 << (n - 1)) == 0) continue;
-        final tp = cache._get(_Kind.note, n, cell, colors);
         final sx = left + (n - 1) % 3 * sub, sy = top + (n - 1) ~/ 3 * sub;
+        final match = selValue != 0 && n == selValue;
+        if (match) {
+          canvas.drawRRect(
+            RRect.fromRectAndRadius(
+              Rect.fromLTWH(sx, sy, sub, sub).deflate(0.5),
+              Radius.circular(sub * 0.3),
+            ),
+            paint..color = colors.noteMatchBg,
+          );
+        }
+        final tp = cache._get(
+          match ? _Kind.noteMatch : _Kind.note,
+          n,
+          cell,
+          colors,
+        );
         tp.paint(
           canvas,
           Offset(sx + (sub - tp.width) / 2, sy + (sub - tp.height) / 2),

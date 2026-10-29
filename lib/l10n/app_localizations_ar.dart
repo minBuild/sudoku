@@ -308,6 +308,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get instantCheckDesc => 'إظهار الإدخالات الخاطئة فور إدخالها';
 
   @override
+  String get soundEffects => 'المؤثرات الصوتية';
+
+  @override
+  String get soundEffectsDesc => 'أصوات الإدخال والخطأ والإكمال';
+
+  @override
   String get privacyOptions => 'خيارات الخصوصية';
 
   @override

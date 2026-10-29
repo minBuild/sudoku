@@ -293,6 +293,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get instantCheckDesc => 'Mostra subito gli inserimenti errati';
 
   @override
+  String get soundEffects => 'Effetti sonori';
+
+  @override
+  String get soundEffectsDesc => 'Suoni di inserimento, errore e completamento';
+
+  @override
   String get privacyOptions => 'Opzioni privacy';
 
   @override

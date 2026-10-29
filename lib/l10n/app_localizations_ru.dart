@@ -303,6 +303,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get instantCheckDesc => 'Сразу показывать неверные цифры';
 
   @override
+  String get soundEffects => 'Звуковые эффекты';
+
+  @override
+  String get soundEffectsDesc => 'Звуки ввода, ошибки и завершения';
+
+  @override
   String get privacyOptions => 'Параметры конфиденциальности';
 
   @override

@@ -299,6 +299,12 @@ class AppLocalizationsCs extends AppLocalizations {
   String get instantCheckDesc => 'Chybné zadání zobrazit hned';
 
   @override
+  String get soundEffects => 'Zvukové efekty';
+
+  @override
+  String get soundEffectsDesc => 'Zvuky zadání, chyby a dokončení';
+
+  @override
   String get privacyOptions => 'Možnosti ochrany soukromí';
 
   @override

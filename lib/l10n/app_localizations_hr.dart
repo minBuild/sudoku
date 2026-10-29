@@ -300,6 +300,12 @@ class AppLocalizationsHr extends AppLocalizations {
   String get instantCheckDesc => 'Odmah prikaži pogrešne unose';
 
   @override
+  String get soundEffects => 'Zvučni efekti';
+
+  @override
+  String get soundEffectsDesc => 'Zvukovi unosa, pogreške i rješenja';
+
+  @override
   String get privacyOptions => 'Mogućnosti privatnosti';
 
   @override

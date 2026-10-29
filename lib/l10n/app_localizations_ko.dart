@@ -280,6 +280,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get instantCheckDesc => '오답을 입력하는 즉시 표시합니다';
 
   @override
+  String get soundEffects => '효과음';
+
+  @override
+  String get soundEffectsDesc => '입력·오답·완료 소리';
+
+  @override
   String get privacyOptions => '개인정보 옵션';
 
   @override

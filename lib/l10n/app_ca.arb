@@ -71,6 +71,8 @@
   "delete": "Esborra",
   "instantCheckDefault": "Comprovació immediata per defecte",
   "instantCheckDesc": "Mostra les respostes incorrectes en introduir-les",
+  "soundEffects": "Efectes de so",
+  "soundEffectsDesc": "Sons d'entrada, d'error i de finalització",
   "privacyOptions": "Opcions de privadesa",
   "privacyOptionsDesc": "Revisa o canvia la configuració del consentiment d'anuncis",
   "privacyPolicy": "Política de privadesa",

@@ -71,6 +71,8 @@
   "delete": "刪除",
   "instantCheckDefault": "預設開啟即時檢查",
   "instantCheckDesc": "輸入錯誤時立即顯示",
+  "soundEffects": "音效",
+  "soundEffectsDesc": "輸入、出錯和完成的提示音",
   "privacyOptions": "隱私權選項",
   "privacyOptionsDesc": "查看或變更廣告同意設定",
   "privacyPolicy": "隱私權政策",

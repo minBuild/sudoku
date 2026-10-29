@@ -149,11 +149,13 @@ class SudokuController extends ChangeNotifier {
   void select(int i) {
     if (!_playing || i < 0 || i > 80 || _selected == i) return;
     _selected = i;
+    _effects.add(GameEffect.selected);
     _changed();
   }
 
   void toggleNote() {
     if (!_playing) return;
+    _effects.add(GameEffect.accepted);
     _noteMode = !_noteMode;
     notifyListeners();
   }
@@ -167,6 +169,7 @@ class SudokuController extends ChangeNotifier {
       _values[i] = 0;
       _notes[i] ^= 1 << (n - 1);
       _recomputeConflicts();
+      _effects.add(GameEffect.accepted);
       _changed();
       return;
     }
@@ -185,22 +188,28 @@ class SudokuController extends ChangeNotifier {
     }
     _recomputeConflicts();
 
+    // 입력 1번에 결과 효과 1개. 첫 오답만 firstMistake 가 뒤따른다.
+    var fx = GameEffect.accepted;
     if (_instantCheck && wrong) {
       _wrongCount++;
-      _effects.add(GameEffect.wrong);
-      if (_wrongCount == 1) _effects.add(GameEffect.firstMistake);
+      fx = GameEffect.wrong;
       if (_wrongCount >= maxWrong) {
         _stopTime();
         _status = GameStatus.failed;
+        fx = GameEffect.failed;
       }
     } else if (!_instantCheck && _conflicts[i]) {
-      _effects.add(GameEffect.conflict);
+      fx = GameEffect.conflict;
     }
-
     if (_isSolved()) {
       _stopTime();
       _status = GameStatus.solved;
       _selected = null;
+      fx = GameEffect.solved;
+    }
+    _effects.add(fx);
+    if (fx == GameEffect.wrong && _wrongCount == 1) {
+      _effects.add(GameEffect.firstMistake);
     }
     _changed();
   }
@@ -213,6 +222,7 @@ class SudokuController extends ChangeNotifier {
     _values[i] = 0;
     _notes[i] = 0;
     _recomputeConflicts();
+    _effects.add(GameEffect.accepted);
     _changed();
   }
 
@@ -223,6 +233,7 @@ class SudokuController extends ChangeNotifier {
     _values.setAll(0, s.values);
     _notes.setAll(0, s.notes);
     _recomputeConflicts();
+    _effects.add(GameEffect.accepted);
     _changed();
   }
 

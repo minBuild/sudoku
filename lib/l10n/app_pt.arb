@@ -71,6 +71,8 @@
   "delete": "Excluir",
   "instantCheckDefault": "Verificação imediata por padrão",
   "instantCheckDesc": "Mostra os erros assim que você os digita",
+  "soundEffects": "Efeitos sonoros",
+  "soundEffectsDesc": "Sons de entrada, erro e conclusão",
   "privacyOptions": "Opções de privacidade",
   "privacyOptionsDesc": "Consulte ou altere suas configurações de consentimento de anúncios",
   "privacyPolicy": "Política de Privacidade",

@@ -287,6 +287,12 @@ class AppLocalizationsMs extends AppLocalizations {
       'Tunjukkan isian salah sebaik sahaja dimasukkan';
 
   @override
+  String get soundEffects => 'Kesan bunyi';
+
+  @override
+  String get soundEffectsDesc => 'Bunyi input, kesilapan dan selesai';
+
+  @override
   String get privacyOptions => 'Pilihan Privasi';
 
   @override

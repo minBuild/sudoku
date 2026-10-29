@@ -370,6 +370,14 @@
   "@instantCheckDesc": {
     "description": "설정 즉시 체크 설명"
   },
+  "soundEffects": "효과음",
+  "@soundEffects": {
+    "description": "효과음 켜기/끄기 (설정 스위치·게임 메뉴)"
+  },
+  "soundEffectsDesc": "입력·오답·완료 소리",
+  "@soundEffectsDesc": {
+    "description": "설정 효과음 설명. 무음 스위치 문구는 넣지 않음"
+  },
   "privacyOptions": "개인정보 옵션",
   "@privacyOptions": {
     "description": "개인정보 옵션(UMP). 법적 문구, 사람 검수 필요"

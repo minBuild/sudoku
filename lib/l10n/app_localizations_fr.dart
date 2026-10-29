@@ -295,6 +295,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get instantCheckDesc => 'Signale une erreur dès sa saisie';
 
   @override
+  String get soundEffects => 'Effets sonores';
+
+  @override
+  String get soundEffectsDesc => 'Sons de saisie, d\'erreur et de réussite';
+
+  @override
   String get privacyOptions => 'Options de confidentialité';
 
   @override

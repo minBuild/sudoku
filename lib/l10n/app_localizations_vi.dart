@@ -285,6 +285,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get instantCheckDesc => 'Hiển thị số sai ngay khi nhập';
 
   @override
+  String get soundEffects => 'Hiệu ứng âm thanh';
+
+  @override
+  String get soundEffectsDesc => 'Âm thanh khi nhập, sai và hoàn thành';
+
+  @override
   String get privacyOptions => 'Tùy chọn quyền riêng tư';
 
   @override

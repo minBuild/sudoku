@@ -288,6 +288,12 @@ class AppLocalizationsDa extends AppLocalizations {
   String get instantCheckDesc => 'Vis forkerte tal, så snart de indtastes';
 
   @override
+  String get soundEffects => 'Lydeffekter';
+
+  @override
+  String get soundEffectsDesc => 'Lyde ved indtastning, fejl og fuldførelse';
+
+  @override
   String get privacyOptions => 'Privatlivsindstillinger';
 
   @override

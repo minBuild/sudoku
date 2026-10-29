@@ -289,6 +289,12 @@ class AppLocalizationsNb extends AppLocalizations {
   String get instantCheckDesc => 'Vis feil tall med en gang de skrives inn';
 
   @override
+  String get soundEffects => 'Lydeffekter';
+
+  @override
+  String get soundEffectsDesc => 'Lyder for inntasting, feil og fullføring';
+
+  @override
   String get privacyOptions => 'Personvernvalg';
 
   @override

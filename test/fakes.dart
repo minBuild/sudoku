@@ -13,6 +13,7 @@ import 'package:sudoku/services/purchase/entitlement_store.dart';
 import 'package:sudoku/services/purchase/purchase_service.dart';
 import 'package:sudoku/services/record_store.dart';
 import 'package:sudoku/services/settings_store.dart';
+import 'package:sudoku/services/sound/sound_service.dart';
 
 /// 위젯 테스트 기본 로케일(en_US)의 문구.
 final l10nEn = lookupAppLocalizations(const Locale('en'));
@@ -103,6 +104,21 @@ class FakePurchase implements PurchaseGateway {
   Future<void> bootstrap() async {}
 }
 
+class FakeSound implements SoundGateway {
+  final played = <(SoundCue, double)>[];
+  int warmUpCalls = 0;
+  int resyncCalls = 0;
+
+  @override
+  Future<void> warmUp() async => warmUpCalls++;
+
+  @override
+  Future<void> resync() async => resyncCalls++;
+
+  @override
+  void play(SoundCue cue, {double volume = 1}) => played.add((cue, volume));
+}
+
 AppDeps fakeDeps(
   SharedPreferences prefs, {
   FakeAds? ads,
@@ -112,6 +128,7 @@ AppDeps fakeDeps(
   AdSchedule? schedule,
   Future<bool> Function(Uri)? openUrl,
   Uri? privacyPolicyUri,
+  FakeSound? sound,
 }) => AppDeps(
   prefs: prefs,
   entitlement: EntitlementStore(prefs),
@@ -124,4 +141,5 @@ AppDeps fakeDeps(
   adSchedule: schedule,
   openUrl: openUrl,
   privacyPolicyUri: privacyPolicyUri,
+  sound: sound,
 );

@@ -71,6 +71,8 @@
   "delete": "ลบ",
   "instantCheckDefault": "ตรวจทันทีเป็นค่าเริ่มต้น",
   "instantCheckDesc": "แสดงคำตอบผิดทันทีที่กรอก",
+  "soundEffects": "เอฟเฟกต์เสียง",
+  "soundEffectsDesc": "เสียงเมื่อกรอก ผิดพลาด และแก้สำเร็จ",
   "privacyOptions": "ตัวเลือกความเป็นส่วนตัว",
   "privacyOptionsDesc": "ตรวจสอบหรือเปลี่ยนการตั้งค่าความยินยอมด้านโฆษณา",
   "privacyPolicy": "นโยบายความเป็นส่วนตัว",

@@ -16,6 +16,8 @@ class SudokuColors extends ThemeExtension<SudokuColors> {
     required this.error,
     required this.errorBg,
     required this.warning,
+    required this.noteMatchBg,
+    required this.noteMatchText,
   });
 
   final Color boardBg;
@@ -30,6 +32,10 @@ class SudokuColors extends ThemeExtension<SudokuColors> {
   final Color error;
   final Color errorBg;
   final Color warning;
+
+  /// 선택 값과 같은 메모 서브셀의 필 배경과 숫자.
+  final Color noteMatchBg;
+  final Color noteMatchText;
 
   static const _primary = Color(0xFF3B5BDB);
   static const _error = Color(0xFFE5484D);
@@ -47,6 +53,8 @@ class SudokuColors extends ThemeExtension<SudokuColors> {
     error: _error,
     errorBg: _error.withValues(alpha: 0.14),
     warning: const Color(0xFFF59F00),
+    noteMatchBg: _primary.withValues(alpha: 0.32),
+    noteMatchText: const Color(0xFF2F4BC4),
   );
 
   static SudokuColors of(BuildContext context) =>
@@ -66,6 +74,8 @@ class SudokuColors extends ThemeExtension<SudokuColors> {
     Color? error,
     Color? errorBg,
     Color? warning,
+    Color? noteMatchBg,
+    Color? noteMatchText,
   }) => SudokuColors(
     boardBg: boardBg ?? this.boardBg,
     gridThin: gridThin ?? this.gridThin,
@@ -79,6 +89,8 @@ class SudokuColors extends ThemeExtension<SudokuColors> {
     error: error ?? this.error,
     errorBg: errorBg ?? this.errorBg,
     warning: warning ?? this.warning,
+    noteMatchBg: noteMatchBg ?? this.noteMatchBg,
+    noteMatchText: noteMatchText ?? this.noteMatchText,
   );
 
   @override
@@ -98,6 +110,8 @@ class SudokuColors extends ThemeExtension<SudokuColors> {
       error: l(error, other.error),
       errorBg: l(errorBg, other.errorBg),
       warning: l(warning, other.warning),
+      noteMatchBg: l(noteMatchBg, other.noteMatchBg),
+      noteMatchText: l(noteMatchText, other.noteMatchText),
     );
   }
 }

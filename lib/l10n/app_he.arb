@@ -71,6 +71,8 @@
   "delete": "מחיקה",
   "instantCheckDefault": "בדיקה מיידית כברירת מחדל",
   "instantCheckDesc": "הצגת הזנות שגויות מיד",
+  "soundEffects": "אפקטים קוליים",
+  "soundEffectsDesc": "צלילי הזנה, טעות וסיום",
   "privacyOptions": "אפשרויות פרטיות",
   "privacyOptionsDesc": "עיון בהגדרות ההסכמה למודעות או שינוי שלהן",
   "privacyPolicy": "מדיניות פרטיות",

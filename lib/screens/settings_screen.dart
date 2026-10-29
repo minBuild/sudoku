@@ -17,6 +17,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   late final AppDeps _deps = context.read<AppDeps>();
   late bool _instantCheck = _deps.settings.instantCheckDefault;
+  late bool _sound = _deps.settings.soundEnabled;
 
   void _restore() {
     ScaffoldMessenger.of(
@@ -85,6 +86,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             onChanged: (v) {
                               setState(() => _instantCheck = v);
                               _deps.settings.setInstantCheckDefault(v);
+                            },
+                          ),
+                          const Divider(indent: 20, endIndent: 20),
+                          SwitchListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 4,
+                            ),
+                            title: Text(
+                              context.l10n.soundEffects,
+                              style: text.titleMedium,
+                            ),
+                            subtitle: Text(
+                              context.l10n.soundEffectsDesc,
+                              style: text.bodySmall,
+                            ),
+                            value: _sound,
+                            onChanged: (v) {
+                              setState(() => _sound = v);
+                              _deps.settings.setSoundEnabled(v);
                             },
                           ),
                           if (showPrivacy) ...[

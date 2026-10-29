@@ -290,6 +290,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get instantCheckDesc => 'Yanlış girişleri girer girmez göster';
 
   @override
+  String get soundEffects => 'Ses efektleri';
+
+  @override
+  String get soundEffectsDesc => 'Giriş, hata ve tamamlama sesleri';
+
+  @override
   String get privacyOptions => 'Gizlilik Seçenekleri';
 
   @override

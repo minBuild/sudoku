@@ -71,6 +71,8 @@
   "delete": "Supprimer",
   "instantCheckDefault": "Vérification immédiate par défaut",
   "instantCheckDesc": "Signale une erreur dès sa saisie",
+  "soundEffects": "Effets sonores",
+  "soundEffectsDesc": "Sons de saisie, d'erreur et de réussite",
   "privacyOptions": "Options de confidentialité",
   "privacyOptionsDesc": "Consultez ou modifiez vos paramètres de consentement publicitaire",
   "privacyPolicy": "Politique de confidentialité",

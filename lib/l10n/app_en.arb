@@ -71,6 +71,8 @@
   "delete": "Delete",
   "instantCheckDefault": "Instant Check by Default",
   "instantCheckDesc": "Show wrong entries as soon as you enter them",
+  "soundEffects": "Sound effects",
+  "soundEffectsDesc": "Input, mistake and clear sounds",
   "privacyOptions": "Privacy Options",
   "privacyOptionsDesc": "Review or change your ad consent settings",
   "privacyPolicy": "Privacy Policy",

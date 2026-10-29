@@ -71,6 +71,8 @@
   "delete": "Wissen",
   "instantCheckDefault": "Standaard direct controleren",
   "instantCheckDesc": "Toon foute invoer meteen",
+  "soundEffects": "Geluidseffecten",
+  "soundEffectsDesc": "Geluiden bij invoer, fouten en voltooien",
   "privacyOptions": "Privacyopties",
   "privacyOptionsDesc": "Bekijk of wijzig je instellingen voor advertentietoestemming",
   "privacyPolicy": "Privacybeleid",

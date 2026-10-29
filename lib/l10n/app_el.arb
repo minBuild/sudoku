@@ -71,6 +71,8 @@
   "delete": "Διαγραφή",
   "instantCheckDefault": "Άμεσος έλεγχος από προεπιλογή",
   "instantCheckDesc": "Εμφάνιση λανθασμένων αριθμών αμέσως",
+  "soundEffects": "Ηχητικά εφέ",
+  "soundEffectsDesc": "Ήχοι εισαγωγής, λάθους και ολοκλήρωσης",
   "privacyOptions": "Επιλογές απορρήτου",
   "privacyOptionsDesc": "Ελέγξτε ή αλλάξτε τις ρυθμίσεις συναίνεσης για διαφημίσεις",
   "privacyPolicy": "Πολιτική απορρήτου",

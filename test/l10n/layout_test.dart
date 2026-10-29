@@ -108,6 +108,21 @@ Future<void> _openSettings(WidgetTester tester, AppLocalizations l) async {
 void _expectNoOverflow(WidgetTester tester, String what) =>
     expect(tester.takeException(), isNull, reason: what);
 
+/// 게임 ⋮ 메뉴(다시 시작·즉시 체크·효과음)를 열어 overflow 를 보고 닫는다.
+Future<void> _checkGameMenu(
+  WidgetTester tester,
+  AppLocalizations l,
+  String what,
+) async {
+  await tester.tap(find.byTooltip(l.more));
+  await tester.pumpAndSettle();
+  expect(find.text(l.soundEffects), findsOneWidget);
+  _expectNoOverflow(tester, what);
+  await tester.tapAt(const Offset(4, 4)); // 메뉴 바깥
+  await tester.pumpAndSettle();
+  expect(find.text(l.soundEffects), findsNothing);
+}
+
 void main() {
   for (final locale in AppLocalizations.supportedLocales) {
     final tag = locale.toLanguageTag();
@@ -135,6 +150,7 @@ void main() {
         final l = await _pumpApp(tester, locale);
         await _enterGame(tester, l);
         _expectNoOverflow(tester, '$tag 게임');
+        await _checkGameMenu(tester, l, '$tag 게임 메뉴');
         await tester.pumpWidget(const SizedBox()); // 게임 타이머 정리
       });
 
@@ -168,6 +184,7 @@ void main() {
         final l = await _pumpApp(tester, locale, textScale: 1.3);
         await _enterGame(tester, l);
         _expectNoOverflow(tester, '$tag 게임 1.3배');
+        await _checkGameMenu(tester, l, '$tag 게임 메뉴 1.3배');
         await tester.pumpWidget(const SizedBox()); // 게임 타이머 정리
       });
 

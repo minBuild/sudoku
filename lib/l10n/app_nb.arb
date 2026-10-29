@@ -71,6 +71,8 @@
   "delete": "Slett",
   "instantCheckDefault": "Direktesjekk som standard",
   "instantCheckDesc": "Vis feil tall med en gang de skrives inn",
+  "soundEffects": "Lydeffekter",
+  "soundEffectsDesc": "Lyder for inntasting, feil og fullføring",
   "privacyOptions": "Personvernvalg",
   "privacyOptionsDesc": "Se gjennom eller endre innstillingene for samtykke til annonser",
   "privacyPolicy": "Personvernerklæring",

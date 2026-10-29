@@ -297,6 +297,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get instantCheckDesc => 'Arată imediat cifrele greșite';
 
   @override
+  String get soundEffects => 'Efecte sonore';
+
+  @override
+  String get soundEffectsDesc =>
+      'Sunete pentru introducere, greșeală și finalizare';
+
+  @override
   String get privacyOptions => 'Opțiuni de confidențialitate';
 
   @override

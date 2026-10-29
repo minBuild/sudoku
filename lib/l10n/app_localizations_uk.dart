@@ -303,6 +303,12 @@ class AppLocalizationsUk extends AppLocalizations {
   String get instantCheckDesc => 'Одразу показувати неправильні цифри';
 
   @override
+  String get soundEffects => 'Звукові ефекти';
+
+  @override
+  String get soundEffectsDesc => 'Звуки введення, помилки та завершення';
+
+  @override
   String get privacyOptions => 'Параметри конфіденційності';
 
   @override

@@ -290,6 +290,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instantCheckDesc => 'Show wrong entries as soon as you enter them';
 
   @override
+  String get soundEffects => 'Sound effects';
+
+  @override
+  String get soundEffectsDesc => 'Input, mistake and clear sounds';
+
+  @override
   String get privacyOptions => 'Privacy Options';
 
   @override

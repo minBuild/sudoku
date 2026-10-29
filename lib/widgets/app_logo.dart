@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../l10n/l10n.dart';
 import '../theme/app_theme.dart';
+import 'brand/brand_mark_painter.dart';
 
-/// 로고 이미지 + "스도쿠 [JANG]" 워드마크.
+/// 3×3 타일 마크 + "스도쿠 [JANG]" 워드마크.
 class AppLogo extends StatelessWidget {
   const AppLogo({super.key, this.showTagline = false});
 
@@ -15,11 +16,21 @@ class AppLogo extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Image.asset(
-          'assets/images/logo.png',
-          height: 72,
-          fit: BoxFit.contain,
-          excludeFromSemantics: true,
+        ExcludeSemantics(
+          child: Container(
+            width: 64,
+            height: 64,
+            decoration: BoxDecoration(
+              color: AppTheme.primaryTint,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: CustomPaint(
+              painter: BrandMarkPainter(
+                style: BrandMarkStyle.onTint,
+                glyphFraction: 0.72,
+              ),
+            ),
+          ),
         ),
         const SizedBox(height: 12),
         Wrap(

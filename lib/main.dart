@@ -26,5 +26,7 @@ Future<void> main() async {
   unawaited(deps.purchase.bootstrap()); // 단계별 timeout 10s, 내부 try/catch
   WidgetsBinding.instance.addPostFrameCallback((_) {
     if (!deps.entitlement.adsRemoved.value) unawaited(deps.ads.warmUp());
+    // 설정과 무관하게 항상 준비한다. 켜고 끄기는 재생 직전에 확인한다 (D7).
+    unawaited(deps.sound.warmUp());
   });
 }

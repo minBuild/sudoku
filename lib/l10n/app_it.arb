@@ -71,6 +71,8 @@
   "delete": "Elimina",
   "instantCheckDefault": "Verifica immediata predefinita",
   "instantCheckDesc": "Mostra subito gli inserimenti errati",
+  "soundEffects": "Effetti sonori",
+  "soundEffectsDesc": "Suoni di inserimento, errore e completamento",
   "privacyOptions": "Opzioni privacy",
   "privacyOptionsDesc": "Rivedi o modifica le impostazioni del consenso agli annunci",
   "privacyPolicy": "Informativa sulla privacy",

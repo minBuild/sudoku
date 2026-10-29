@@ -71,6 +71,8 @@
   "delete": "Padam",
   "instantCheckDefault": "Semak Serta-merta secara Lalai",
   "instantCheckDesc": "Tunjukkan isian salah sebaik sahaja dimasukkan",
+  "soundEffects": "Kesan bunyi",
+  "soundEffectsDesc": "Bunyi input, kesilapan dan selesai",
   "privacyOptions": "Pilihan Privasi",
   "privacyOptionsDesc": "Semak atau tukar tetapan persetujuan iklan anda",
   "privacyPolicy": "Dasar Privasi",

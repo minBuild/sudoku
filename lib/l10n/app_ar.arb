@@ -71,6 +71,8 @@
   "delete": "حذف",
   "instantCheckDefault": "التحقق الفوري افتراضيًا",
   "instantCheckDesc": "إظهار الإدخالات الخاطئة فور إدخالها",
+  "soundEffects": "المؤثرات الصوتية",
+  "soundEffectsDesc": "أصوات الإدخال والخطأ والإكمال",
   "privacyOptions": "خيارات الخصوصية",
   "privacyOptionsDesc": "راجع إعدادات موافقتك على الإعلانات أو غيّرها",
   "privacyPolicy": "سياسة الخصوصية",

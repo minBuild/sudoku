@@ -283,6 +283,12 @@ class AppLocalizationsTh extends AppLocalizations {
   String get instantCheckDesc => 'แสดงคำตอบผิดทันทีที่กรอก';
 
   @override
+  String get soundEffects => 'เอฟเฟกต์เสียง';
+
+  @override
+  String get soundEffectsDesc => 'เสียงเมื่อกรอก ผิดพลาด และแก้สำเร็จ';
+
+  @override
   String get privacyOptions => 'ตัวเลือกความเป็นส่วนตัว';
 
   @override

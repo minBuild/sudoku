@@ -71,6 +71,8 @@
   "delete": "Sil",
   "instantCheckDefault": "Varsayılan Olarak Anında Kontrol",
   "instantCheckDesc": "Yanlış girişleri girer girmez göster",
+  "soundEffects": "Ses efektleri",
+  "soundEffectsDesc": "Giriş, hata ve tamamlama sesleri",
   "privacyOptions": "Gizlilik Seçenekleri",
   "privacyOptionsDesc": "Reklam izni ayarlarınızı inceleyin veya değiştirin",
   "privacyPolicy": "Gizlilik Politikası",

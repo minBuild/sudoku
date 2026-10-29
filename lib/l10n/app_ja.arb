@@ -71,6 +71,8 @@
   "delete": "削除",
   "instantCheckDefault": "即時チェックを標準にする",
   "instantCheckDesc": "誤った数字を入力するとすぐに表示します",
+  "soundEffects": "効果音",
+  "soundEffectsDesc": "入力・ミス・クリアの音",
   "privacyOptions": "プライバシー オプション",
   "privacyOptionsDesc": "広告の同意設定を確認または変更します",
   "privacyPolicy": "プライバシーポリシー",

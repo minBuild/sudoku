@@ -295,6 +295,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get instantCheckDesc => 'Falsche Eingaben sofort anzeigen';
 
   @override
+  String get soundEffects => 'Soundeffekte';
+
+  @override
+  String get soundEffectsDesc => 'Töne für Eingabe, Fehler und Abschluss';
+
+  @override
   String get privacyOptions => 'Datenschutzoptionen';
 
   @override

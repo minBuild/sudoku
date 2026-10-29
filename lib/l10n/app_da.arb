@@ -71,6 +71,8 @@
   "delete": "Slet",
   "instantCheckDefault": "Straks-tjek som standard",
   "instantCheckDesc": "Vis forkerte tal, så snart de indtastes",
+  "soundEffects": "Lydeffekter",
+  "soundEffectsDesc": "Lyde ved indtastning, fejl og fuldførelse",
   "privacyOptions": "Privatlivsindstillinger",
   "privacyOptionsDesc": "Se eller skift dine indstillinger for samtykke til annoncer",
   "privacyPolicy": "Privatlivspolitik",

@@ -71,6 +71,8 @@
   "delete": "Törlés",
   "instantCheckDefault": "Azonnali ellenőrzés alapból",
   "instantCheckDesc": "A hibás számokat beíráskor azonnal jelzi",
+  "soundEffects": "Hangeffektek",
+  "soundEffectsDesc": "Bevitel, hiba és megoldás hangjai",
   "privacyOptions": "Adatvédelmi beállítások",
   "privacyOptionsDesc": "A hirdetési hozzájárulás beállításainak megtekintése vagy módosítása",
   "privacyPolicy": "Adatvédelmi irányelvek",

@@ -291,6 +291,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get instantCheckDesc => 'Mostra os erros assim que você os digita';
 
   @override
+  String get soundEffects => 'Efeitos sonoros';
+
+  @override
+  String get soundEffectsDesc => 'Sons de entrada, erro e conclusão';
+
+  @override
   String get privacyOptions => 'Opções de privacidade';
 
   @override

@@ -71,6 +71,8 @@
   "delete": "Xóa",
   "instantCheckDefault": "Mặc định kiểm tra ngay",
   "instantCheckDesc": "Hiển thị số sai ngay khi nhập",
+  "soundEffects": "Hiệu ứng âm thanh",
+  "soundEffectsDesc": "Âm thanh khi nhập, sai và hoàn thành",
   "privacyOptions": "Tùy chọn quyền riêng tư",
   "privacyOptionsDesc": "Xem lại hoặc thay đổi cài đặt đồng ý quảng cáo",
   "privacyPolicy": "Chính sách quyền riêng tư",

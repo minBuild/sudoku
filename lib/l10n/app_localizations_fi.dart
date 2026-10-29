@@ -291,6 +291,12 @@ class AppLocalizationsFi extends AppLocalizations {
   String get instantCheckDesc => 'Näytä väärät numerot heti syötettäessä';
 
   @override
+  String get soundEffects => 'Äänitehosteet';
+
+  @override
+  String get soundEffectsDesc => 'Syötön, virheen ja ratkaisun äänet';
+
+  @override
   String get privacyOptions => 'Tietosuoja-asetukset';
 
   @override

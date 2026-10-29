@@ -45,6 +45,9 @@
 | [ ] | A6 스토어 스크린샷을 에뮬레이터로 캡처 (후속 작업) | AI | - | 휴대폰 스크린샷 2장 이상 |
 | [x] | A7 다국어 33개 언어(README §지원 언어) ARB, 폴백 en, 해석 콜백(`no→nb`, `zh-TW/HK/MO→번체`, 2순위 언어), iOS CFBundleLocalizations·InfoPlist.xcstrings·knownRegions | AI | - | test/l10n/*, ios_config_test 통과 |
 | [x] | A8 앱 내 개인정보처리방침 링크(설정, `url_launcher`). URL 호스팅 후 활성: `privacyPolicyUrl`이 비면 행 숨김 | AI | D2(활성) | `settings_privacy_link_test`, URL 반영 후 `legal_links_test` skip 0 |
+| [ ] | A9 수동 게이트: 효과음 4종 사람 청취 승인(tap < wrong < solved, 피로감 없음). 소리를 바꾸면 `dart run tool/gen_sounds.dart` 후 다시 청취 | 사용자 | - | `assets/sounds/*.wav` 청취 기록(검수자·날짜) |
+| [ ] | A10 수동 게이트: `design/icon/contact_sheet.png` 승인(20px에서 앰버 점 구분, 0.35 타일이 사라지지 않음) | 사용자 | - | 승인 기록. 바꾸면 `RENDER_ICON=1` 렌더 후 `dart run flutter_launcher_icons` |
+| [ ] | A11 Android 실기기 게이트(사용자 기기): 시스템 터치음 ON에서 숫자패드·툴바 이중음 없음, 200회 연타 뒤에도 소리와 앱이 정상 | 사용자 | - | 실기기 확인 기록 |
 
 ## B. 서명
 
@@ -66,7 +69,7 @@
 | [ ] | C2 서명된 AAB를 내부 테스트에 업로드 | 사용자 | B4 | 내부 테스트 트랙에 버전 표시 |
 | [ ] | C3 `remove_ads` 비소모성 상품, **가격 확정 후**(README §사용자 확인 10) **₩990**(끝자리 내림). 구매 옵션 '구매' 1개, 하위 호환 지정, 할인 오퍼 없음. 확정 가격은 README 가격표에 기록 | 사용자 | C2 | 내부 테스트 빌드에서 구매 버튼 활성, logcat `IAP price=₩990 … cur=KRW` |
 | [ ] | C4 라이선스 테스터 등록. 구매·취소·pending·복원 테스트는 내부 테스트 링크로 설치한 빌드에서만 | 사용자 | C2 | 테스트 구매 성공, 재설치 후 자동 복원 |
-| [ ] | C5 스토어 등록 정보([store-listing.md](store-listing.md)): 아이콘 512, 피처 그래픽 1024×500, 휴대폰 스크린샷 2장 이상, 웹사이트는 E4 도메인 루트 | 사용자 | A6 | 등록정보 저장 |
+| [ ] | C5 스토어 등록 정보([store-listing.md](store-listing.md)): 아이콘 512, 피처 그래픽 1024×500, 휴대폰 스크린샷 2장 이상, 웹사이트는 E4 도메인 루트. 메모: Play 512 아이콘 = `design/icon/icon.png` 다운스케일. 피처 그래픽은 `#3B5BDB` 바탕 + 양화 마크 + 워드마크로 후속 | 사용자 | A6 | 등록정보 저장 |
 | [ ] | C6 앱 콘텐츠: 방침 URL, 광고 포함 = 예, 광고 ID 사용 = 예, 데이터 보안, 콘텐츠 등급, 타깃 연령 13세 이상 | 사용자 | D2 | 앱 콘텐츠 페이지 모두 완료 |
 | [ ] | C7 프로덕션 게시 | 사용자 | C2~C6 · G1 · G2 · G3 · G4 | 스토어 페이지 공개 |
 
@@ -101,7 +104,7 @@
 | [ ] | F4b 마케팅 URL·지원 URL = E4 도메인 루트(AdMob이 app-ads.txt를 찾는 위치) | 사용자 | D2 · F1 | App Store Connect 앱 정보·버전 페이지 URL |
 | [ ] | F5 [README "맥북에서 할 순서"](../README.md#맥북에서-할-순서): `pod install`, 시뮬레이터 확인, `flutter build ipa`, `-showBuildSettings`로 `GAD_APPLICATION_ID`가 Release=실제·Profile=샘플인지 확인, Organizer 업로드. 샘플 단위 빌드 게이트: 심사용 빌드는 `DART_DEFINES`에 `ADMOB_INTERSTITIAL_IOS`가 없어야 하고, `+N`이 TestFlight 빌드보다 커야 하며(같은 번호 재업로드 금지), 실제 단위 빌드는 D4 이후. 실제 단위 빌드는 첫 판부터 광고가 나오므로 D4 이후 실행, 테스트 중 광고 클릭 금지. 아카이브 `.lproj` 34개(Base 포함)와 `{zh-Hans,zh-Hant,ar,ko}.lproj/InfoPlist.strings` 확인(README) | 사용자 | F0 · A1-iOS | Organizer 업로드 완료, TestFlight 빌드 표시 |
 | [ ] | F6 Sandbox 구매·복원, 구매 없는 계정에서 "복원할 구매가 없어요" 표시 | 사용자 | F3 · F5 | 구매 후 광고 사라짐, 재설치 후 자동 복원 |
-| [ ] | F6b 실기기 QA(아래 표). 결과를 표에 기록 | 사용자 | F5 · F6 · D4 | 27개 상황 모두 기대 결과 |
+| [ ] | F6b 실기기 QA(아래 표). 결과를 표에 기록 | 사용자 | F5 · F6 · D4 | 31개 상황 모두 기대 결과 |
 | [ ] | F7 버전 페이지 "앱 내 구입"에 `remove_ads` 첨부(심사용 스크린샷 포함, 빠지면 반려) | 사용자 | F3 | 버전 페이지 앱 내 구입 목록 |
 | [ ] | F8 심사 메모(영어 병기): 한국어 "새 게임 시작 시 전면광고(첫 판부터, 이후 15분 간격), 광고 제거는 비소모성 IAP, 설정 > 구매 복원. 개인정보처리방침은 설정 > 개인정보처리방침. ATT 창은 첫 실행 시 홈 화면이 뜬 직후 표시됩니다. 설정 > 개인정보 보호 및 보안 > 추적 > '앱이 추적을 요청하도록 허용'이 꺼져 있으면 iOS가 창을 띄우지 않습니다." / English "An interstitial ad is shown when starting a new game (from the first game, then at most once every 15 minutes). Remove Ads is a non-consumable IAP; Settings > Restore Purchases. Privacy policy: Settings > Privacy Policy. The ATT prompt appears right after the home screen on first launch. iOS does not show it if Settings > Privacy & Security > Tracking > 'Allow Apps to Request to Track' is off." | 사용자 | - | 앱 심사 정보 메모란 |
 | [ ] | F9 심사 제출 | 사용자 | F1~F8 · G1~G5 | 심사 상태 |
@@ -147,6 +150,10 @@
 | 25 | `ru` | 실수 1/2/5/21 형태가 자연스러움 | |
 | 26 | `zh-Hant` | 번체로 표시 | |
 | 27 | 설정 > 개인정보처리방침 | 외부 브라우저에서 로그인 없이 열리고, 복귀하면 설정 화면이 그대로 | |
+| 28 | iOS 무음 스위치 ON에서 게임 입력 | 효과음이 나지 않음 | |
+| 29 | 음악 앱이 재생 중일 때 보드·숫자패드 탭 | 음악이 끊기지 않고 효과음이 섞여 남 | |
+| 30 | 통화·Siri 뒤, 전면광고를 닫은 뒤 첫 탭 | 소리가 정상 | |
+| 31 | 콜드스타트 직후 첫 탭 | 크래시 없음, 소리가 남 | |
 
 - 수동 QA 언어 전환은 iOS 설정 > Sudoku > 언어(앱별 언어)로 대표 6개(`de, ru, ar, th, zh-Hant, sw→en`)를 바꿔 가며 합니다.
 - **iOS 기대값**: 언어를 바꾸면 앱이 다시 시작되고 → 이어하기 카드가 보이고 → 저장한 상태로 복원됩니다. "보드·타이머 유지"는 Android 기대값입니다(Manifest `configChanges`에 `locale|layoutDirection`).
@@ -157,11 +164,11 @@
 
 UMP 갱신 무응답 시나리오는 실기기에서 재현할 수 없으므로 단위 테스트(`test/services/consent_service_test.dart`)로 대신합니다.
 
-## 블록별 남은 개수 (2026-10-26)
+## 블록별 남은 개수 (2026-10-29)
 
 | 블록 | 남음 / 전체 |
 |---|---|
-| A | 2 / 9 |
+| A | 5 / 12 |
 | B | 4 / 4 |
 | C | 8 / 8 |
 | D | 4 / 4 |

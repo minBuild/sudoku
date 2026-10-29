@@ -71,6 +71,8 @@
   "delete": "Vymazať",
   "instantCheckDefault": "Okamžitá kontrola predvolene",
   "instantCheckDesc": "Nesprávne zadanie zobraziť hneď",
+  "soundEffects": "Zvukové efekty",
+  "soundEffectsDesc": "Zvuky zadania, chyby a dokončenia",
   "privacyOptions": "Možnosti ochrany súkromia",
   "privacyOptionsDesc": "Skontrolujte alebo zmeňte nastavenia súhlasu s reklamami",
   "privacyPolicy": "Zásady ochrany osobných údajov",

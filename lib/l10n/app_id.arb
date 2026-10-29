@@ -71,6 +71,8 @@
   "delete": "Hapus",
   "instantCheckDefault": "Cek Langsung secara Default",
   "instantCheckDesc": "Tampilkan isian yang salah saat dimasukkan",
+  "soundEffects": "Efek suara",
+  "soundEffectsDesc": "Suara input, kesalahan, dan selesai",
   "privacyOptions": "Opsi Privasi",
   "privacyOptionsDesc": "Tinjau atau ubah pengaturan persetujuan iklan Anda",
   "privacyPolicy": "Kebijakan Privasi",

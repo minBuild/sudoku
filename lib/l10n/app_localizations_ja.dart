@@ -280,6 +280,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get instantCheckDesc => '誤った数字を入力するとすぐに表示します';
 
   @override
+  String get soundEffects => '効果音';
+
+  @override
+  String get soundEffectsDesc => '入力・ミス・クリアの音';
+
+  @override
   String get privacyOptions => 'プライバシー オプション';
 
   @override

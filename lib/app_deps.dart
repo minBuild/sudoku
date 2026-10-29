@@ -12,6 +12,7 @@ import 'services/purchase/entitlement_store.dart';
 import 'services/purchase/purchase_service.dart';
 import 'services/record_store.dart';
 import 'services/settings_store.dart';
+import 'services/sound/sound_service.dart';
 import 'services/sudoku_generator.dart';
 
 typedef PuzzleFactory = Future<SudokuPuzzle> Function(Difficulty);
@@ -44,8 +45,10 @@ class AppDeps {
     AdSchedule? adSchedule,
     UrlOpener? openUrl,
     this.privacyPolicyUri,
+    SoundGateway? sound,
   }) : adSchedule = adSchedule ?? AdSchedule(),
-       openUrl = openUrl ?? _neverOpens;
+       openUrl = openUrl ?? _neverOpens,
+       sound = sound ?? const NoopSoundService();
 
   /// entitlement 동기 로드 + purchase 스트림 동기 구독 (D13).
   factory AppDeps.production(SharedPreferences prefs) {
@@ -69,6 +72,7 @@ class AppDeps {
       privacyPolicyUri: privacyPolicyUrl.isEmpty
           ? null
           : Uri.parse(privacyPolicyUrl),
+      sound: AudioPlayersSoundService(),
     );
   }
 
@@ -82,6 +86,9 @@ class AppDeps {
   final PuzzleFactory generate;
   final AdSchedule adSchedule;
   final UrlOpener openUrl;
+
+  /// 게임 효과음. 테스트 기본값은 무음.
+  final SoundGateway sound;
 
   /// null 이면 설정의 방침 행을 숨긴다 (호스팅 전).
   final Uri? privacyPolicyUri;
