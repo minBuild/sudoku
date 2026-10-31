@@ -127,7 +127,7 @@ void main() {
       prefs,
       purchase: FakePurchase(PurchaseReady(_price[lang]!, 'USD')),
       withSaves: true,
-      generate: (d) async => generatePuzzle(d),
+      generate: (r) async => generateFor(r),
       privacyPolicyUri: Uri.parse(_privacy),
     );
     await tester.pumpWidget(SudokuApp(key: ValueKey(lang), deps: deps));

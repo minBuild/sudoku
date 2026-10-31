@@ -1,209 +1,233 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "NSUserTrackingUsageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your device identifier is used to show personalized ads. You can use the app normally even if you don't allow it."
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sudoku"
+          }
+        }
+      }
+    },
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "sudoku"
+          }
+        }
+      }
+    },
+    "NSUserTrackingUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يُستخدم معرّف جهازك لعرض إعلانات مخصّصة. يمكنك استخدام التطبيق بشكل طبيعي حتى إذا لم تسمح بذلك."
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "맞춤형 광고를 제공하기 위해 기기 식별자를 사용합니다. 허용하지 않아도 앱은 정상적으로 이용할 수 있어요."
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'identificador del dispositiu s'utilitza per mostrar anuncis personalitzats. Pots utilitzar l'app amb normalitat encara que no ho permetis."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "L'identifiant de votre appareil est utilisé pour afficher des publicités personnalisées. Vous pouvez utiliser l'app normalement même si vous ne l'autorisez pas."
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identifikátor vašeho zařízení se používá k zobrazování personalizovaných reklam. Aplikaci můžete normálně používat, i když to nepovolíte."
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "El identificador de tu dispositivo se usa para mostrar anuncios personalizados. Puedes usar la app con normalidad aunque no lo permitas."
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Din enheds id bruges til at vise personlige annoncer. Du kan bruge appen normalt, selvom du ikke tillader det."
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "パーソナライズされた広告を表示するためにデバイスの識別子を使用します。許可しなくてもアプリは通常どおりご利用いただけます。"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Kennung deines Geräts wird verwendet, um personalisierte Werbung anzuzeigen. Du kannst die App auch ohne Erlaubnis ganz normal nutzen."
           }
         },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "O identificador do seu dispositivo é usado para mostrar anúncios personalizados. Você pode usar o app normalmente mesmo sem permitir."
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το αναγνωριστικό της συσκευής σας χρησιμοποιείται για την εμφάνιση εξατομικευμένων διαφημίσεων. Μπορείτε να χρησιμοποιείτε την εφαρμογή κανονικά ακόμη κι αν δεν το επιτρέψετε."
           }
         },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "يُستخدم معرّف جهازك لعرض إعلانات مخصّصة. يمكنك استخدام التطبيق بشكل طبيعي حتى إذا لم تسمح بذلك."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your device identifier is used to show personalized ads. You can use the app normally even if you don't allow it."
           }
         },
-        "ca": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "L'identificador del dispositiu s'utilitza per mostrar anuncis personalitzats. Pots utilitzar l'app amb normalitat encara que no ho permetis."
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El identificador de tu dispositivo se usa para mostrar anuncios personalizados. Puedes usar la app con normalidad aunque no lo permitas."
           }
         },
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Identifikátor vašeho zařízení se používá k zobrazování personalizovaných reklam. Aplikaci můžete normálně používat, i když to nepovolíte."
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laitteesi tunnistetta käytetään personoitujen mainosten näyttämiseen. Voit käyttää sovellusta normaalisti, vaikka et salli sitä."
           }
         },
-        "da": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Din enheds id bruges til at vise personlige annoncer. Du kan bruge appen normalt, selvom du ikke tillader det."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'identifiant de votre appareil est utilisé pour afficher des publicités personnalisées. Vous pouvez utiliser l'app normalement même si vous ne l'autorisez pas."
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Die Kennung deines Geräts wird verwendet, um personalisierte Werbung anzuzeigen. Du kannst die App auch ohne Erlaubnis ganz normal nutzen."
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מזהה המכשיר שלך משמש להצגת מודעות מותאמות אישית. אפשר להשתמש באפליקציה כרגיל גם אם לא תאשר זאת."
           }
         },
-        "el": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Το αναγνωριστικό της συσκευής σας χρησιμοποιείται για την εμφάνιση εξατομικευμένων διαφημίσεων. Μπορείτε να χρησιμοποιείτε την εφαρμογή κανονικά ακόμη κι αν δεν το επιτρέψετε."
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपके डिवाइस आइडेंटिफ़ायर का उपयोग आपके लिए खास विज्ञापन दिखाने के लिए किया जाता है। अनुमति न देने पर भी आप ऐप को सामान्य रूप से इस्तेमाल कर सकते हैं।"
           }
         },
-        "fi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Laitteesi tunnistetta käytetään personoitujen mainosten näyttämiseen. Voit käyttää sovellusta normaalisti, vaikka et salli sitä."
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identifikator vašeg uređaja koristi se za prikaz personaliziranih oglasa. Aplikaciju možete normalno koristiti i ako to ne dopustite."
           }
         },
-        "he": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "מזהה המכשיר שלך משמש להצגת מודעות מותאמות אישית. אפשר להשתמש באפליקציה כרגיל גם אם לא תאשר זאת."
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Az eszközazonosítódat személyre szabott hirdetések megjelenítésére használjuk. Az alkalmazás akkor is normálisan használható, ha ezt nem engedélyezed."
           }
         },
-        "hi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "आपके डिवाइस आइडेंटिफ़ायर का उपयोग आपके लिए खास विज्ञापन दिखाने के लिए किया जाता है। अनुमति न देने पर भी आप ऐप को सामान्य रूप से इस्तेमाल कर सकते हैं।"
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pengenal perangkat Anda digunakan untuk menampilkan iklan yang dipersonalisasi. Anda tetap dapat menggunakan aplikasi seperti biasa meskipun tidak mengizinkannya."
           }
         },
-        "hr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Identifikator vašeg uređaja koristi se za prikaz personaliziranih oglasa. Aplikaciju možete normalno koristiti i ako to ne dopustite."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'identificatore del dispositivo viene usato per mostrare annunci personalizzati. Puoi usare l'app normalmente anche se non lo consenti."
           }
         },
-        "hu": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Az eszközazonosítódat személyre szabott hirdetések megjelenítésére használjuk. Az alkalmazás akkor is normálisan használható, ha ezt nem engedélyezed."
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パーソナライズされた広告を表示するためにデバイスの識別子を使用します。許可しなくてもアプリは通常どおりご利用いただけます。"
           }
         },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pengenal perangkat Anda digunakan untuk menampilkan iklan yang dipersonalisasi. Anda tetap dapat menggunakan aplikasi seperti biasa meskipun tidak mengizinkannya."
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "맞춤형 광고를 제공하기 위해 기기 식별자를 사용합니다. 허용하지 않아도 앱은 정상적으로 이용할 수 있어요."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "L'identificatore del dispositivo viene usato per mostrare annunci personalizzati. Puoi usare l'app normalmente anche se non lo consenti."
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pengecam peranti anda digunakan untuk memaparkan iklan yang diperibadikan. Anda masih boleh menggunakan apl seperti biasa walaupun tidak membenarkannya."
           }
         },
-        "ms": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pengecam peranti anda digunakan untuk memaparkan iklan yang diperibadikan. Anda masih boleh menggunakan apl seperti biasa walaupun tidak membenarkannya."
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enhetens identifikator brukes til å vise tilpassede annonser. Du kan bruke appen som normalt selv om du ikke tillater det."
           }
         },
-        "nb": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enhetens identifikator brukes til å vise tilpassede annonser. Du kan bruke appen som normalt selv om du ikke tillater det."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De ID van je apparaat wordt gebruikt om gepersonaliseerde advertenties te tonen. Je kunt de app ook normaal gebruiken als je dit niet toestaat."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "De ID van je apparaat wordt gebruikt om gepersonaliseerde advertenties te tonen. Je kunt de app ook normaal gebruiken als je dit niet toestaat."
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identyfikator urządzenia jest używany do wyświetlania spersonalizowanych reklam. Możesz normalnie korzystać z aplikacji, nawet jeśli na to nie zezwolisz."
           }
         },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Identyfikator urządzenia jest używany do wyświetlania spersonalizowanych reklam. Możesz normalnie korzystać z aplikacji, nawet jeśli na to nie zezwolisz."
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O identificador do seu dispositivo é usado para mostrar anúncios personalizados. Você pode usar o app normalmente mesmo sem permitir."
           }
         },
-        "ro": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Identificatorul dispozitivului tău este folosit pentru a afișa reclame personalizate. Poți folosi aplicația normal chiar dacă nu permiți acest lucru."
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identificatorul dispozitivului tău este folosit pentru a afișa reclame personalizate. Poți folosi aplicația normal chiar dacă nu permiți acest lucru."
           }
         },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Идентификатор вашего устройства используется для показа персонализированной рекламы. Вы можете пользоваться приложением как обычно, даже если не разрешите это."
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Идентификатор вашего устройства используется для показа персонализированной рекламы. Вы можете пользоваться приложением как обычно, даже если не разрешите это."
           }
         },
-        "sk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Identifikátor vášho zariadenia sa používa na zobrazovanie prispôsobených reklám. Aplikáciu môžete normálne používať, aj keď to nepovolíte."
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identifikátor vášho zariadenia sa používa na zobrazovanie prispôsobených reklám. Aplikáciu môžete normálne používať, aj keď to nepovolíte."
           }
         },
-        "sv": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enhetens identifierare används för att visa anpassade annonser. Du kan använda appen som vanligt även om du inte tillåter det."
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enhetens identifierare används för att visa anpassade annonser. Du kan använda appen som vanligt även om du inte tillåter det."
           }
         },
-        "th": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ระบบใช้ตัวระบุอุปกรณ์ของคุณเพื่อแสดงโฆษณาที่ปรับให้เหมาะกับคุณ แม้ไม่อนุญาต คุณก็ยังใช้แอปได้ตามปกติ"
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ระบบใช้ตัวระบุอุปกรณ์ของคุณเพื่อแสดงโฆษณาที่ปรับให้เหมาะกับคุณ แม้ไม่อนุญาต คุณก็ยังใช้แอปได้ตามปกติ"
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cihaz tanımlayıcınız kişiselleştirilmiş reklamlar göstermek için kullanılır. İzin vermeseniz de uygulamayı normal şekilde kullanabilirsiniz."
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cihaz tanımlayıcınız kişiselleştirilmiş reklamlar göstermek için kullanılır. İzin vermeseniz de uygulamayı normal şekilde kullanabilirsiniz."
           }
         },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ідентифікатор вашого пристрою використовується для показу персоналізованої реклами. Ви можете користуватися застосунком як звичайно, навіть якщо не дозволите це."
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ідентифікатор вашого пристрою використовується для показу персоналізованої реклами. Ви можете користуватися застосунком як звичайно, навіть якщо не дозволите це."
           }
         },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mã nhận dạng thiết bị của bạn được dùng để hiển thị quảng cáo được cá nhân hóa. Bạn vẫn có thể dùng ứng dụng bình thường dù không cho phép."
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mã nhận dạng thiết bị của bạn được dùng để hiển thị quảng cáo được cá nhân hóa. Bạn vẫn có thể dùng ứng dụng bình thường dù không cho phép."
           }
         },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "你的设备标识符将用于展示个性化广告。即使不允许，你也可以正常使用本应用。"
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的设备标识符将用于展示个性化广告。即使不允许，你也可以正常使用本应用。"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "你的裝置識別碼將用於顯示個人化廣告。即使不允許，你仍可正常使用本 App。"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的裝置識別碼將用於顯示個人化廣告。即使不允許，你仍可正常使用本 App。"
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

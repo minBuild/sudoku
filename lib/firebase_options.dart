@@ -28,5 +28,5 @@ const _ios = FirebaseOptions(
   appId: 'TODO',
   messagingSenderId: 'TODO',
   projectId: 'TODO',
-  iosBundleId: 'com.jang.sudoku',
+  iosBundleId: 'io.minbuild.sudoku',
 );
