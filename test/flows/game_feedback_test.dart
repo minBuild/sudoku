@@ -55,18 +55,40 @@ void main() {
     expect(haptics, 0);
   });
 
-  test('accepted → tap 1.0, 햅틱 없음', () async {
+  test('placed(숫자 기입) → place 1.0, 햅틱 없음', () async {
     await setUpWith([0, 1]);
     c.select(0);
     await only(() => c.input(solAt(0)));
+    expect(sound.played, [(SoundCue.place, 1.0)]);
+    expect(haptics, 0);
+  });
+
+  test('noted(메모 토글) → note 1.0, 햅틱 없음', () async {
+    await setUpWith([0, 1]);
+    c.select(0);
+    await only(() => c.toggleNote());
+    expect(sound.played, [(SoundCue.tap, 1.0)]);
+    await only(() => c.input(3));
+    expect(sound.played, [(SoundCue.note, 1.0)]);
+    expect(haptics, 0);
+  });
+
+  test('accepted(지우기·되돌리기) → tap 1.0, 햅틱 없음', () async {
+    await setUpWith([0, 1]);
+    c
+      ..select(0)
+      ..input(solAt(0));
+    await only(() => c.erase());
+    expect(sound.played, [(SoundCue.tap, 1.0)]);
+    await only(() => c.undo());
     expect(sound.played, [(SoundCue.tap, 1.0)]);
     expect(haptics, 0);
   });
 
-  test('hinted → tap 1.0, 햅틱 없음', () async {
+  test('hinted → place 1.0, 햅틱 없음', () async {
     await setUpWith([0, 1]);
     await only(() => c.hint());
-    expect(sound.played, [(SoundCue.tap, 1.0)]);
+    expect(sound.played, [(SoundCue.place, 1.0)]);
     expect(haptics, 0);
   });
 

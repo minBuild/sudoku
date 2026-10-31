@@ -93,6 +93,8 @@ class _GameScreenState extends State<GameScreen> {
         ).showSnackBar(SnackBar(content: Text(context.l10n.mistakeKept)));
       case GameEffect.selected ||
           GameEffect.accepted ||
+          GameEffect.placed ||
+          GameEffect.noted ||
           GameEffect.solved ||
           GameEffect.hinted:
         break;

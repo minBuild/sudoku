@@ -37,10 +37,12 @@ void main() {
     });
   }
 
-  test('peak 순서 tap < wrong ≤ failed ≤ solved', () {
+  test('peak 순서 tap < note < place < wrong ≤ failed ≤ solved', () {
     double p(SoundCue c) =>
         _peak(readWav(File('assets/sounds/${c.name}.wav')).samples);
-    expect(p(SoundCue.tap), lessThan(p(SoundCue.wrong)));
+    expect(p(SoundCue.tap), lessThan(p(SoundCue.note)));
+    expect(p(SoundCue.note), lessThan(p(SoundCue.place)));
+    expect(p(SoundCue.place), lessThan(p(SoundCue.wrong)));
     expect(p(SoundCue.wrong), lessThanOrEqualTo(p(SoundCue.failed)));
     expect(p(SoundCue.failed), lessThanOrEqualTo(p(SoundCue.solved)));
   });

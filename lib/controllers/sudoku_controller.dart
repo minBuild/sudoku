@@ -177,7 +177,7 @@ class SudokuController extends ChangeNotifier {
       _values[i] = 0;
       _notes[i] ^= 1 << (n - 1);
       _recomputeConflicts();
-      _effects.add(GameEffect.accepted);
+      _effects.add(GameEffect.noted);
       _changed();
       return;
     }
@@ -197,7 +197,7 @@ class SudokuController extends ChangeNotifier {
     _recomputeConflicts();
 
     // 입력 1번에 결과 효과 1개. 첫 오답만 firstMistake 가 뒤따른다.
-    var fx = GameEffect.accepted;
+    var fx = GameEffect.placed;
     if (_instantCheck && wrong) {
       _wrongCount++;
       fx = GameEffect.wrong;

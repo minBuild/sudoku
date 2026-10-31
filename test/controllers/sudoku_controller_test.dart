@@ -296,7 +296,7 @@ void main() {
         ..input(solAt(0))
         ..input(solAt(0));
       await _flush();
-      expect(effects, [GameEffect.selected, GameEffect.accepted]);
+      expect(effects, [GameEffect.selected, GameEffect.placed]);
       c.dispose();
     });
 
@@ -322,7 +322,7 @@ void main() {
       await _flush();
       expect(effects, [
         GameEffect.selected,
-        GameEffect.accepted,
+        GameEffect.placed,
         GameEffect.accepted,
         GameEffect.accepted,
       ]);
@@ -359,11 +359,11 @@ void main() {
       expect(solAt(0), isNot(2));
       expect(c.isConflictedAt(0), isFalse);
       await _flush();
-      expect(effects, [GameEffect.selected, GameEffect.accepted]);
+      expect(effects, [GameEffect.selected, GameEffect.placed]);
       c.dispose();
     });
 
-    test('toggleNote 와 메모 입력은 accepted', () async {
+    test('toggleNote 는 accepted, 메모 입력은 noted', () async {
       final c = playing([0, 1]);
       final effects = _record(c);
       c
@@ -374,7 +374,7 @@ void main() {
       expect(effects, [
         GameEffect.selected,
         GameEffect.accepted,
-        GameEffect.accepted,
+        GameEffect.noted,
       ]);
       c.dispose();
     });

@@ -1,5 +1,5 @@
 // 게임 효과음 WAV 생성기. 실행: dart run tool/gen_sounds.dart
-// 출력: assets/sounds/{tap,wrong,failed,solved}.wav (22.05kHz · mono · 16bit)
+// 출력: assets/sounds/{tap,place,note,wrong,failed,solved}.wav (22.05kHz · mono · 16bit)
 // 수치 기준은 이 파일과 test/services/sound_assets_test.dart 가 같이 지킨다.
 // 음색은 사람이 듣고 판단한다.
 import 'dart:io';
@@ -77,6 +77,55 @@ void _fadeOut(Float64List s, double fadeMs) {
   }
 }
 
+/// 연필 긁는 소리용 띠 통과 잡음. [seed] 가 같으면 결과도 같다 (재생성 결정적).
+/// 1극 고역(hpHz)·저역(lpHz) 필터를 차례로 건다.
+Float64List _bandNoise(
+  int len, {
+  required double hpHz,
+  required double lpHz,
+  int seed = 7,
+}) {
+  final rnd = math.Random(seed);
+  final out = Float64List(len);
+  final aH = math.exp(-2 * math.pi * hpHz / rate);
+  final aL = math.exp(-2 * math.pi * lpHz / rate);
+  var lowOfHp = 0.0, lp = 0.0;
+  for (var i = 0; i < len; i++) {
+    final x = rnd.nextDouble() * 2 - 1;
+    lowOfHp = aH * lowOfHp + (1 - aH) * x;
+    final hp = x - lowOfHp;
+    lp = aL * lp + (1 - aL) * hp;
+    out[i] = lp;
+  }
+  return out;
+}
+
+/// [startMs] 부터 [lenMs] 동안 잡음에 획 모양 봉투(어택 후 완만 감쇠)를 씌워 더한다.
+/// [grain] 은 종이 결을 흉내 내는 빠른 진폭 떨림(Hz).
+void _addStroke(
+  Float64List out,
+  Float64List noise,
+  double startMs,
+  double lenMs, {
+  required double attackMs,
+  required double decayMs,
+  double gain = 1,
+  double grain = 170,
+}) {
+  final start = _n(startMs);
+  final end = math.min(out.length, start + _n(lenMs));
+  for (var i = start; i < end; i++) {
+    final tMs = (i - start) * 1000 / rate;
+    var env = tMs < attackMs
+        ? tMs / attackMs
+        : math.exp(-(tMs - attackMs) / decayMs);
+    final left = lenMs - tMs;
+    if (left < 8) env *= math.max(0, left / 8);
+    env *= 0.75 + 0.25 * math.sin(2 * math.pi * grain * tMs / 1000);
+    out[i] += gain * env * noise[i];
+  }
+}
+
 Float64List _normalize(Float64List s, double peak) {
   var m = 0.0;
   for (final v in s) {
@@ -97,6 +146,36 @@ Float64List synth(SoundCue cue) {
       _addNote(s, 0, 3300, const [0.25], attackMs: 2, decayMs: 5);
       _fadeOut(s, 10);
       return _normalize(s, 0.16);
+    case SoundCue.place:
+      // 숫자 기입. 880Hz 가 30ms 안에 660Hz 로 내려오는 "톡"(마림바 느낌) + 2배음.
+      // tap 보다 길고 음정이 또렷해 "적혔다"는 느낌을 준다.
+      final s = Float64List(_n(100));
+      for (var i = 0; i < s.length; i++) {
+        final tMs = i * 1000 / rate;
+        final env = tMs < 3 ? tMs / 3 : math.exp(-(tMs - 3) / 28);
+        // 위상 적분으로 글라이드: f(t) = 660 + 220·e^(−t/12ms)
+        final t = tMs / 1000;
+        final phase =
+            2 * math.pi * (660 * t + 220 * 0.012 * (1 - math.exp(-t / 0.012)));
+        s[i] =
+            env *
+            (math.sin(phase) +
+                0.35 * math.sin(2 * phase) +
+                0.12 * math.sin(3 * phase));
+      }
+      _addNote(s, 0, 2640, const [0.18], attackMs: 1, decayMs: 4);
+      _fadeOut(s, 25);
+      return _normalize(s, 0.19);
+    case SoundCue.note:
+      // 연필 메모. 1.4–5kHz 띠 잡음에 짧은 획 둘(0–55ms, 60–135ms).
+      // 두 번째 획은 조금 약하고 결이 다르게 들리도록 다른 seed 를 쓴다.
+      final s = Float64List(_n(140));
+      final a = _bandNoise(s.length, hpHz: 1400, lpHz: 5000, seed: 11);
+      final b = _bandNoise(s.length, hpHz: 1800, lpHz: 4500, seed: 23);
+      _addStroke(s, a, 0, 55, attackMs: 4, decayMs: 30);
+      _addStroke(s, b, 60, 75, attackMs: 6, decayMs: 34, gain: 0.8, grain: 140);
+      _fadeOut(s, 15);
+      return _normalize(s, 0.18);
     case SoundCue.wrong:
       // 330Hz → 262Hz 하강 2음. 부드러운 배음, 음마다 5ms 어택·릴리스.
       final s = Float64List(_n(150));

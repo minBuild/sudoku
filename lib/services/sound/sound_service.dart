@@ -58,7 +58,11 @@ class AudioPlayersSoundService implements SoundGateway {
   Future<void> _load() async {
     try {
       for (final cue in SoundCue.values) {
-        final n = cue == SoundCue.tap ? 3 : 1;
+        final n = switch (cue) {
+          SoundCue.tap => 3,
+          SoundCue.place || SoundCue.note => 2,
+          _ => 1,
+        };
         _pools[cue] = await AudioPool.create(
           source: AssetSource('sounds/${cue.name}.wav'),
           minPlayers: n,
